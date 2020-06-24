@@ -1,2 +1,18 @@
-# techpoint-sos
-SOS Challenge S&amp;C Team 05
+# Techpoint's SOS Challenge
+Summer 2020  
+June 22 - July 24
+
+## Team members  
+### Go squad  
+John Kaufeld (product manager)  
+Kaitlin Walper  
+### Pro squad
+Andrew Gan  
+Abdullah Salau  
+Jaelyn Rogers  
+
+## Coach
+Kelly Schafka  
+Eric Freiman
+
+Coach company: [Dewpoint](https://www.dewpoint.com/)
