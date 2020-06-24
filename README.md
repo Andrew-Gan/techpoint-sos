@@ -16,3 +16,9 @@ Kelly Schafka
 Eric Freiman
 
 Coach company: [Dewpoint](https://www.dewpoint.com/)
+
+## Dependencies
+
+## Execution
+
+## Preview
