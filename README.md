@@ -13,7 +13,8 @@ Jaelyn Rogers
 
 ## Coach
 Kelly Schafka  
-Eric Freiman
+Eric Freiman  
+Chris Weiss  
 
 Coach company: [Dewpoint](https://www.dewpoint.com/)
 
