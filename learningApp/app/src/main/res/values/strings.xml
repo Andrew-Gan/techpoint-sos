@@ -11,15 +11,8 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
-    <string name="fragment_home_name">Andrew Gan</string>
-    <string name="fragment_home_classification">Senior</string>
-    <string name="fragment_home_major">Computer Engineering</string>
-    <string name="fragment_home_school">Purdue University</string>
     <string name="fragment_home_accScore">Accumulated score</string>
-    <string name="fragment_home_score">35</string>
     <string name="fragment_home_courseWIP">Courses in progress (11 credits)</string>
-    <string name="fragment_home_courseWIP_list">ECE 201\nENGL 106\nCS 159\nENGR 132\n</string>
     <string name="fragment_home_recommendedCourses">Recommended courses</string>
-    <string name="fragment_home_recommendedCourses_list">ECE 202\nECE 301\nECE302</string>
 
 </resources>
