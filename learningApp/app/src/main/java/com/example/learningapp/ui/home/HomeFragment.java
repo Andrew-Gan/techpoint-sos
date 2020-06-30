@@ -23,17 +23,21 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        loadProfile(root);
+
+        return root;
+    }
+
+    public void loadProfile(View root) {
         final TextView nameText = root.findViewById(R.id.name);
         final TextView majorText = root.findViewById(R.id.major);
         final TextView classText = root.findViewById(R.id.classification);
         final TextView schoolText = root.findViewById(R.id.school);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
 
-            }
-        });
-
-        return root;
+        // to be replaced with data retrieval from mySQL or local storage
+        nameText.setText("Andrew");
+        majorText.setText("Computer Engineering");
+        classText.setText("Senior");
+        schoolText.setText("Purdue University");
     }
 }
