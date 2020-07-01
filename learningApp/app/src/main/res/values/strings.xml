@@ -11,7 +11,7 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
-    <string name="fragment_home_accScore">Accumulated score</string>
+    <string name="fragment_home_accScore">Accumulated score</string>"
     <string name="fragment_home_courseWIP">Courses in progress (11 credits)</string>
     <string name="fragment_home_recommendedCourses">Recommended courses</string>
 

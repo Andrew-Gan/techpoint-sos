@@ -2,12 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
     <ImageView
-        android:id="@+id/avatar"
+        android:id="@+id/home_avatar"
         android:layout_width="97dp"
         android:layout_height="118dp"
         android:layout_marginStart="40dp"
@@ -18,7 +19,7 @@
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/home_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -26,11 +27,11 @@
         android:layout_marginTop="34dp"
         android:text="name"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/avatar"
+        app:layout_constraintStart_toEndOf="@+id/home_avatar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/school"
+        android:id="@+id/home_school"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -38,11 +39,11 @@
         android:layout_marginTop="4dp"
         android:text="school"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/avatar"
-        app:layout_constraintTop_toBottomOf="@+id/major" />
+        app:layout_constraintStart_toEndOf="@+id/home_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/home_major" />
 
     <TextView
-        android:id="@+id/major"
+        android:id="@+id/home_major"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -50,11 +51,11 @@
         android:layout_marginTop="4dp"
         android:text="major"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/avatar"
-        app:layout_constraintTop_toBottomOf="@+id/classification" />
+        app:layout_constraintStart_toEndOf="@+id/home_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/home_class" />
 
     <TextView
-        android:id="@+id/classification"
+        android:id="@+id/home_class"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -62,11 +63,11 @@
         android:layout_marginTop="4dp"
         android:text="classification"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/avatar"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        app:layout_constraintStart_toEndOf="@+id/home_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/home_name" />
 
     <TextView
-        android:id="@+id/AccPointsStr"
+        android:id="@+id/home_AccPointsStr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -76,10 +77,10 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/avatar" />
+        app:layout_constraintTop_toBottomOf="@+id/home_avatar" />
 
     <TextView
-        android:id="@+id/ScoreInt"
+        android:id="@+id/home_ScoreInt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="200dp"
@@ -88,11 +89,11 @@
         android:text="35"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/AccPointsStr"
-        app:layout_constraintTop_toBottomOf="@+id/school" />
+        app:layout_constraintStart_toStartOf="@+id/home_AccPointsStr"
+        app:layout_constraintTop_toBottomOf="@+id/home_school" />
 
     <TextView
-        android:id="@+id/courseWIP"
+        android:id="@+id/home_courseWIP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -102,43 +103,31 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AccPointsStr" />
+        app:layout_constraintTop_toBottomOf="@+id/home_AccPointsStr" />
 
-    <TextView
-        android:id="@+id/courseWIP_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
-        android:text="wip_list"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseWIP" />
+<!--    <TextView-->
+<!--        android:id="@+id/home_recCourses"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="40dp"-->
+<!--        android:layout_marginLeft="40dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:text="@string/fragment_home_recommendedCourses"-->
+<!--        android:textSize="18sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/home_courseWIP_list" />-->
 
-    <TextView
-        android:id="@+id/recommendedCourses"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/fragment_home_recommendedCourses"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseWIP_list" />
-
-    <TextView
-        android:id="@+id/recommendedCourses_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
-        android:text="recommendedCourses_list"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recommendedCourses" />
+<!--    <TextView-->
+<!--        android:id="@+id/home_recCourses_list"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="40dp"-->
+<!--        android:layout_marginLeft="40dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:text="recommendedCourses_list"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/home_recCourses" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
