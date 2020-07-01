@@ -2,8 +2,10 @@ package com.example.learningapp.ui.home;
 
 import android.app.ActionBar;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +37,22 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         loadProfile(root);
-        loadCoursesWIP(root);
+
+        // replace 3 with num courses retrieved from database
+        String[] coursesWIP = {"ECE 201", "ENGL 106", "CS 301", "ENGR 132"};
+        createCoursesList(root, coursesWIP, 750, true);
+
+        TextView recText = new TextView(this.getContext());
+        recText.setText("Recommended courses");
+        recText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        recText.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        ConstraintLayout home_layout = root.findViewById(R.id.home_layout);
+        recText.setX(110);
+        recText.setY(1080);
+        home_layout.addView(recText);
+
+        String[] coursesRec = {"ECE 301", "MGMT 101", "ECONS 252"};
+        createCoursesList(root, coursesRec, 1200, false);
 
         return root;
     }
@@ -47,48 +64,63 @@ public class HomeFragment extends Fragment {
         final TextView schoolText = root.findViewById(R.id.home_school);
 
         // to be replaced with data retrieval from database
-        nameText.setText("Andrew");
-        majorText.setText("Computer Engineering");
-        classText.setText("Senior");
-        schoolText.setText("Purdue University");
+        String[] user_info = {"Andrew", "Economics", "Sophomore", "Florida University"};
+        nameText.setText(user_info[0]);
+        majorText.setText(user_info[1]);
+        classText.setText(user_info[2]);
+        schoolText.setText(user_info[3]);
     }
 
-    public void loadCoursesWIP(View root) {
+    public void createCoursesList(View root, String[] course_list, int y, Boolean inProg) {
         ConstraintLayout home_layout = root.findViewById(R.id.home_layout);
-        // replace 3 with num courses retrieved from database
-        String[] coursesName = {"ECE 201", "ENGL 106", "CS 301"};
-//        ViewGroup[] wipcourses_view = new ViewGroup[coursesName.length];
+        RelativeLayout[] wip_courses_view = new RelativeLayout[course_list.length];
+        for(int i = 0; i < course_list.length; i++) {
+            // call constructor
+            wip_courses_view[i] = new RelativeLayout(this.getContext());
+            wip_courses_view[i].setMinimumWidth(900);
 
-        for(int i = 0; i < 3; i++) {
             // course name
             TextView courseText = new TextView(this.getContext());
-            courseText.setX(100);
-            courseText.setY(i * 100 + 725);
-            courseText.setText(coursesName[i]);
+            courseText.setText(course_list[i]);
             courseText.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 18);
-            home_layout.addView(courseText);
+            wip_courses_view[i].addView(courseText);
 
-            // drop button
-            Button courseDropButton = new Button(this.getContext());
             RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(250, 100);
-            courseDropButton.setX(450);
-            courseDropButton.setY(i * 100 + 725 - 10);
-            courseDropButton.setLayoutParams(rlp);
-            courseDropButton.setText("DROP");
-            courseDropButton.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12);
-//            wipcourses_view[i].addView(courseDropButton);
-            home_layout.addView(courseDropButton);
+            if(inProg == true) {
 
-            // finish button
-            Button courseFinishButton = new Button(this.getContext());
-            courseFinishButton.setX(750);
-            courseFinishButton.setY(i * 100 + 725 - 10);
-            courseFinishButton.setLayoutParams(rlp);
-            courseFinishButton.setText("FINISH");
-            courseFinishButton.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12);
-//            wipcourses_view[i].addView(courseFinishButton);
-//            home_layout.addView(wipcourses_view[i]);
-            home_layout.addView(courseFinishButton);
+                // drop button
+                Button courseDropButton = new Button(this.getContext());
+                courseDropButton.setX(300);
+                courseDropButton.setY(-15);
+                courseDropButton.setLayoutParams(rlp);
+                courseDropButton.setText("DROP");
+                courseDropButton.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12);
+                wip_courses_view[i].addView(courseDropButton);
+
+                // finish button
+                Button courseFinishButton = new Button(this.getContext());
+                courseFinishButton.setX(600);
+                courseFinishButton.setY(-15);
+                courseFinishButton.setLayoutParams(rlp);
+                courseFinishButton.setText("FINISH");
+                courseFinishButton.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12);
+                wip_courses_view[i].addView(courseFinishButton);
+            }
+            else {
+                // add button
+                Button courseFinishButton = new Button(this.getContext());
+                courseFinishButton.setX(300);
+                courseFinishButton.setY(-15);
+                courseFinishButton.setLayoutParams(rlp);
+                courseFinishButton.setText("ADD");
+                courseFinishButton.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12);
+                wip_courses_view[i].addView(courseFinishButton);
+            }
+
+            // add course layout to home layout
+            wip_courses_view[i].setX(120);
+            wip_courses_view[i].setY(i * 75 + y);
+            home_layout.addView(wip_courses_view[i]);
         }
     }
 }
