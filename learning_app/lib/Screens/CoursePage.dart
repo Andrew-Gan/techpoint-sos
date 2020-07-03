@@ -7,8 +7,9 @@ class CoursePage extends StatefulWidget {
 }
 
 class _CoursePageState extends State<CoursePage> {
-  final _suggestions = <WordPair>[];
-  final _registered = <WordPair>{};
+  // replace with db retrieval
+  final _courses = ['ECE 101', 'ECE 201', 'ECE 202', 'ECE 301', 'ENGR 132', 'ENGL 106'];
+  final _registered = <String>{};
   final _biggerFont = TextStyle(fontSize: 18.0);
 
   @override
@@ -17,67 +18,43 @@ class _CoursePageState extends State<CoursePage> {
       appBar: AppBar(
         title: Text('Course Listing'),
         actions: [
-          IconButton(icon: Icon(Icons.list), onPressed: _pushRegistered),
+          IconButton(icon: Icon(Icons.list), onPressed: _showCourseInfo),
         ],
       ),
-      body: _buildSuggestions(),
+      body: /*_buildSuggestions()*/
+        ListView.builder(
+          padding: EdgeInsets.all(16.0),
+          itemBuilder: (context, i) {
+            final index = i ~/ 2;
+            if (index >= _courses.length) return null;
+            if (i.isOdd) return Divider();
+            return _buildRow(_courses[index]);
+          }),
     );
   }
 
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: EdgeInsets.all(16.0),
-        itemBuilder: /*1*/ (context, i) {
-          if (i.isOdd) return Divider();
-
-          final index = i ~/ 2;
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10));
-          }
-          return _buildRow(_suggestions[index]);
-        });
-  }
-
-  Widget _buildRow(WordPair pair) {
-    final alreadyRegistered = _registered.contains(pair);
+  Widget _buildRow(String courseName) {
     return ListTile(
       title: Text(
-        pair.asPascalCase,
+        courseName,
         style: _biggerFont,
       ),
       trailing: Icon(Icons.chevron_right),
-      // onTap: () {
-      //   // display course info page
-      //   Navigator.push(context, route);
-      // },
+      onTap: () {
+        _showCourseInfo();
+      },
     );
   }
 
-  void _pushRegistered() {
+  void _showCourseInfo() {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        // NEW lines from here...
         builder: (BuildContext context) {
-          final tiles = _registered.map(
-            (WordPair pair) {
-              return ListTile(
-                title: Text(
-                  pair.asPascalCase,
-                  style: _biggerFont,
-                ),
-              );
-            },
-          );
-          final divided = ListTile.divideTiles(
-            context: context,
-            tiles: tiles,
-          ).toList();
-
           return Scaffold(
             appBar: AppBar(
-              title: Text('Registered Suggestions'),
+              title: Text('Course Information'),
             ),
-            body: ListView(children: divided),
+            body: Text('courseName'),
           );
         }, //...to here.
       ),
