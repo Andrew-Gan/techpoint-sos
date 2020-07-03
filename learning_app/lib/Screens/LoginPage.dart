@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage>
   Widget build(BuildContext context) {
     return new Scaffold(
         body: new Container(
-      color: Colors.white,
+      color: Colors.blueGrey,
       child: new ListView(
         children: <Widget>[
           Column(
@@ -80,88 +80,94 @@ class _LoginPageState extends State<LoginPage>
               new Container(
                 color: Color(0xffFFFFFF),
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 25.0),
+                  padding: EdgeInsets.only(bottom: 0.0),
                   child: new Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 25.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  new Text(
-                                    'Email ID',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  decoration: const InputDecoration(
-                                      hintText: "Enter email ID"),
-                                  controller: emailController,
-                                  enabled: true,
+                        padding: EdgeInsets.only(
+                            left: 25.0, right: 25.0, top: 25.0),
+                        child: new Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            new Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                new Text(
+                                  'Email ID',
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                            ],
-                          )),
+                              ],
+                            ),
+                          ],
+                        )),
                       Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 25.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  new Text(
-                                    'Password',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
+                        padding: EdgeInsets.only(
+                            left: 25.0, right: 25.0, top: 2.0),
+                        child: new Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            new Flexible(
+                              child: new TextField(
+                                decoration: const InputDecoration(
+                                    hintText: "Enter email ID"),
+                                controller: emailController,
+                                enabled: true,
                               ),
-                            ],
-                          )),
+                            ),
+                          ],
+                        )),
                       Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  decoration: const InputDecoration(
-                                      hintText: "Enter password"),
-                                  controller: pwController,
-                                  enabled: true,
-                                  obscureText: true,
+                        padding: EdgeInsets.only(
+                            left: 25.0, right: 25.0, top: 25.0),
+                        child: new Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            new Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                new Text(
+                                  'Password',
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold),
                                 ),
+                              ],
+                            ),
+                          ],
+                        )),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 25.0, right: 25.0, top: 2.0),
+                        child: new Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            new Flexible(
+                              child: new TextField(
+                                decoration: const InputDecoration(
+                                    hintText: "Enter password"),
+                                controller: pwController,
+                                enabled: true,
+                                obscureText: true,
                               ),
-                            ],
-                          )),
+                            ),
+                          ],
+                        )),
                       Center(
-                          heightFactor: 4,
-                          child: FlatButton(onPressed: onLoginPress, child: Text('LOGIN'))
-                              ),
+                        heightFactor: 4,
+                        child: OutlineButton(
+                          onPressed: onLoginPress,
+                          child: Text('LOGIN'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0)
+                          ),
+                        )
+                      ),
                     ],
                   ),
                 ),
