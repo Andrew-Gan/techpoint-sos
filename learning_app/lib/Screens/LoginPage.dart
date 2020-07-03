@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -6,32 +7,27 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> 
+class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
+  final emailController = TextEditingController();
+  final pwController = TextEditingController();
 
   @override
   void initState() => super.initState();
 
   @override
   Widget build(BuildContext context) {
-    // replace with database retrieval
-    String name = 'Andrew Gan';
-    String email = 'andrew45@indiana.edu';
-    String major = 'Economics and Mangement';
-    String classification = 'Sophomore';
-    String college = 'Indiana University';
-
     return new Scaffold(
         body: new Container(
-      color: Colors.blueGrey,
+      color: Colors.white,
       child: new ListView(
         children: <Widget>[
           Column(
             children: <Widget>[
               new Container(
-                height: 280.0,
+                height: 260.0,
                 color: Colors.white,
                 child: new Column(
                   children: <Widget>[
@@ -64,7 +60,7 @@ class _LoginPageState extends State<LoginPage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             new Container(
-                                width: 400.0,
+                                width: 300.0,
                                 height: 100.0,
                                 decoration: new BoxDecoration(
                                   shape: BoxShape.rectangle,
@@ -90,90 +86,82 @@ class _LoginPageState extends State<LoginPage>
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(
-                            left: 25.0, right: 25.0, top: 25.0),
-                        child: new Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            new Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                new Text(
-                                  'Email ID',
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 25.0, right: 25.0, top: 2.0),
-                        child: new Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            new Flexible(
-                              child: new TextField(
-                                decoration: const InputDecoration(
-                                  hintText: "Enter email ID",
-                                ),
-                                enabled: !_status,
-                                autofocus: !_status,
-                                textInputAction: TextInputAction.send),
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 25.0),
+                          child: new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  new Text(
+                                    'Email ID',
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        )),
+                            ],
+                          )),
                       Padding(
-                        padding: EdgeInsets.only(
-                            left: 25.0, right: 25.0, top: 25.0),
-                        child: new Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            new Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                new Text(
-                                  'Password',
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold),
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 2.0),
+                          child: new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Flexible(
+                                child: new TextField(
+                                  decoration: const InputDecoration(
+                                      hintText: "Enter email ID"),
+                                  controller: emailController,
+                                  enabled: true,
                                 ),
-                              ],
-                            ),
-                          ],
-                        )),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 25.0, right: 25.0, top: 2.0),
-                        child: new Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            new Flexible(
-                              child: new TextField(
-                                decoration: const InputDecoration(
-                                  hintText: "Enter password",
-                                ),
-                                enabled: !_status,
-                                autofocus: !_status,
-
                               ),
-                            ),
-                          ],
-                        )),
+                            ],
+                          )),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 25.0),
+                          child: new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  new Text(
+                                    'Password',
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 2.0),
+                          child: new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Flexible(
+                                child: new TextField(
+                                  decoration: const InputDecoration(
+                                      hintText: "Enter password"),
+                                  controller: pwController,
+                                  enabled: true,
+                                  obscureText: true,
+                                ),
+                              ),
+                            ],
+                          )),
                       Center(
                           heightFactor: 4,
-                          child: FlatButton(
-                            onPressed: onLoginPress,
-                            child: Text(
-                              'LOGIN',
-                              style: TextStyle(fontSize: 20.0),
-                            ),
-                          )),
+                          child: FlatButton(onPressed: onLoginPress, child: Text('LOGIN'))
+                              ),
                     ],
                   ),
                 ),
@@ -189,10 +177,13 @@ class _LoginPageState extends State<LoginPage>
   void dispose() {
     // Clean up the controller when the Widget is disposed
     myFocusNode.dispose();
+    emailController.dispose();
+    pwController.dispose();
     super.dispose();
   }
 
   void onLoginPress() {
-
+    log('Email is ' + emailController.text);
+    log('PW is ' + pwController.text);
   }
 }
