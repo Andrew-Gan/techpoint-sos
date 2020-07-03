@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 
 class CoursePage extends StatefulWidget {
   @override
@@ -9,7 +8,8 @@ class CoursePage extends StatefulWidget {
 class _CoursePageState extends State<CoursePage> {
   // replace with db retrieval
   final _courses = ['ECE 101', 'ECE 201', 'ECE 202', 'ECE 301', 'ENGR 132', 'ENGL 106'];
-  final _registered = <String>{};
+  // final _registered = <String>{};
+  var _displayinfo;
   final _biggerFont = TextStyle(fontSize: 18.0);
 
   @override
@@ -28,19 +28,20 @@ class _CoursePageState extends State<CoursePage> {
             final index = i ~/ 2;
             if (index >= _courses.length) return null;
             if (i.isOdd) return Divider();
-            return _buildRow(_courses[index]);
+            return _buildRow(index);
           }),
     );
   }
 
-  Widget _buildRow(String courseName) {
+  Widget _buildRow(int index) {
     return ListTile(
       title: Text(
-        courseName,
+        _courses[index],
         style: _biggerFont,
       ),
       trailing: Icon(Icons.chevron_right),
       onTap: () {
+        _displayinfo = index;
         _showCourseInfo();
       },
     );
@@ -54,7 +55,7 @@ class _CoursePageState extends State<CoursePage> {
             appBar: AppBar(
               title: Text('Course Information'),
             ),
-            body: Text('courseName'),
+            body: Text(_courses[_displayinfo]),
           );
         }, //...to here.
       ),

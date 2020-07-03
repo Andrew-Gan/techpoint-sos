@@ -12,22 +12,26 @@ class _ProfilePageState extends State<ProfilePage>
   final FocusNode myFocusNode = FocusNode();
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+  void initState() => super.initState();
 
   @override
   Widget build(BuildContext context) {
+    // replace with database retrieval
+    String name = 'Andrew Gan';
+    String email = 'andrew45@indiana.edu';
+    String major = 'Economics and Mangement';
+    String classification = 'Sophomore';
+    String college = 'Indiana University';
+
     return new Scaffold(
         body: new Container(
-      color: Colors.white,
+      color: Colors.blueGrey,
       child: new ListView(
         children: <Widget>[
           Column(
             children: <Widget>[
               new Container(
-                height: 250.0,
+                height: 220.0,
                 color: Colors.white,
                 child: new Column(
                   children: <Widget>[
@@ -119,13 +123,6 @@ class _ProfilePageState extends State<ProfilePage>
                                   ),
                                 ],
                               ),
-                              new Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  _status ? _getEditIcon() : new Container(),
-                                ],
-                              )
                             ],
                           )),
                       Padding(
@@ -150,19 +147,20 @@ class _ProfilePageState extends State<ProfilePage>
                           )),
                       Padding(
                           padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
+                              left: 25.0, right: 25.0, top: 10.0),
                           child: new Row(
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  decoration: const InputDecoration(
-                                    hintText: "Enter Your Name",
+                              new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  new Text(
+                                    name,
+                                    style: TextStyle(
+                                        fontSize: 16.0,),
                                   ),
-                                  enabled: !_status,
-                                  autofocus: !_status,
-
-                                ),
+                                ],
                               ),
                             ],
                           )),
@@ -188,16 +186,19 @@ class _ProfilePageState extends State<ProfilePage>
                           )),
                       Padding(
                           padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
+                              left: 25.0, right: 25.0, top: 10.0),
                           child: new Row(
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  decoration: const InputDecoration(
-                                      hintText: "Enter Email ID"),
-                                  enabled: !_status,
-                                ),
+                              new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  new Text(
+                                    email,
+                                    style: TextStyle(fontSize: 16.0,),
+                                  ),
+                                ],
                               ),
                             ],
                           )),
@@ -212,7 +213,7 @@ class _ProfilePageState extends State<ProfilePage>
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   new Text(
-                                    'Mobile',
+                                    'Major',
                                     style: TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold),
@@ -223,16 +224,19 @@ class _ProfilePageState extends State<ProfilePage>
                           )),
                       Padding(
                           padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
+                              left: 25.0, right: 25.0, top: 10.0),
                           child: new Row(
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  decoration: const InputDecoration(
-                                      hintText: "Enter Mobile Number"),
-                                  enabled: !_status,
-                                ),
+                              new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  new Text(
+                                    major,
+                                    style: TextStyle(fontSize: 16.0,),
+                                  ),
+                                ],
                               ),
                             ],
                           )),
@@ -241,57 +245,74 @@ class _ProfilePageState extends State<ProfilePage>
                               left: 25.0, right: 25.0, top: 25.0),
                           child: new Row(
                             mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Expanded(
-                                child: Container(
-                                  child: new Text(
-                                    'Pin Code',
+                              new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  new Text(
+                                    'Class',
                                     style: TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                                flex: 2,
-                              ),
-                              Expanded(
-                                child: Container(
-                                  child: new Text(
-                                    'State',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                flex: 2,
+                                ],
                               ),
                             ],
                           )),
                       Padding(
                           padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
+                              left: 25.0, right: 25.0, top: 10.0),
                           child: new Row(
                             mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Flexible(
-                                child: Padding(
-                                  padding: EdgeInsets.only(right: 10.0),
-                                  child: new TextField(
-                                    decoration: const InputDecoration(
-                                        hintText: "Enter Pin Code"),
-                                    enabled: !_status,
+                              new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  new Text(
+                                    classification,
+                                    style: TextStyle(fontSize: 16.0,),
                                   ),
-                                ),
-                                flex: 2,
+                                ],
                               ),
-                              Flexible(
-                                child: new TextField(
-                                  decoration: const InputDecoration(
-                                      hintText: "Enter State"),
-                                  enabled: !_status,
-                                ),
-                                flex: 2,
+                            ],
+                          )),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 25.0),
+                          child: new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  new Text(
+                                    'College',
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 10.0),
+                          child: new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  new Text(
+                                    college,
+                                    style: TextStyle(fontSize: 16.0,),
+                                  ),
+                                ],
                               ),
                             ],
                           )),
@@ -363,25 +384,6 @@ class _ProfilePageState extends State<ProfilePage>
           ),
         ],
       ),
-    );
-  }
-
-  Widget _getEditIcon() {
-    return new GestureDetector(
-      child: new CircleAvatar(
-        backgroundColor: Colors.red,
-        radius: 14.0,
-        child: new Icon(
-          Icons.edit,
-          color: Colors.white,
-          size: 16.0,
-        ),
-      ),
-      onTap: () {
-        setState(() {
-          _status = false;
-        });
-      },
     );
   }
 }
