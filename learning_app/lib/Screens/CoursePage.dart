@@ -6,8 +6,6 @@ class CoursePage extends StatefulWidget {
 }
 
 class _CoursePageState extends State<CoursePage> {
-  // replace with db retrieval
-  final _courses = ['ECE 101', 'ECE 201', 'ECE 202', 'ECE 301', 'ENGR 132', 'ENGL 106'];
   // final _registered = <String>{};
   var _displayinfo;
   final _biggerFont = TextStyle(fontSize: 18.0);
@@ -60,5 +58,25 @@ class _CoursePageState extends State<CoursePage> {
         }, //...to here.
       ),
     );
+  }
+}
+
+class CourseInfo {
+  final String id;
+  final String title;
+  final String description;
+  final int credit;
+  final String prereq;  // every course separated with a ','
+
+  CourseInfo({this.id, this.title, this.description, this.credit, this.prereq});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'credit': credit,
+      'prereq': prereq,
+    };
   }
 }

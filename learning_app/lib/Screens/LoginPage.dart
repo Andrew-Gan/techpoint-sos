@@ -240,9 +240,10 @@ class AccountInfo {
   final String year;
   final String college;
   final String password;
+  final String regCourse;
 
   AccountInfo({this.name, this.email, this.major,this.year, this.college,
-    this.password});
+    this.password, this.regCourse,});
 
   Map<String, dynamic> toMap() {
     return {
@@ -252,6 +253,7 @@ class AccountInfo {
       'year': year,
       'college': college,
       'password': password,
+      'regCourse': regCourse,
     };
   }
 }
