@@ -23,6 +23,7 @@ Coach company: [Dewpoint](https://www.dewpoint.com/)
 
 ## Preview
 <kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_login.png" width=200 height=400 /></kbd>
+<kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_profile.png" width=200 height=400 /></kbd>
 
 ## References
 [Item listing and generation](https://codelabs.developers.google.com/codelabs/first-flutter-app-pt1)  
