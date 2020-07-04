@@ -15,6 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   final FocusNode myFocusNode = FocusNode();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool isInvalid = false;
 
   @override
   void initState() => super.initState();
@@ -60,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 color: Color(0xffFFFFFF),
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 20.0),
+                  padding: EdgeInsets.only(bottom: 60.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -94,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                             Flexible(
                               child: TextField(
                                 decoration: const InputDecoration(
-                                    hintText: "Enter email ID"),
+                                  hintText: "Enter email ID"),
                                 controller: emailController,
                                 enabled: true,
                               ),
@@ -103,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                         )),
                       Padding(
                         padding: EdgeInsets.only(
-                            left: 25.0, right: 25.0, top: 25.0),
+                          left: 25.0, right: 25.0, top: 25.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: <Widget>[
@@ -114,8 +115,8 @@ class _LoginPageState extends State<LoginPage> {
                                 Text(
                                   'Password',
                                   style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
@@ -138,8 +139,30 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         )),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 25.0, right: 25.0, top: 35.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Visibility(
+                              child: Text(
+                                'Incorrect email or password provided',
+                                style: TextStyle(
+                                  fontSize: 16.0, 
+                                  color: Colors.red,),
+                              ),
+                              replacement: Text(
+                                '',
+                                style: TextStyle(
+                                  fontSize: 16.0,),
+                              ),
+                              visible: isInvalid,
+                            ),
+                          ],
+                        )),
                       Center(
-                        heightFactor: 4,
+                        heightFactor: 2,
                         child: OutlineButton(
                           onPressed: onLoginPress,
                           child: Text('LOGIN'),
@@ -169,15 +192,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void onLoginPress() async {
-    // to be removed after debug completed
-    log('Email is ' + emailController.text);
-    log('PassWord is ' + passwordController.text);
-
     final Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'account_database.db'),
       onCreate: (db, version) async {
         return await db.execute(
-          'CREATE TABLE accounts(name TEXT, email TEXT, password TEXT, major TEXT, year TEXT, college TEXT)',
+          'CREATE TABLE accounts(name TEXT, email TEXT, password TEXT,'
+          'major TEXT, year TEXT, college TEXT)',
         );
       },
       version: 1
@@ -186,7 +206,8 @@ class _LoginPageState extends State<LoginPage> {
     final List<Map<String, dynamic>> res = await dbRef.query(
       'accounts',
       distinct: true,
-      where: 'email = \'' + emailController.text + '\' AND password = \'' + passwordController.text + '\'',
+      where: 'email = \'' + emailController.text + '\' AND password = \'' +
+      passwordController.text + '\'',
     );
     List<AccountInfo> queryRes = List.generate(res.length, (i) {
       return AccountInfo(
@@ -195,10 +216,11 @@ class _LoginPageState extends State<LoginPage> {
         major: res[i]['major'],
         year: res[i]['year'],
         college: res[i]['college'],
-        password: res[i]['password'],
       );
     });
-    log(queryRes.toString());
+
+    if (queryRes.length == 0) setState(() => isInvalid = true);
+    else setState(() => isInvalid = false);
     db.whenComplete(() => null);
   }
 }
@@ -209,10 +231,9 @@ class AccountInfo {
   final String major;
   final String year;
   final String college;
-  final String password;
 
   AccountInfo(
-    {this.name, this.email, this.major, this.year, this.college, this.password}
+    {this.name, this.email, this.major, this.year, this.college}
   );
 
   Map<String, dynamic> toMap() {
@@ -222,7 +243,6 @@ class AccountInfo {
       'major': major,
       'year': year,
       'college': college,
-      'password': password,
     };
   }
 }

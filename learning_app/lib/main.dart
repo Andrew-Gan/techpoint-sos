@@ -15,7 +15,7 @@ main() {
       home: SplashScreen(),
       routes: <String, WidgetBuilder>{
         //SPLASH_SCREEN: (BuildContext context) => MapScreen(),
-        PROFILE: (BuildContext context) => ProfilePage(), //ProfilePage(),
+        PROFILE: (BuildContext context) => LoginPage(), //ProfilePage(),
       },
     )
   );
