@@ -1,4 +1,4 @@
-package flutterdemo.aeologic.com.flutterprofilepage
+package flutterdemo.aeologic.com.learningApp
 
 import android.os.Bundle
 

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_profile_page/Constant/Constant.dart';
+import '../Constant/Constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -53,10 +53,10 @@ class SplashScreenState extends State<SplashScreen>
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Padding(
-                  padding: EdgeInsets.only(bottom: 30.0),
+                  padding: EdgeInsets.only(bottom: 50.0),
                   child: Image.asset(
                     'assets/images/powered_by.png',
-                    height: 25.0,
+                    height: 55.0,
                     fit: BoxFit.scaleDown,
                   ))
             ],
@@ -67,7 +67,7 @@ class SplashScreenState extends State<SplashScreen>
               Image.asset(
                 'assets/images/logo.png',
                 width: animation.value * 250,
-                height: animation.value * 250,
+                height: animation.value * 125,
               ),
             ],
           ),

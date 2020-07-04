@@ -1,8 +1,6 @@
-import 'dart:async';
-import 'package:flutter_profile_page/Constant/Constant.dart';
-import 'package:flutter_profile_page/Screens/ProfilePage.dart';
-import 'package:flutter_profile_page/Screens/LoginPage.dart';
-import 'package:flutter_profile_page/Screens/SplashScreen.dart';
+import 'Constant/Constant.dart';
+import 'Screens/SplashScreen.dart';
+import 'Screens/LoginPage.dart';
 import 'package:flutter/material.dart';
 
 main() {

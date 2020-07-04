@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:flutter_profile_page/Screens/ProfilePage.dart';
+import 'ProfilePage.dart';
+import '../create_db.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -24,6 +25,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
 
     void onLoginPress() async {
+      // insert test database
+      createDB();
+
       final Future<Database> db = openDatabase(
         join(await getDatabasesPath(), 'account_database.db'),
       );
@@ -226,5 +230,28 @@ class _LoginPageState extends State<LoginPage> {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+}
+
+class AccountInfo {
+  final String name;
+  final String email;
+  final String major;
+  final String year;
+  final String college;
+  final String password;
+
+  AccountInfo({this.name, this.email, this.major,this.year, this.college,
+    this.password});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'email': email,
+      'major': major,
+      'year': year,
+      'college': college,
+      'password': password,
+    };
   }
 }

@@ -8,17 +8,30 @@
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/kotlin/flutterdemo/aeologic/com/flutterprofilepage/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/kotlin/flutterdemo/aeologic/com/flutterprofilepage/MainActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/android/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/email_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/password_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/powered_by.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/powered_by.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/user_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_profile_page.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_profile_page_android.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/ProfilePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ProfilePage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/SplashScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/SplashScreen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/widget_test.dart" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +41,13 @@
   <component name="FlutterView" splitter-proportion="0.96393895" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
   </component>
   <component name="ProjectId" id="1eBua8d3yJFfm4ce5idKzIuwtr7" />
   <component name="ProjectView">
@@ -39,12 +59,12 @@
         <subPane>
           <expand>
             <path>
-              <item name="flutterProfilePage" type="1abcf292:AndroidViewProjectNode" />
-              <item name="flutter_profile_page" type="e9137016:NonAndroidModuleNode" />
+              <item name="learningApp" type="1abcf292:AndroidViewProjectNode" />
+              <item name="learningApp" type="e9137016:NonAndroidModuleNode" />
             </path>
             <path>
-              <item name="flutterProfilePage" type="1abcf292:AndroidViewProjectNode" />
-              <item name="flutter_profile_page_android" type="e9137016:NonAndroidModuleNode" />
+              <item name="learningApp" type="1abcf292:AndroidViewProjectNode" />
+              <item name="learningApp_android" type="e9137016:NonAndroidModuleNode" />
             </path>
           </expand>
           <select />
@@ -66,8 +86,8 @@
         <subPane>
           <expand>
             <path>
-              <item name="flutterProfilePage" type="58d84e3e:PackageViewProjectNode" />
-              <item name="flutter_profile_page" type="616d4139:PackageViewModuleNode" />
+              <item name="learningApp" type="58d84e3e:PackageViewProjectNode" />
+              <item name="learningApp" type="616d4139:PackageViewModuleNode" />
             </path>
           </expand>
           <select />
@@ -87,11 +107,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\FlutterProjects\flutter_profile_page\flutterProfilePage\assets\images" />
-      <recent name="D:\FlutterProjects\flutter_profile_page\lib\Screens" />
-      <recent name="D:\FlutterProjects\flutter_profile_page\lib\Constant" />
-      <recent name="D:\FlutterProjects\flutter_profile_page\lib" />
-      <recent name="D:\FlutterProjects\flutter_profile_page" />
+      <recent name="D:\FlutterProjects\learningApp\learningApp\assets\images" />
+      <recent name="D:\FlutterProjects\learningApp\lib\Screens" />
+      <recent name="D:\FlutterProjects\learningApp\lib\Constant" />
+      <recent name="D:\FlutterProjects\learningApp\lib" />
+      <recent name="D:\FlutterProjects\learningApp" />
     </key>
   </component>
   <component name="RunManager">
@@ -143,9 +163,9 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1593807494912">
+    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1593897136558">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1593807494912" />
+    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1593897136558" />
   </component>
 </project>

@@ -1,30 +1,7 @@
 import 'dart:async';
-
+import 'Screens/LoginPage.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
-class AccountInfo {
-  final String name;
-  final String email;
-  final String major;
-  final String year;
-  final String college;
-  final String password;
-
-  AccountInfo({this.name, this.email, this.major,this.year, this.college,
-    this.password});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'email': email,
-      'major': major,
-      'year': year,
-      'college': college,
-      'password': password,
-    };
-  }
-}
 
 void createDB() async {
   final Future<Database> db = openDatabase(
@@ -32,9 +9,13 @@ void createDB() async {
 
     // create a table named 'accounts' with the following columns
     onCreate: (db, version) async {
-      return await db.execute(
+      await db.execute(
         'CREATE TABLE accounts(name TEXT, email TEXT, password TEXT,'
         'major TEXT, year TEXT, college TEXT)',
+      );
+      await db.execute(
+        'CREATE TABLE registeredCourses(email TEXT, course TEXT, currentXP INT,'
+        'maxXP INT)',
       );
     },
     version: 1
@@ -51,7 +32,8 @@ void createDB() async {
       college: 'Purdue University',
       password: '123456'
     ).toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
   );
-  dbRef.close();
+  // dbRef.close();
   db.whenComplete(() => null);
 }
