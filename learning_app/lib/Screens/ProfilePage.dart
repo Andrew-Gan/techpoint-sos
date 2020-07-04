@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_profile_page/Screens/LoginPage.dart';
 
 class ProfilePage extends StatefulWidget {
+  final AccountInfo userinfo;
+  ProfilePage(this.userinfo);
+
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfilePage> createState() => _ProfilePageState(userinfo);
 }
 
-class _ProfilePageState extends State<ProfilePage>
-    with SingleTickerProviderStateMixin {
+class _ProfilePageState extends State<ProfilePage> {
   bool _status = true;
+  final AccountInfo userinfo;
   final FocusNode myFocusNode = FocusNode();
+
+  _ProfilePageState(this.userinfo);
 
   @override
   void initState() => super.initState();
 
   @override
   Widget build(BuildContext context) {
-    // replace with database retrieval
-    String name = 'Andrew Gan';
-    String email = 'andrew45@indiana.edu';
-    String major = 'Economics and Mangement';
-    String classification = 'Sophomore';
-    String college = 'Indiana University';
-
     return Scaffold(
         body: Container(
       color: Colors.blueGrey,
@@ -35,25 +34,29 @@ class _ProfilePageState extends State<ProfilePage>
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.only(left: 20.0, top: 20.0),
+                    Align(
+                        // padding: EdgeInsets.only(left: 20.0, top: 12.0),
+                        heightFactor: 1.5,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Icon(
-                              Icons.arrow_back_ios,
-                              color: Colors.black,
-                              size: 22.0,
+                            IconButton(
+                              padding: EdgeInsets.only(left: 25.0,),
+                              icon: Icon(Icons.arrow_back,),
+                              onPressed: () => Navigator.pop(this.context),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: 35.0),
-                              child: Text('PROFILE',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.0,
-                                      fontFamily: 'sans-serif-light',
-                                      color: Colors.black)),
-                            )
+                              padding: EdgeInsets.only(left: 25.0, top: 12.5),
+                              child: Text(
+                                'PROFILE',
+                                style: TextStyle(fontSize: 20.0,)),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.menu,),
+                              padding: EdgeInsets.only(left: 200),
+                              alignment: Alignment.centerRight,
+                              onPressed: () => null,
+                            ),
                           ],
                         )),
                     Padding(
@@ -64,8 +67,8 @@ class _ProfilePageState extends State<ProfilePage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Container(
-                                width: 140.0,
-                                height: 140.0,
+                                width: 120.0,
+                                height: 120.0,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
@@ -76,21 +79,6 @@ class _ProfilePageState extends State<ProfilePage>
                                 )),
                           ],
                         ),
-                        Padding(
-                            padding: EdgeInsets.only(top: 90.0, right: 100.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                CircleAvatar(
-                                  backgroundColor: Colors.red,
-                                  radius: 25.0,
-                                  child: Icon(
-                                    Icons.camera_alt,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              ],
-                            )),
                       ]),
                     )
                   ],
@@ -135,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage>
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Text(
-                                    name,
+                                    userinfo.name,
                                     style: TextStyle(
                                         fontSize: 16.0,),
                                   ),
@@ -174,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage>
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Text(
-                                    email,
+                                    userinfo.email,
                                     style: TextStyle(fontSize: 16.0,),
                                   ),
                                 ],
@@ -212,7 +200,7 @@ class _ProfilePageState extends State<ProfilePage>
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Text(
-                                    major,
+                                    userinfo.major,
                                     style: TextStyle(fontSize: 16.0,),
                                   ),
                                 ],
@@ -250,7 +238,7 @@ class _ProfilePageState extends State<ProfilePage>
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Text(
-                                    classification,
+                                    userinfo.year,
                                     style: TextStyle(fontSize: 16.0,),
                                   ),
                                 ],
@@ -288,7 +276,7 @@ class _ProfilePageState extends State<ProfilePage>
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Text(
-                                    college,
+                                    userinfo.college,
                                     style: TextStyle(fontSize: 16.0,),
                                   ),
                                 ],

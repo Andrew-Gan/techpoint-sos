@@ -1,8 +1,8 @@
-import 'dart:developer';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_profile_page/Screens/ProfilePage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,6 +22,42 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    void onLoginPress() async {
+      final Future<Database> db = openDatabase(
+        join(await getDatabasesPath(), 'account_database.db'),
+      );
+
+      final Database dbRef = await db; // capture a reference of the future type
+      final List<Map<String, dynamic>> res = await dbRef.query(
+        'accounts',
+        distinct: true,
+        where: 'email = \'' + emailController.text + '\' AND password = \'' +
+          passwordController.text + '\'',
+      );
+      List<AccountInfo> queryRes = List.generate(res.length, (i) {
+        return AccountInfo(
+          name: res[i]['name'],
+          email: res[i]['email'],
+          major: res[i]['major'],
+          year: res[i]['year'],
+          college: res[i]['college'],
+        );
+      });
+
+      dbRef.close();
+      db.whenComplete(() => null);
+      if (queryRes.length == 0)
+        setState(() => isInvalid = true);
+      else {
+        setState(() => isInvalid = false);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilePage(queryRes.first)
+        ));
+      }
+    }
+
     return Scaffold(
         body: Container(
       color: Colors.blueGrey,
@@ -42,15 +78,16 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Container(
-                              width: 300.0,
-                              height: 100.0,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                image: DecorationImage(
-                                  image: ExactAssetImage('assets/images/login.png'),
-                                  fit: BoxFit.cover,
-                                ),
-                              )),
+                                width: 300.0,
+                                height: 100.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  image: DecorationImage(
+                                    image: ExactAssetImage(
+                                        'assets/images/login.png'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                )),
                           ],
                         ),
                       ]),
@@ -67,110 +104,110 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(
-                            left: 25.0, right: 25.0, top: 25.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(
-                                  'Email ID',
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 25.0, right: 25.0, top: 2.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Flexible(
-                              child: TextField(
-                                decoration: const InputDecoration(
-                                  hintText: "Enter email ID"),
-                                controller: emailController,
-                                enabled: true,
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 25.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Text(
+                                    'Email ID',
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        )),
+                            ],
+                          )),
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 25.0, right: 25.0, top: 25.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(
-                                  'Password',
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 2.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Flexible(
+                                child: TextField(
+                                  decoration: const InputDecoration(
+                                      hintText: "Enter email ID"),
+                                  controller: emailController,
+                                  enabled: true,
+                                ),
+                              ),
+                            ],
+                          )),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 25.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Text(
+                                    'Password',
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 2.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Flexible(
+                                child: TextField(
+                                  decoration: const InputDecoration(
+                                      hintText: "Enter password"),
+                                  controller: passwordController,
+                                  enabled: true,
+                                  obscureText: true,
+                                ),
+                              ),
+                            ],
+                          )),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 35.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Visibility(
+                                child: Text(
+                                  'Incorrect email or password provided',
                                   style: TextStyle(
                                     fontSize: 16.0,
-                                    fontWeight: FontWeight.bold),
+                                    color: Colors.red,
+                                  ),
                                 ),
-                              ],
-                            ),
-                          ],
-                        )),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 25.0, right: 25.0, top: 2.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Flexible(
-                              child: TextField(
-                                decoration: const InputDecoration(
-                                    hintText: "Enter password"),
-                                controller: passwordController,
-                                enabled: true,
-                                obscureText: true,
+                                replacement: Text(
+                                  '',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                visible: isInvalid,
                               ),
-                            ),
-                          ],
-                        )),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 25.0, right: 25.0, top: 35.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Visibility(
-                              child: Text(
-                                'Incorrect email or password provided',
-                                style: TextStyle(
-                                  fontSize: 16.0, 
-                                  color: Colors.red,),
-                              ),
-                              replacement: Text(
-                                '',
-                                style: TextStyle(
-                                  fontSize: 16.0,),
-                              ),
-                              visible: isInvalid,
-                            ),
-                          ],
-                        )),
+                            ],
+                          )),
                       Center(
-                        heightFactor: 2,
-                        child: OutlineButton(
-                          onPressed: onLoginPress,
-                          child: Text('LOGIN'),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0)
-                          ),
-                        )
-                      ),
+                          heightFactor: 2,
+                          child: OutlineButton(
+                            onPressed: onLoginPress,
+                            child: Text('LOGIN'),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0)),
+                          )),
                     ],
                   ),
                 ),
@@ -189,60 +226,5 @@ class _LoginPageState extends State<LoginPage> {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
-  }
-
-  void onLoginPress() async {
-    final Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'account_database.db'),
-      onCreate: (db, version) async {
-        return await db.execute(
-          'CREATE TABLE accounts(name TEXT, email TEXT, password TEXT,'
-          'major TEXT, year TEXT, college TEXT)',
-        );
-      },
-      version: 1
-    );
-    final Database dbRef = await db; // capture a reference of the future type
-    final List<Map<String, dynamic>> res = await dbRef.query(
-      'accounts',
-      distinct: true,
-      where: 'email = \'' + emailController.text + '\' AND password = \'' +
-      passwordController.text + '\'',
-    );
-    List<AccountInfo> queryRes = List.generate(res.length, (i) {
-      return AccountInfo(
-        name: res[i]['name'],
-        email: res[i]['email'],
-        major: res[i]['major'],
-        year: res[i]['year'],
-        college: res[i]['college'],
-      );
-    });
-
-    if (queryRes.length == 0) setState(() => isInvalid = true);
-    else setState(() => isInvalid = false);
-    db.whenComplete(() => null);
-  }
-}
-
-class AccountInfo {
-  final String name;
-  final String email;
-  final String major;
-  final String year;
-  final String college;
-
-  AccountInfo(
-    {this.name, this.email, this.major, this.year, this.college}
-  );
-
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'email': email,
-      'major': major,
-      'year': year,
-      'college': college,
-    };
   }
 }
