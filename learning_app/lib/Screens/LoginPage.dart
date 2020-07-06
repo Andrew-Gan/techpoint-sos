@@ -23,13 +23,12 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    // insert test database
+    createDB();
+    
     void onLoginPress() async {
-      // insert test database
-      createDB();
-
       final Future<Database> db = openDatabase(
-        join(await getDatabasesPath(), 'account_database.db'),
+        join(await getDatabasesPath(), 'learningApp_database.db'),
       );
 
       final Database dbRef = await db; // capture a reference of the future type
@@ -46,11 +45,11 @@ class _LoginPageState extends State<LoginPage> {
           major: res[i]['major'],
           year: res[i]['year'],
           college: res[i]['college'],
+          regCourse: res[i]['regCourse'],
         );
       });
 
       dbRef.close();
-      db.whenComplete(() => null);
       if (queryRes.length == 0)
         setState(() => isInvalid = true);
       else {

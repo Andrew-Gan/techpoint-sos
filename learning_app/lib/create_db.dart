@@ -6,16 +6,24 @@ import 'package:sqflite/sqflite.dart';
 
 void createDB() async {
   final Future<Database> db = openDatabase(
-    join(await getDatabasesPath(), 'account_database.db'),
+    join(await getDatabasesPath(), 'learningApp_database.db'),
 
     onCreate: (db, version) async {
       await db.execute(
-        'CREATE TABLE accounts(name TEXT, email TEXT, password TEXT,'
+        'CREATE TABLE accounts(name TEXT, email TEXT UNIQUE, password TEXT,'
         'major TEXT, year TEXT, college TEXT, regCourse TEXT)',
       );
       await db.execute(
-        'CREATE TABLE courses(id TEXT, title TEXT,'
+        'CREATE TABLE courses(id TEXT UNIQUE, title TEXT,'
         'description TEXT, credit INTEGER, prereq TEXT)',
+      );
+      await db.execute(
+        'CREATE TABLE assignments(courseID TEXT, title TEXT,'
+        'content TEXT, dueDate INTEGER, instructor TEXT)',
+      );
+      await db.execute(
+        'CREATE TABLE reviews(courseID TEXT, title TEXT,'
+        'sender TEXT, receiver TEXT, instructor TEXT)',
       );
     },
     version: 1
@@ -33,13 +41,12 @@ void createDB() async {
       year: 'Senior',
       college: 'Purdue University',
       password: '123456',
-      regCourse: 'ECE 20100',
+      regCourse: 'ECE 20100,ECE 20200',
     ).toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
   // course info for testing
-
   dbRef.insert(
     'courses',
     CourseInfo(

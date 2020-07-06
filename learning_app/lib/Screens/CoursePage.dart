@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
 class CoursePage extends StatefulWidget {
+  final List<String> regCourses;
+  CoursePage(this.regCourses);
+
   @override
-  State<CoursePage> createState() => _CoursePageState();
+  State<CoursePage> createState() => _CoursePageState(regCourses);
 }
 
 class _CoursePageState extends State<CoursePage> {
-  // final _registered = <String>{};
+  final List<String> regCourses;
   var _displayinfo;
   final _biggerFont = TextStyle(fontSize: 18.0);
+
+  _CoursePageState(this.regCourses);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +29,7 @@ class _CoursePageState extends State<CoursePage> {
           padding: EdgeInsets.all(16.0),
           itemBuilder: (context, i) {
             final index = i ~/ 2;
-            if (index >= _courses.length) return null;
+            if (index >= regCourses.length) return null;
             if (i.isOdd) return Divider();
             return _buildRow(index);
           }),
@@ -34,7 +39,7 @@ class _CoursePageState extends State<CoursePage> {
   Widget _buildRow(int index) {
     return ListTile(
       title: Text(
-        _courses[index],
+        regCourses[index],
         style: _biggerFont,
       ),
       trailing: Icon(Icons.chevron_right),
@@ -53,7 +58,7 @@ class _CoursePageState extends State<CoursePage> {
             appBar: AppBar(
               title: Text('Course Information'),
             ),
-            body: Text(_courses[_displayinfo]),
+            body: Text(regCourses[_displayinfo]),
           );
         }, //...to here.
       ),
