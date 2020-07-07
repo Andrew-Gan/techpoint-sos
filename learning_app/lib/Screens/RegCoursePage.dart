@@ -18,17 +18,18 @@ class _RegCoursePageState extends State<RegCoursePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey,
         title: Text('Registered courses'),
       ),
-      body: /*_buildSuggestions()*/
-        ListView.builder(
-          padding: EdgeInsets.all(16.0),
-          itemBuilder: (context, i) {
-            final index = i ~/ 2;
-            if (index >= regCourses.length) return null;
-            if (i.isOdd) return Divider();
-            return _buildRow(index);
-          }),
+      body: ListView.builder(
+        padding: EdgeInsets.all(16.0),
+        itemBuilder: (context, i) {
+          final index = i ~/ 2;
+          if (index >= regCourses.length) return null;
+          if (i.isOdd) return Divider();
+          return _buildRow(index);
+        }
+      ),
     );
   }
 

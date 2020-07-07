@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'ProfilePage.dart';
-import '../create_db.dart';
+import '../CreateDB.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -62,46 +62,48 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     return Scaffold(
-        body: Container(
-      color: Colors.blueGrey,
-      child: ListView(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Container(
-                height: 260.0,
-                color: Colors.white,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 100.0),
-                      child: Stack(fit: StackFit.loose, children: <Widget>[
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                                width: 300.0,
-                                height: 100.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  image: DecorationImage(
-                                    image: ExactAssetImage(
-                                        'assets/images/login.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )),
-                          ],
-                        ),
-                      ]),
-                    )
-                  ],
+      appBar: AppBar(
+        backgroundColor: Colors.blueGrey,
+        title: Text('Login'),
+      ),
+      body: Container(
+        color: Colors.blueGrey,
+        child: ListView(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Container(
+                  height: 260.0,
+                  color: Colors.white,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 100.0),
+                        child: Stack(fit: StackFit.loose, children: <Widget>[
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                  width: 300.0,
+                                  height: 100.0,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    image: DecorationImage(
+                                      image: ExactAssetImage(
+                                          'assets/images/login.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ]),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                color: Color(0xffFFFFFF),
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 60.0),
+                Container(
+                  color: Color(0xffFFFFFF),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -214,12 +216,12 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-              )
-            ],
-          ),
-        ],
-      ),
-    ));
+              ],
+            ),
+          ],
+        ),
+      )
+    );
   }
 
   @override
