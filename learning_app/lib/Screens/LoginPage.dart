@@ -233,28 +233,3 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 }
-
-class AccountInfo {
-  final String name;
-  final String email;
-  final String major;
-  final String year;
-  final String college;
-  final String password;
-  final String regCourse;
-
-  AccountInfo({this.name, this.email, this.major,this.year, this.college,
-    this.password, this.regCourse,});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'email': email,
-      'major': major,
-      'year': year,
-      'college': college,
-      'password': password,
-      'regCourse': regCourse,
-    };
-  }
-}

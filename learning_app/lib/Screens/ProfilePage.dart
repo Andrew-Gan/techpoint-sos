@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:learningApp/Screens/RegCoursePage.dart';
-import 'LoginPage.dart';
+import 'CourseDetailsPage.dart';
+import '../CreateDB.dart';
 
 class ProfilePage extends StatefulWidget {
   final AccountInfo userinfo;
@@ -13,9 +13,12 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final AccountInfo userinfo;
+  List<String> regCourses;
   final FocusNode myFocusNode = FocusNode();
 
-  _ProfilePageState(this.userinfo);
+  _ProfilePageState(this.userinfo) {
+    regCourses = this.userinfo.regCourse.split(',');
+  }
 
   @override
   void initState() => super.initState();
@@ -26,262 +29,234 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         title: Text('Profile'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.list),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) =>
-                RegCoursePage(userinfo.regCourse.split(',')),
-              ),
-            ),
-          ),
-        ],
       ),
       body: Container(
-      color: Colors.blueGrey,
-      child: ListView(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Container(
-                height: 220.0,
-                color: Colors.white,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 50.0),
-                      child: Stack(fit: StackFit.loose, children: <Widget>[
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                                width: 120.0,
-                                height: 120.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: ExactAssetImage(
-                                        'assets/images/as.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )),
-                          ],
-                        ),
-                      ]),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                color: Color(0xffFFFFFF),
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 42.5),
+        color: Colors.blueGrey,
+        child: ListView(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height - 80,
+                  color: Colors.white,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                          padding: EdgeInsets.only(
-                            left: 45.0, right: 25.0, top: 0.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
+                        padding: EdgeInsets.only(top: 20.0, left: 50.0),
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              width: 100.0,
+                              height: 100.0,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: ExactAssetImage('assets/images/as.png'),
+                                ),
+                              )
+                            ),
+                            Container(
+                              color: Color(0xffFFFFFF),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(
-                                    'Name',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 45.0,
+                                      right: 25.0,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text(
+                                              'Name',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 45.0,
+                                      right: 25.0,
+                                      top: 5.0
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text(
+                                              userinfo.name,
+                                              style: TextStyle(fontSize: 16.0,),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 45.0,
+                                      right: 25.0,
+                                      top: 15.0
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text(
+                                              'Email ID',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 45.0,
+                                      right: 25.0,
+                                      top: 5.0
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text(
+                                              userinfo.email,
+                                              style: TextStyle(fontSize: 16.0,),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 45.0,
+                                      right: 25.0,
+                                      top: 15.0
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text(
+                                              'College',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 45.0,
+                                      right: 25.0,
+                                      top: 5.0
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text(
+                                              userinfo.college,
+                                              style: TextStyle(fontSize: 16.0,),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
                                   ),
                                 ],
                               ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 45.0, right: 25.0, top: 10.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    userinfo.name,
-                                    style: TextStyle(
-                                        fontSize: 16.0,),
-                                  ),
-                                ],
+                            )
+                          ],
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(left: 20.0, top: 50.0),
+                            child: Text(
+                              'Registered courses',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 45.0, right: 25.0, top: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    'Email ID',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 45.0, right: 25.0, top: 10.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    userinfo.email,
-                                    style: TextStyle(fontSize: 16.0,),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 45.0, right: 25.0, top: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    'Major',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 45.0, right: 25.0, top: 10.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    userinfo.major,
-                                    style: TextStyle(fontSize: 16.0,),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 45.0, right: 25.0, top: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    'Class',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 45.0, right: 25.0, top: 10.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    userinfo.year,
-                                    style: TextStyle(fontSize: 16.0,),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 45.0, right: 25.0, top: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    'College',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 45.0, right: 25.0, top: 10.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    userinfo.college,
-                                    style: TextStyle(fontSize: 16.0,),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 20.0, top: 20.0),
+                            height: 200.0,
+                            child: ListView.builder(
+                              padding: EdgeInsets.all(0.0),
+                              itemBuilder: (context, i) {
+                                final index = i ~/ 2;
+                                if (index >= regCourses.length) return null;
+                                if (i.isOdd) return Divider();
+                                return _buildRow(context, index);
+                              }
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
-              )
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
+      )
+    );
+  }
+
+  Widget _buildRow(BuildContext context, int index) {
+    return ListTile(
+      title: Text(
+        regCourses[index],
       ),
-    ));
+      trailing: Icon(Icons.chevron_right),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => CourseDetailsPage(regCourses[index]),
+        ),);
+      },
+    );
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'dart:async';
+import '../CreateDB.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 class CourseDetailsPage extends StatefulWidget {
   final String courseID;
   CourseDetailsPage(this.courseID);
+
   @override
   State<CourseDetailsPage> createState() => _CourseDetailsPageState(courseID);
 }
@@ -27,26 +29,21 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
         padding: EdgeInsets.all(16.0),
         itemBuilder: (context, i) {
           final index = i ~/ 2;
-          if (index >= regCourses.length) return null;
+          if (index >= assignQInfo.length) return null;
           if (i.isOdd) return Divider();
-          return _buildRow(index);
+          return _buildRow(context, index);
         },
       ),
     );
   }
 
-  Widget _buildRow(int index) {
+  Widget _buildRow(BuildContext context, int index) {
     return ListTile(
       title: Text(
-        regCourses[index],
-        style: _biggerFont,
+        assignQInfo[index].assignTitle,
       ),
       trailing: Icon(Icons.chevron_right),
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => CourseDetailsPage(regCourses[index]),
-        ),);
-      },
+      onTap: null,
     );
   }
 
@@ -78,27 +75,5 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
     });
 
     if(this.mounted == true) setState(() => assignQInfo = queryRes);
-  }
-}
-
-class AssignmentQuestionInfo {
-  final String assignTitle;
-  final String courseID;
-  final String imageB64;
-  final String content;
-  final int dueDate;
-  final String instrEmail;
-
-  AssignmentQuestionInfo({this.assignTitle, this.courseID, this.imageB64,
-    this.content, this.dueDate, this.instrEmail,});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'assignID': assignTitle,
-      'courseID': courseID,
-      'content': content,
-      'dueDate': dueDate,
-      'instrEmail': instrEmail,
-    };
   }
 }

@@ -1,16 +1,72 @@
 import 'dart:async';
-import 'Screens/CourseDetailsPage.dart';
-import 'Screens/LoginPage.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'dart:io';
-import 'dart:convert';
+// import 'dart:io';
+// import 'dart:convert';
 
-/// void createDB() async
-/// 
-/// Create tables in the same database if the db file is not found
-/// Insert entries into the tables for testing purposes
-/// Note: all time data are stored as 'UnixTimeFromEpoch'
+abstract class SQLiteInfo {
+  final String tableName = '';
+  Map<String, dynamic> toMap();
+}
+
+class AccountInfo implements SQLiteInfo {
+  final String tableName = 'accounts';
+  final String name, email, major, year, college, password, regCourse;
+
+  AccountInfo({this.name, this.email, this.major,this.year, this.college,
+    this.password, this.regCourse,});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'email': email,
+      'major': major,
+      'year': year,
+      'college': college,
+      'password': password,
+      'regCourse': regCourse,
+    };
+  }
+}
+
+class AssignmentQuestionInfo implements SQLiteInfo {
+  final String tableName = 'assignmentQuestions';
+  final String assignTitle, courseID, imageB64, content, instrEmail;
+  final int dueDate;
+
+  AssignmentQuestionInfo({this.assignTitle, this.courseID, this.imageB64,
+    this.content, this.dueDate, this.instrEmail,});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'assignTitle': assignTitle,
+      'courseID': courseID,
+      'imageB64': imageB64,
+      'content': content,
+      'dueDate': dueDate,
+      'instrEmail': instrEmail,
+    };
+  }
+}
+
+class AssignmentSubmissionInfo implements SQLiteInfo {
+  final String tableName = 'assignmentSubmissions';
+  final String assignTitle, courseID, content, studentEmail;
+  final int submitDate;
+
+  AssignmentSubmissionInfo({this.assignTitle, this.courseID, this.content,
+    this.submitDate, this.studentEmail,});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'assignTitle': assignTitle,
+      'courseID': courseID,
+      'content': content,
+      'submitDate': submitDate,
+      'studentEmail': studentEmail,
+    };
+  }
+}
 
 void createDB() async {
   final Future<Database> db = openDatabase(
@@ -55,13 +111,15 @@ void createDB() async {
   );
 
   // encode image file to base64
-  final imgBytes = await File('assets/images/circuit.jpeg').readAsBytes();
-  String imgB64 = base64.encode(imgBytes);
+  // String imgPath = Directory.current.path + '/assets/images/circuit.jpeg';
+  // final imgBytes = await File(imgPath).readAsBytes();
+  // String imgB64 = base64.encode(imgBytes);
+  String imgB64 = '';
 
   // assignment info for testing
   dbRef.insert(
-    'assignments',
-    AssignmentInfo(
+    'assignmentQuestions',
+    AssignmentQuestionInfo(
       assignTitle: 'Weekly assignment #1: Voltage and Resistance',
       courseID: 'ECE 20100',
       imageB64: imgB64,
@@ -69,8 +127,8 @@ void createDB() async {
       dueDate: 1594166399000,
       instrEmail: 'teacher@purdue.edu',
     ).toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
   // dbRef.close();
-  db.whenComplete(() => null);
 }
