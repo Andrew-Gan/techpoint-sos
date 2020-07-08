@@ -7,9 +7,7 @@ import '../CreateDB.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  State<LoginPage> createState() {
-    return _LoginPageState();
-  }
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -54,9 +52,8 @@ class _LoginPageState extends State<LoginPage> {
         setState(() => isInvalid = true);
       else {
         setState(() => isInvalid = false);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ProfilePage(queryRes.first)
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => ProfilePage(queryRes.first),
         ));
       }
     }

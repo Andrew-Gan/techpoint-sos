@@ -82,8 +82,9 @@ void createDB() async {
         'imageB64 TEXT, content TEXT, dueDate INTEGER, instrEmail TEXT)',
       );
       await db.execute(
-        'CREATE TABLE assignmentAnswers(assignTitle TEXT, courseID TEXT'
-        'content TEXT, submitDate INTEGER, studentEmail TEXT)',
+        'CREATE TABLE assignmentSubmissions(assignTitle TEXT, courseID TEXT'
+        'content TEXT, submitDate INTEGER, studentEmail TEXT, UNIQUE(assignTitle,'
+        'courseID, studentEmail))',
       );
       await db.execute(
         'CREATE TABLE reviews(courseID TEXT, title TEXT,'

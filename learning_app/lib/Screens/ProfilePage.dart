@@ -258,7 +258,7 @@ class _ProfilePageState extends State<ProfilePage> {
       onTap: () {
         _queryAssignmentInfo(courseID);
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => CoursePage(courseID, assignQInfo),
+          builder: (context) => CoursePage(userinfo.email, courseID, assignQInfo),
         ),);
       },
     );

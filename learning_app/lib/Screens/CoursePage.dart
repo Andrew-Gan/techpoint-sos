@@ -1,19 +1,22 @@
 import '../CreateDB.dart';
+import 'AssignPage.dart';
 import 'package:flutter/material.dart';
 
 class CoursePage extends StatefulWidget {
+  final String email;
   final String courseID;
   final List<AssignmentQuestionInfo> assignQInfo;
-  CoursePage(this.courseID, this.assignQInfo);
+  CoursePage(this.email, this.courseID, this.assignQInfo);
 
   @override
-  State<CoursePage> createState() => _CoursePageState(courseID, assignQInfo);
+  State<CoursePage> createState() => _CoursePageState(email, courseID, assignQInfo);
 }
 
 class _CoursePageState extends State<CoursePage> {
   final String courseID;
+  final String email;
   final List<AssignmentQuestionInfo> assignQInfo;
-  _CoursePageState(this.courseID, this.assignQInfo);
+  _CoursePageState(this.email, this.courseID, this.assignQInfo);
 
   @override
   Widget build(BuildContext context) {
@@ -98,15 +101,15 @@ class _CoursePageState extends State<CoursePage> {
     );
   }
 
-  Widget _buildRow(BuildContext context, int index) {
+  Widget _buildRow(BuildContext context, int i) {
     return ListTile(
       title: Text(
-        assignQInfo[index].assignTitle,
+        assignQInfo[i].assignTitle,
       ),
       trailing: Icon(Icons.chevron_right),
       onTap: () {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => MaterialBuil)
+          MaterialPageRoute(builder: (context) => AssignPage(email, assignQInfo[i])),
         );
       },
     );
