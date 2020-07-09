@@ -44,7 +44,6 @@ class _AssignPageState extends State<AssignPage> {
               color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(
@@ -53,14 +52,25 @@ class _AssignPageState extends State<AssignPage> {
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Text(
-                              'Submission box',
+                              assignQInfo.assignTitle,
                               style: TextStyle(
                                 fontSize: 16.0,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 10.0),
+                              child: Text(
+                                assignQInfo.content,
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -78,7 +88,7 @@ class _AssignPageState extends State<AssignPage> {
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                             ),
-                            maxLines: 18,
+                            maxLines: 15,
                             controller: ansController,
                             enabled: true,
                           ),

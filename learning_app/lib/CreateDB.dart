@@ -21,7 +21,7 @@ enum AccountPrivilege {
 class AccountInfo implements SQLiteInfo {
   final String tableName = 'accounts';
   final String name, email, major, year, college, password, regCourse;
-  final AccountPrivilege privilege;
+  final int privilege;
 
   AccountInfo({this.name, this.email, this.major,this.year, this.college,
     this.password, this.regCourse, this.privilege});
@@ -118,7 +118,7 @@ void createDB() async {
       college: 'Purdue University',
       password: '123456',
       regCourse: 'ECE 20100,ECE 20200',
-      privilege: AccountPrivilege.student,
+      privilege: AccountPrivilege.student.index,
     ).toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
@@ -133,7 +133,7 @@ void createDB() async {
       college: 'Purdue University',
       password: '123456',
       regCourse: 'ECE 20100,',
-      privilege: AccountPrivilege.teacher,
+      privilege: AccountPrivilege.teacher.index,
     ).toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
