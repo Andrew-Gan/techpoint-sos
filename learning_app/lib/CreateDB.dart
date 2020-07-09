@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/rendering.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 // import 'dart:io';
@@ -9,12 +10,21 @@ abstract class SQLiteInfo {
   Map<String, dynamic> toMap();
 }
 
+enum AccountPrivilege {
+  root,
+  admin,
+  teacher,
+  student,
+  guest,
+}
+
 class AccountInfo implements SQLiteInfo {
   final String tableName = 'accounts';
   final String name, email, major, year, college, password, regCourse;
+  final AccountPrivilege privilege;
 
   AccountInfo({this.name, this.email, this.major,this.year, this.college,
-    this.password, this.regCourse,});
+    this.password, this.regCourse, this.privilege});
 
   Map<String, dynamic> toMap() {
     return {
@@ -25,6 +35,7 @@ class AccountInfo implements SQLiteInfo {
       'college': college,
       'password': password,
       'regCourse': regCourse,
+      'privilege': privilege,
     };
   }
 }
@@ -75,20 +86,20 @@ void createDB() async {
     onCreate: (db, version) async {
       await db.execute(
         'CREATE TABLE accounts(name TEXT, email TEXT UNIQUE, password TEXT,'
-        'major TEXT, year TEXT, college TEXT, regCourse TEXT)',
+        'major TEXT, year TEXT, college TEXT, regCourse TEXT, privilege INTEGER)',
       );
       await db.execute(
         'CREATE TABLE assignmentQuestions(assignTitle TEXT UNIQUE, courseID TEXT,'
         'imageB64 TEXT, content TEXT, dueDate INTEGER, instrEmail TEXT)',
       );
       await db.execute(
-        'CREATE TABLE assignmentSubmissions(assignTitle TEXT, courseID TEXT'
+        'CREATE TABLE assignmentSubmissions(assignTitle TEXT, courseID TEXT,'
         'content TEXT, submitDate INTEGER, studentEmail TEXT, UNIQUE(assignTitle,'
         'courseID, studentEmail))',
       );
       await db.execute(
-        'CREATE TABLE reviews(courseID TEXT, title TEXT,'
-        'sender TEXT, receiver TEXT, instrEmail TEXT)',
+        'CREATE TABLE reviews(courseID TEXT, assignTitle TEXT,'
+        'reviewerEmail TEXT, authorEmail TEXT, instrEmail TEXT)',
       );
     },
     version: 1
@@ -107,6 +118,22 @@ void createDB() async {
       college: 'Purdue University',
       password: '123456',
       regCourse: 'ECE 20100,ECE 20200',
+      privilege: AccountPrivilege.student,
+    ).toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+
+  dbRef.insert(
+    'accounts',
+    AccountInfo(
+      name: 'Paul Ryan',
+      email: 'paul@purdue.edu',
+      major: '',
+      year: '',
+      college: 'Purdue University',
+      password: '123456',
+      regCourse: 'ECE 20100,',
+      privilege: AccountPrivilege.teacher,
     ).toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );

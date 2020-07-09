@@ -255,8 +255,8 @@ class _ProfilePageState extends State<ProfilePage> {
         courseID,
       ),
       trailing: Icon(Icons.chevron_right),
-      onTap: () {
-        _queryAssignmentInfo(courseID);
+      onTap: () async {
+        assignQInfo = await _queryAssignmentInfo(courseID);
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => CoursePage(userinfo.email, courseID, assignQInfo),
         ),);
@@ -267,7 +267,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void dispose() => super.dispose();
 
-  void _queryAssignmentInfo(String courseID) async {
+  Future<List<AssignmentQuestionInfo>> _queryAssignmentInfo(String courseID) async {
     Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'),
     );
@@ -291,6 +291,6 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     });
 
-    if(this.mounted == true) setState(() => assignQInfo = queryRes);
+    return queryRes;
   }
 }

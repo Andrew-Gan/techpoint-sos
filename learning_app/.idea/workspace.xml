@@ -7,11 +7,12 @@
     <list default="true" id="0275312c-f543-4969-8faf-f1183ecc27d0" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/CourseDetailsPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/CourseDetailsPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/CoursePage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/CourseDetailsPage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/CoursePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/CoursePage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/LoginPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/LoginPage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/ProfilePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ProfilePage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/RegCoursePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/RegCoursePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/RegCoursePage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/SplashScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/SplashScreen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/create_db.dart" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
@@ -145,9 +146,9 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1594151014921">
+    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1594258473703">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1594151014921" />
+    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1594258473703" />
   </component>
 </project>
