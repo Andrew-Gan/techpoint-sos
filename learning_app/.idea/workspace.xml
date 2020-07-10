@@ -8,7 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/CourseDetailsPage.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/CoursePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/CoursePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/CoursePage.dart" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/LoginPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/LoginPage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/ProfilePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ProfilePage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/RegCoursePage.dart" beforeDir="false" />
