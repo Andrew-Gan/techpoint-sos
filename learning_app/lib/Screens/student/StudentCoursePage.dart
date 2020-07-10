@@ -3,7 +3,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../CreateDB.dart';
-import 'StudentAssignPage.dart';
+import 'StudentAssignSubmitPage.dart';
+import 'StudentAssignReviewPage.dart';
 import 'package:flutter/material.dart';
 
 class StudentCoursePage extends StatefulWidget {
@@ -113,15 +114,25 @@ class _StudentCoursePageState extends State<StudentCoursePage> {
       ),
       trailing: Icon(Icons.chevron_right),
       onTap: () async {
-        var info = await _queryAssignInfo(assignQTitles[i], courseID);
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => StudentAssignPage(email, info)),
-        );
+        var assignQInfo = await _queryAssignInfo(assignQTitles[i]);
+        var assignSInfo = await _queryAssignSubmits(assignQTitles[i]);
+        if(assignSInfo == null) {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) =>
+              StudentAssignSubmitPage(email, assignQInfo)),
+          );
+        }
+        else {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) =>
+              StudentAssignReviewPage(assignQInfo, assignSInfo)),
+          );
+        }
       },
     );
   }
 
-  Future<AssignmentQuestionInfo> _queryAssignInfo(String assignTitle, String courseID) async {
+  Future<AssignmentQuestionInfo> _queryAssignInfo(String assignTitle) async {
     Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'),
     );
@@ -148,6 +159,36 @@ class _StudentCoursePageState extends State<StudentCoursePage> {
     });
 
     return queryRes.first;
+  }
+
+  Future<AssignmentSubmissionInfo> _queryAssignSubmits(String assignTitle) async {
+    Future<Database> db = openDatabase(
+      join(await getDatabasesPath(), 'learningApp_database.db'),
+    );
+    Database dbRef = await db;
+
+    var res = await dbRef.query(
+      'assignmentSubmissions',
+      where: 'assignTitle = ? AND courseID = ? AND studentEmail = ?',
+      whereArgs: [assignTitle, courseID, email],
+      orderBy: 'submitDate DESC'
+    );
+
+    dbRef.close();
+
+    if(res.length < 1) {
+      return null;
+    }
+
+    return AssignmentSubmissionInfo(
+      assignTitle: res.first['assignTitle'],
+      courseID: res.first['courseID'],
+      content: res.first['content'],
+      submitDate: res.first['submitDate'],
+      studentEmail: res.first['studentEmail'],
+      recScore: res.first['recScore'],
+      remarks: res.first['remarks'],
+    );
   }
 
   @override

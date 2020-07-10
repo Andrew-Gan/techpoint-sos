@@ -62,11 +62,11 @@ class AssignmentQuestionInfo implements SQLiteInfo {
 
 class AssignmentSubmissionInfo implements SQLiteInfo {
   final String tableName = 'assignmentSubmissions';
-  final String assignTitle, courseID, content, studentEmail;
+  final String assignTitle, courseID, content, studentEmail, remarks;
   final int submitDate, recScore;
 
   AssignmentSubmissionInfo({this.assignTitle, this.courseID, this.content,
-    this.submitDate, this.studentEmail, this.recScore,});
+    this.submitDate, this.studentEmail, this.recScore, this.remarks,});
 
   Map<String, dynamic> toMap() {
     return {
@@ -76,6 +76,7 @@ class AssignmentSubmissionInfo implements SQLiteInfo {
       'submitDate': submitDate,
       'studentEmail': studentEmail,
       'recScore': recScore,
+      'remarks': remarks,
     };
   }
 }
@@ -97,7 +98,7 @@ void createDB() async {
       await db.execute(
         'CREATE TABLE assignmentSubmissions(assignTitle TEXT, courseID TEXT,'
         'content TEXT, submitDate INTEGER, studentEmail TEXT, recScore INTEGER,'
-        'UNIQUE(assignTitle, courseID, studentEmail))',
+        'remarks TEXT, UNIQUE(assignTitle, courseID, studentEmail))',
       );
       await db.execute(
         'CREATE TABLE reviews(courseID TEXT, assignTitle TEXT,'

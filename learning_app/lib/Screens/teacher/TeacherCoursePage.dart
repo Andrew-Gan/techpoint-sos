@@ -117,11 +117,12 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
             IconButton(
               icon: Icon(Icons.list),
               onPressed: () async {
-                var info = await _queryAssignInfo(assignQTitles[i], courseID);
-                var assignSInfo = await _queryAssignSubmits(info); 
+                var assignQInfo = await _queryAssignInfo(assignQTitles[i], courseID);
+                var assignSInfo = await _queryAssignSubmits(assignQInfo); 
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => TeacherAssignSubmissionsPage(assignSInfo),
+                    builder: (context) =>
+                      TeacherAssignSubmissionsPage(assignQInfo, assignSInfo),
                   ),
                 );
               }
@@ -186,6 +187,7 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
         submitDate: res[i]['submitDate'],
         studentEmail: res[i]['studentEmail'],
         recScore: res[i]['recScore'],
+        remarks: res[i]['remarks'],
       );
     });
 

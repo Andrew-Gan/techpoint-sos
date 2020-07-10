@@ -4,21 +4,21 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
 
-class StudentAssignPage extends StatefulWidget {
+class StudentAssignSubmitPage extends StatefulWidget {
   final String studentEmail;
   final AssignmentQuestionInfo assignQInfo;
-  StudentAssignPage(this.studentEmail, this.assignQInfo);
+  StudentAssignSubmitPage(this.studentEmail, this.assignQInfo);
 
   @override
-  State<StudentAssignPage> createState() =>_StudentAssignPageState(studentEmail, assignQInfo);
+  State<StudentAssignSubmitPage> createState() =>_StudentAssignSubmitPageState(studentEmail, assignQInfo);
 }
 
-class _StudentAssignPageState extends State<StudentAssignPage> {
+class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
   final FocusNode myFocusNode = FocusNode();
   final String studentEmail;
   final AssignmentQuestionInfo assignQInfo;
   DateTime dueDate;
-  _StudentAssignPageState(this.studentEmail, this.assignQInfo) {
+  _StudentAssignSubmitPageState(this.studentEmail, this.assignQInfo) {
     dueDate = DateTime.fromMillisecondsSinceEpoch(assignQInfo.dueDate);
   }
   final ansController = TextEditingController();
@@ -79,7 +79,7 @@ class _StudentAssignPageState extends State<StudentAssignPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      left: 25.0, right: 25.0, top: 20.0),
+                      left: 25.0, right: 25.0, top: 40.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -179,6 +179,8 @@ class _StudentAssignPageState extends State<StudentAssignPage> {
         content: ansController.text,
         submitDate: DateTime.now().millisecondsSinceEpoch,
         studentEmail: studentEmail,
+        recScore: 0,
+        remarks: '',
       ).toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );

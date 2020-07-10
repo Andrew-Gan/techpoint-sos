@@ -1,25 +1,28 @@
 import '../../CreateDB.dart';
 import 'package:flutter/material.dart';
+import 'TeacherViewSubmitPage.dart';
 
 class TeacherAssignSubmissionsPage extends StatefulWidget {
+  final AssignmentQuestionInfo assignQInfo;
   final List<AssignmentSubmissionInfo> assignSInfo;
-  TeacherAssignSubmissionsPage(this.assignSInfo);
+  TeacherAssignSubmissionsPage(this.assignQInfo, this.assignSInfo);
 
   @override
   State<TeacherAssignSubmissionsPage> createState() => 
-    _TeacherAssignSubmissionsPageState(assignSInfo);
+    _TeacherAssignSubmissionsPageState(assignQInfo, assignSInfo);
 }
 
 class _TeacherAssignSubmissionsPageState extends State<TeacherAssignSubmissionsPage> {
+  final AssignmentQuestionInfo assignQInfo;
   final List<AssignmentSubmissionInfo> assignSInfo;
-  _TeacherAssignSubmissionsPageState(this.assignSInfo);
+  _TeacherAssignSubmissionsPageState(this.assignQInfo, this.assignSInfo);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
-        title: Text('Course'),
+        title: Text('Submissions'),
       ),
       body: Container(
         color: Colors.blueGrey,
@@ -34,19 +37,27 @@ class _TeacherAssignSubmissionsPageState extends State<TeacherAssignSubmissionsP
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(top: 20.0, left: 20.0),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              color: Colors.white,
-                              child: Text(
-                                assignSInfo.first.courseID,
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          color: Colors.white,
+                          child: Text(
+                            assignQInfo.courseID,
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold
                             ),
-                          ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 20.0, left: 20.0),
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          color: Colors.white,
+                          child: Text(
+                            assignQInfo.assignTitle,
+                            style: TextStyle(fontSize: 16.0,),
+                          ),
                         ),
                       ),
                       Column(
@@ -98,7 +109,11 @@ class _TeacherAssignSubmissionsPageState extends State<TeacherAssignSubmissionsP
           submitDate.hour.toString() + ':' + submitDate.minute.toString(),
       ),
       trailing: Icon(Icons.chevron_right),
-      onTap: null,
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) =>
+          TeacherViewSubmitPage(assignQInfo, assignSInfo[i])
+        )
+      ),
     );
   }
 
