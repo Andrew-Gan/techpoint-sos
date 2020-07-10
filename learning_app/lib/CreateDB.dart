@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/rendering.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 // import 'dart:io';
@@ -43,10 +42,10 @@ class AccountInfo implements SQLiteInfo {
 class AssignmentQuestionInfo implements SQLiteInfo {
   final String tableName = 'assignmentQuestions';
   final String assignTitle, courseID, imageB64, content, instrEmail;
-  final int dueDate;
+  final int dueDate, maxScore;
 
   AssignmentQuestionInfo({this.assignTitle, this.courseID, this.imageB64,
-    this.content, this.dueDate, this.instrEmail,});
+    this.content, this.dueDate, this.instrEmail, this.maxScore,});
 
   Map<String, dynamic> toMap() {
     return {
@@ -56,6 +55,7 @@ class AssignmentQuestionInfo implements SQLiteInfo {
       'content': content,
       'dueDate': dueDate,
       'instrEmail': instrEmail,
+      'maxScore': maxScore,
     };
   }
 }
@@ -63,10 +63,10 @@ class AssignmentQuestionInfo implements SQLiteInfo {
 class AssignmentSubmissionInfo implements SQLiteInfo {
   final String tableName = 'assignmentSubmissions';
   final String assignTitle, courseID, content, studentEmail;
-  final int submitDate;
+  final int submitDate, recScore;
 
   AssignmentSubmissionInfo({this.assignTitle, this.courseID, this.content,
-    this.submitDate, this.studentEmail,});
+    this.submitDate, this.studentEmail, this.recScore,});
 
   Map<String, dynamic> toMap() {
     return {
@@ -75,6 +75,7 @@ class AssignmentSubmissionInfo implements SQLiteInfo {
       'content': content,
       'submitDate': submitDate,
       'studentEmail': studentEmail,
+      'recScore': recScore,
     };
   }
 }
@@ -89,13 +90,14 @@ void createDB() async {
         'major TEXT, year TEXT, college TEXT, regCourse TEXT, privilege INTEGER)',
       );
       await db.execute(
-        'CREATE TABLE assignmentQuestions(assignTitle TEXT UNIQUE, courseID TEXT,'
-        'imageB64 TEXT, content TEXT, dueDate INTEGER, instrEmail TEXT)',
+        'CREATE TABLE assignmentQuestions(assignTitle TEXT UNIQUE, courseID TEXT'
+        'UNIQUE, imageB64 TEXT, content TEXT, dueDate INTEGER, instrEmail TEXT,'
+        'maxScore INTEGER)',
       );
       await db.execute(
         'CREATE TABLE assignmentSubmissions(assignTitle TEXT, courseID TEXT,'
-        'content TEXT, submitDate INTEGER, studentEmail TEXT, UNIQUE(assignTitle,'
-        'courseID, studentEmail))',
+        'content TEXT, submitDate INTEGER, studentEmail TEXT, recScore INTEGER,'
+        'UNIQUE(assignTitle, courseID, studentEmail))',
       );
       await db.execute(
         'CREATE TABLE reviews(courseID TEXT, assignTitle TEXT,'
@@ -108,7 +110,7 @@ void createDB() async {
   final Database dbRef = await db;
 
   // user info for testing
-  dbRef.insert(
+  await dbRef.insert(
     'accounts',
     AccountInfo(
       name: 'Andrew Gan',
@@ -123,7 +125,7 @@ void createDB() async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
-  dbRef.insert(
+  await dbRef.insert(
     'accounts',
     AccountInfo(
       name: 'Paul Ryan',
@@ -145,7 +147,7 @@ void createDB() async {
   String imgB64 = '';
 
   // assignment info for testing
-  dbRef.insert(
+  await dbRef.insert(
     'assignmentQuestions',
     AssignmentQuestionInfo(
       assignTitle: 'Weekly assignment #1: Voltage and Resistance',
@@ -154,9 +156,10 @@ void createDB() async {
       content: 'Suppose a diagram',
       dueDate: 2594166399000,
       instrEmail: 'teacher@purdue.edu',
+      maxScore: 100,
     ).toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
-  // dbRef.close();
+  dbRef.close();
 }

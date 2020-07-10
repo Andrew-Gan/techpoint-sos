@@ -33,7 +33,7 @@ class _TeacherAssignSubmissionsPageState extends State<TeacherAssignSubmissionsP
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(top: 20.0, left: 50.0),
+                        padding: EdgeInsets.only(top: 20.0, left: 20.0),
                         child: Row(
                           children: <Widget>[
                             Container(
@@ -89,9 +89,13 @@ class _TeacherAssignSubmissionsPageState extends State<TeacherAssignSubmissionsP
   }
 
   Widget _buildRow(BuildContext context, int i) {
+    DateTime submitDate =
+      DateTime.fromMillisecondsSinceEpoch(assignSInfo[i].submitDate);
     return ListTile(
       title: Text(
-        assignSInfo[i].studentEmail,
+        assignSInfo[i].studentEmail + '\n' + submitDate.year.toString() + '-' +
+          submitDate.month.toString() + '-' + submitDate.day.toString() + ', ' +
+          submitDate.hour.toString() + ':' + submitDate.minute.toString(),
       ),
       trailing: Icon(Icons.chevron_right),
       onTap: null,

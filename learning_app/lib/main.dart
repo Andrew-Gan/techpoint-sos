@@ -12,8 +12,7 @@ main() {
           primaryColorDark: Colors.blue),
       home: SplashScreen(),
       routes: <String, WidgetBuilder>{
-        //SPLASH_SCREEN: (BuildContext context) => MapScreen(),
-        PROFILE: (BuildContext context) => LoginPage(), //ProfilePage(),
+        PROFILE: (BuildContext context) => LoginPage(),
       },
     )
   );

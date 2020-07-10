@@ -100,10 +100,10 @@ class _StudentAssignPageState extends State<StudentAssignPage> {
                     padding: EdgeInsets.only(left: 25.0),
                     child: Visibility(
                       child: Text(
-                        'Assignment successfully submitted on ' +
+                        'Assignment successfully submitted on\n' +
+                          DateTime.now().year.toString() + '-' +
                           DateTime.now().month.toString() + '-' +
-                          DateTime.now().day.toString() + '-' +
-                          DateTime.now().year.toString() + ' at ' +
+                          DateTime.now().day.toString() + ' at ' +
                           DateTime.now().hour.toString() + ':' +
                           DateTime.now().minute.toString(),
                         style: TextStyle(
@@ -122,10 +122,10 @@ class _StudentAssignPageState extends State<StudentAssignPage> {
                     padding: EdgeInsets.only(left: 25.0),
                     child: Visibility(
                       child: Text(
-                        'Submission failed.\nAssignment was due on ' +
+                        'Submission failed.\nAssignment was due on\n' +
+                        dueDate.year.toString() + '-' +
                         dueDate.month.toString() + '-' +
-                        dueDate.day.toString() + '-' +
-                        dueDate.year.toString() + ' at ' +
+                        dueDate.day.toString() + ' at ' +
                         dueDate.hour.toString() + ':' +
                         dueDate.minute.toString(),
                         style: TextStyle(
@@ -171,7 +171,7 @@ class _StudentAssignPageState extends State<StudentAssignPage> {
       join(await getDatabasesPath(), 'learningApp_database.db'));
 
     final Database dbRef = await db;
-    dbRef.insert(
+    await dbRef.insert(
       'assignmentSubmissions',
       AssignmentSubmissionInfo(
         assignTitle: assignQInfo.assignTitle,
@@ -182,6 +182,7 @@ class _StudentAssignPageState extends State<StudentAssignPage> {
       ).toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    dbRef.close();
 
     ansController.clear();
 

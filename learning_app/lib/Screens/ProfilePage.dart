@@ -18,7 +18,7 @@ class StudentProfilePage extends StatefulWidget {
 class _StudentProfilePageState extends State<StudentProfilePage> {
   final AccountInfo userinfo;
   List<String> regCourses;
-  List<AssignmentQuestionInfo> assignQInfo;
+  List<String> assignQTitles;
 
   _StudentProfilePageState(this.userinfo) {
     regCourses = this.userinfo.regCourse.split(',');
@@ -257,13 +257,13 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
       ),
       trailing: Icon(Icons.chevron_right),
       onTap: () async {
-        assignQInfo = await _queryAssignmentInfo(courseID);
+        assignQTitles = await _queryAssignmentTitles(courseID);
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) {
             if(userinfo.privilege == AccountPrivilege.student.index)
-              return StudentCoursePage(userinfo.email, courseID, assignQInfo);
+              return StudentCoursePage(userinfo.email, courseID, assignQTitles);
             else if(userinfo.privilege == AccountPrivilege.teacher.index)
-              return TeacherCoursePage(userinfo.email, courseID, assignQInfo);
+              return TeacherCoursePage(userinfo.email, courseID, assignQTitles);
             else return null;
           }
         ),);
@@ -274,29 +274,25 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
   @override
   void dispose() => super.dispose();
 
-  Future<List<AssignmentQuestionInfo>> _queryAssignmentInfo(String courseID) async {
+  Future<List<String>> _queryAssignmentTitles(String courseID) async {
     Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'),
     );
     Database dbRef = await db;
 
-    final List<Map<String, dynamic>> res = await dbRef.query(
+    final res = await dbRef.query(
       'assignmentQuestions',
       distinct: true,
-      where: 'courseID = \'' + courseID + '\'',
+      where: 'courseID = ?',
+      whereArgs: [courseID],
       orderBy: 'dueDate',
     );
 
-    List<AssignmentQuestionInfo> queryRes = List.generate(res.length, (i) {
-      return AssignmentQuestionInfo(
-        assignTitle: res[i]['assignTitle'],
-        courseID: res[i]['courseID'],
-        imageB64: res[i]['imageB64'],
-        content: res[i]['content'],
-        dueDate: res[i]['dueDate'],
-        instrEmail: res[i]['instrEmail'],
-      );
-    });
+    dbRef.close();
+
+    List<String> queryRes = List.generate(
+      res.length, (i) => res[i]['assignTitle']
+    );
 
     return queryRes;
   }

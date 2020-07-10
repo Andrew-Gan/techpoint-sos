@@ -146,9 +146,13 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1594263674521">
+    <state x="485" y="188" width="1022" height="737" key="SettingsEditor" timestamp="1594352374639">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1594263674521" />
+    <state x="485" y="188" width="1022" height="737" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1594352374639" />
+    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1594352375988">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1594352375988" />
   </component>
 </project>

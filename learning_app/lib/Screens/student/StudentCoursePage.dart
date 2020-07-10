@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
 import '../../CreateDB.dart';
 import 'StudentAssignPage.dart';
 import 'package:flutter/material.dart';
@@ -5,18 +9,19 @@ import 'package:flutter/material.dart';
 class StudentCoursePage extends StatefulWidget {
   final String email;
   final String courseID;
-  final List<AssignmentQuestionInfo> assignQInfo;
-  StudentCoursePage(this.email, this.courseID, this.assignQInfo);
+  final List<String> assignQTitles;
+  StudentCoursePage(this.email, this.courseID, this.assignQTitles);
 
   @override
-  State<StudentCoursePage> createState() => _StudentCoursePageState(email, courseID, assignQInfo);
+  State<StudentCoursePage> createState() => 
+    _StudentCoursePageState(email, courseID, assignQTitles);
 }
 
 class _StudentCoursePageState extends State<StudentCoursePage> {
   final String courseID;
   final String email;
-  final List<AssignmentQuestionInfo> assignQInfo;
-  _StudentCoursePageState(this.email, this.courseID, this.assignQInfo);
+  final List<String> assignQTitles;
+  _StudentCoursePageState(this.email, this.courseID, this.assignQTitles);
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +87,7 @@ class _StudentCoursePageState extends State<StudentCoursePage> {
                               padding: EdgeInsets.all(0.0),
                               itemBuilder: (context, i) {
                                 final index = i ~/ 2;
-                                if (index >= assignQInfo.length) return null;
+                                if (index >= assignQTitles.length) return null;
                                 if (i.isOdd) return Divider();
                                 return _buildRow(context, index);
                               }
@@ -104,15 +109,45 @@ class _StudentCoursePageState extends State<StudentCoursePage> {
   Widget _buildRow(BuildContext context, int i) {
     return ListTile(
       title: Text(
-        assignQInfo[i].assignTitle,
+        assignQTitles[i],
       ),
       trailing: Icon(Icons.chevron_right),
-      onTap: () {
+      onTap: () async {
+        var info = await _queryAssignInfo(assignQTitles[i], courseID);
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => StudentAssignPage(email, assignQInfo[i])),
+          MaterialPageRoute(builder: (context) => StudentAssignPage(email, info)),
         );
       },
     );
+  }
+
+  Future<AssignmentQuestionInfo> _queryAssignInfo(String assignTitle, String courseID) async {
+    Future<Database> db = openDatabase(
+      join(await getDatabasesPath(), 'learningApp_database.db'),
+    );
+    Database dbRef = await db;
+
+    var res = await dbRef.query(
+      'assignmentQuestions',
+      where: 'assignTitle = ? AND courseID = ?',
+      whereArgs: [assignTitle, courseID],
+    );
+
+    dbRef.close();
+
+    var queryRes = List.generate(res.length, (i) {
+      return AssignmentQuestionInfo(
+        assignTitle: res[i]['assignTitle'],
+        courseID: res[i]['courseID'],
+        imageB64: res[i]['imageB64'],
+        content: res[i]['content'],
+        dueDate: res[i]['dueDate'],
+        instrEmail: res[i]['instrEmail'],
+        maxScore: res[i]['maxScore'],
+      );
+    });
+
+    return queryRes.first;
   }
 
   @override
