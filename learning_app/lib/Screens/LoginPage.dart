@@ -44,17 +44,23 @@ class _LoginPageState extends State<LoginPage> {
           year: res[i]['year'],
           college: res[i]['college'],
           regCourse: res[i]['regCourse'],
+          privilege: res[i]['privilege'],
         );
       });
 
       dbRef.close();
+      emailController.clear();
+      passwordController.clear();
+
       if (queryRes.length == 0)
         setState(() => isInvalid = true);
       else {
         setState(() => isInvalid = false);
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => ProfilePage(queryRes.first),
-        ));
+          MaterialPageRoute(builder: (context) =>
+            StudentProfilePage(queryRes.first),
+          )
+        );
       }
     }
 

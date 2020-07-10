@@ -1,22 +1,18 @@
 import '../../CreateDB.dart';
-import '../AssignPage.dart';
 import 'package:flutter/material.dart';
 
-class CoursePage extends StatefulWidget {
-  final String email;
-  final String courseID;
-  final List<AssignmentQuestionInfo> assignQInfo;
-  CoursePage(this.email, this.courseID, this.assignQInfo);
+class TeacherAssignSubmissionsPage extends StatefulWidget {
+  final List<AssignmentSubmissionInfo> assignSInfo;
+  TeacherAssignSubmissionsPage(this.assignSInfo);
 
   @override
-  State<CoursePage> createState() => _CoursePageState(email, courseID, assignQInfo);
+  State<TeacherAssignSubmissionsPage> createState() => 
+    _TeacherAssignSubmissionsPageState(assignSInfo);
 }
 
-class _CoursePageState extends State<CoursePage> {
-  final String courseID;
-  final String email;
-  final List<AssignmentQuestionInfo> assignQInfo;
-  _CoursePageState(this.email, this.courseID, this.assignQInfo);
+class _TeacherAssignSubmissionsPageState extends State<TeacherAssignSubmissionsPage> {
+  final List<AssignmentSubmissionInfo> assignSInfo;
+  _TeacherAssignSubmissionsPageState(this.assignSInfo);
 
   @override
   Widget build(BuildContext context) {
@@ -43,20 +39,11 @@ class _CoursePageState extends State<CoursePage> {
                             Container(
                               color: Colors.white,
                               child: Text(
-                                courseID,
+                                assignSInfo.first.courseID,
                                 style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold
                                 ),
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(top: 20.0, left: 90.0),
-                              width: 250.0,
-                              height: 80.0,
-                              child: Text(
-                                '0 / 1000',
-                                style: TextStyle(fontSize: 30.0),
                               ),
                             ),
                           ],
@@ -68,7 +55,7 @@ class _CoursePageState extends State<CoursePage> {
                           Padding(
                             padding: EdgeInsets.only(left: 20.0, top: 50.0),
                             child: Text(
-                              'Assignments',
+                              'Assignment Submissions',
                               style: TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold,
@@ -82,7 +69,7 @@ class _CoursePageState extends State<CoursePage> {
                               padding: EdgeInsets.all(0.0),
                               itemBuilder: (context, i) {
                                 final index = i ~/ 2;
-                                if (index >= assignQInfo.length) return null;
+                                if (index >= assignSInfo.length) return null;
                                 if (i.isOdd) return Divider();
                                 return _buildRow(context, index);
                               }
@@ -104,14 +91,10 @@ class _CoursePageState extends State<CoursePage> {
   Widget _buildRow(BuildContext context, int i) {
     return ListTile(
       title: Text(
-        assignQInfo[i].assignTitle,
+        assignSInfo[i].studentEmail,
       ),
       trailing: Icon(Icons.chevron_right),
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => AssignPage(email, assignQInfo[i])),
-        );
-      },
+      onTap: null,
     );
   }
 

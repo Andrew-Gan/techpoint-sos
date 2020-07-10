@@ -1,22 +1,19 @@
-import '../CreateDB.dart';
-import 'AssignPage.dart';
+import '../../CreateDB.dart';
+import 'TeacherAssignUpdatePage.dart';
 import 'package:flutter/material.dart';
 
-class CoursePage extends StatefulWidget {
-  final String email;
-  final String courseID;
+class TeacherAssignQuestionsPage extends StatefulWidget {
   final List<AssignmentQuestionInfo> assignQInfo;
-  CoursePage(this.email, this.courseID, this.assignQInfo);
+  TeacherAssignQuestionsPage(this.assignQInfo);
 
   @override
-  State<CoursePage> createState() => _CoursePageState(email, courseID, assignQInfo);
+  State<TeacherAssignQuestionsPage> createState() => 
+    _TeacherAssignQuestionsPageState(assignQInfo);
 }
 
-class _CoursePageState extends State<CoursePage> {
-  final String courseID;
-  final String email;
+class _TeacherAssignQuestionsPageState extends State<TeacherAssignQuestionsPage> {
   final List<AssignmentQuestionInfo> assignQInfo;
-  _CoursePageState(this.email, this.courseID, this.assignQInfo);
+  _TeacherAssignQuestionsPageState(this.assignQInfo);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +40,7 @@ class _CoursePageState extends State<CoursePage> {
                             Container(
                               color: Colors.white,
                               child: Text(
-                                courseID,
+                                assignQInfo.first.courseID,
                                 style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold
@@ -109,7 +106,7 @@ class _CoursePageState extends State<CoursePage> {
       trailing: Icon(Icons.chevron_right),
       onTap: () {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => AssignPage(email, assignQInfo[i])),
+          MaterialPageRoute(builder: (context) => TeacherAssignUpdatePage(assignQInfo[i])),
         );
       },
     );

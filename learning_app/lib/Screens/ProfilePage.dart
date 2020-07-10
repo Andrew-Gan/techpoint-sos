@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'CoursePage.dart';
+import 'teacher/TeacherCoursePage.dart';
+import 'student/StudentCoursePage.dart';
 import '../CreateDB.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class ProfilePage extends StatefulWidget {
+class StudentProfilePage extends StatefulWidget {
   final AccountInfo userinfo;
-  ProfilePage(this.userinfo);
+  StudentProfilePage(this.userinfo);
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState(userinfo);
+  State<StudentProfilePage> createState() => _StudentProfilePageState(userinfo);
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _StudentProfilePageState extends State<StudentProfilePage> {
   final AccountInfo userinfo;
   List<String> regCourses;
   List<AssignmentQuestionInfo> assignQInfo;
 
-  _ProfilePageState(this.userinfo) {
+  _StudentProfilePageState(this.userinfo) {
     regCourses = this.userinfo.regCourse.split(',');
   }
 
@@ -258,7 +259,13 @@ class _ProfilePageState extends State<ProfilePage> {
       onTap: () async {
         assignQInfo = await _queryAssignmentInfo(courseID);
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => CoursePage(userinfo.email, courseID, assignQInfo),
+          builder: (context) {
+            if(userinfo.privilege == AccountPrivilege.student.index)
+              return StudentCoursePage(userinfo.email, courseID, assignQInfo);
+            else if(userinfo.privilege == AccountPrivilege.teacher.index)
+              return TeacherCoursePage(userinfo.email, courseID, assignQInfo);
+            else return null;
+          }
         ),);
       },
     );

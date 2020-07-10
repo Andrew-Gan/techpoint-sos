@@ -2,23 +2,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import '../CreateDB.dart';
+import '../../CreateDB.dart';
 
-class AssignPage extends StatefulWidget {
+class StudentAssignPage extends StatefulWidget {
   final String studentEmail;
   final AssignmentQuestionInfo assignQInfo;
-  AssignPage(this.studentEmail, this.assignQInfo);
+  StudentAssignPage(this.studentEmail, this.assignQInfo);
 
   @override
-  State<AssignPage> createState() =>_AssignPageState(studentEmail, assignQInfo);
+  State<StudentAssignPage> createState() =>_StudentAssignPageState(studentEmail, assignQInfo);
 }
 
-class _AssignPageState extends State<AssignPage> {
+class _StudentAssignPageState extends State<StudentAssignPage> {
   final FocusNode myFocusNode = FocusNode();
   final String studentEmail;
   final AssignmentQuestionInfo assignQInfo;
   DateTime dueDate;
-  _AssignPageState(this.studentEmail, this.assignQInfo) {
+  _StudentAssignPageState(this.studentEmail, this.assignQInfo) {
     dueDate = DateTime.fromMillisecondsSinceEpoch(assignQInfo.dueDate);
   }
   final ansController = TextEditingController();

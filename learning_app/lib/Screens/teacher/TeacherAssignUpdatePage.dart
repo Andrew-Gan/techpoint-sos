@@ -4,18 +4,18 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
 
-class AssignUpdatePage extends StatefulWidget {
+class TeacherAssignUpdatePage extends StatefulWidget {
   final AssignmentQuestionInfo assignQInfo;
-  AssignUpdatePage(this.assignQInfo);
+  TeacherAssignUpdatePage(this.assignQInfo);
 
   @override
-  State<AssignUpdatePage> createState() =>_AssignUpdatePageState(assignQInfo);
+  State<TeacherAssignUpdatePage> createState() =>_TeacherAssignUpdatePageState(assignQInfo);
 }
 
-class _AssignUpdatePageState extends State<AssignUpdatePage> {
+class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
   final FocusNode myFocusNode = FocusNode();
   final AssignmentQuestionInfo assignQInfo;
-  _AssignUpdatePageState(this.assignQInfo);
+  _TeacherAssignUpdatePageState(this.assignQInfo);
 
   final contentController = TextEditingController();
   final dueDateController = TextEditingController();
