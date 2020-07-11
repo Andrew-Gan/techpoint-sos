@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-// import 'dart:io';
-// import 'dart:convert';
 
 abstract class SQLiteInfo {
   final String tableName = '';
@@ -41,21 +39,24 @@ class AccountInfo implements SQLiteInfo {
 
 class AssignmentQuestionInfo implements SQLiteInfo {
   final String tableName = 'assignmentQuestions';
-  final String assignTitle, courseID, imageB64, content, instrEmail;
-  final int dueDate, maxScore;
+  final String assignTitle, courseID, content, instrEmail;
+  final int dueDate, maxScore, isPeerReview, peerReviewCount, reviewDueDate;
 
-  AssignmentQuestionInfo({this.assignTitle, this.courseID, this.imageB64,
-    this.content, this.dueDate, this.instrEmail, this.maxScore,});
+  AssignmentQuestionInfo({this.assignTitle, this.courseID, this.content,
+    this.dueDate, this.instrEmail, this.maxScore, this.isPeerReview,
+    this.peerReviewCount, this.reviewDueDate});
 
   Map<String, dynamic> toMap() {
     return {
       'assignTitle': assignTitle,
       'courseID': courseID,
-      'imageB64': imageB64,
       'content': content,
       'dueDate': dueDate,
       'instrEmail': instrEmail,
       'maxScore': maxScore,
+      'isPeerReview': isPeerReview,
+      'peerReviewCount': peerReviewCount,
+      'reviewDueDate': reviewDueDate,
     };
   }
 }
@@ -112,8 +113,9 @@ void createDB() async {
       );
       await db.execute(
         'CREATE TABLE assignmentQuestions(assignTitle TEXT UNIQUE, courseID TEXT'
-        'UNIQUE, imageB64 TEXT, content TEXT, dueDate INTEGER, instrEmail TEXT,'
-        'maxScore INTEGER)',
+        'UNIQUE, content TEXT, dueDate INTEGER, instrEmail TEXT,'
+        'maxScore INTEGER, isPeerReview INTEGER, peerReviewCount INTEGER,'
+        'reviewDueDate INTEGER)',
       );
       await db.execute(
         'CREATE TABLE assignmentSubmissions(assignTitle TEXT, courseID TEXT,'
@@ -161,23 +163,47 @@ void createDB() async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
-  // encode image file to base64
-  // String imgPath = Directory.current.path + '/assets/images/circuit.jpeg';
-  // final imgBytes = await File(imgPath).readAsBytes();
-  // String imgB64 = base64.encode(imgBytes);
-  String imgB64 = '';
-
   // assignment info for testing
   await dbRef.insert(
     'assignmentQuestions',
     AssignmentQuestionInfo(
       assignTitle: 'Weekly assignment #1: Voltage and Resistance',
       courseID: 'ECE 20100',
-      imageB64: imgB64,
       content: 'Suppose a diagram',
-      dueDate: 2594166399000,
+      dueDate: 1594166399000,
       instrEmail: 'teacher@purdue.edu',
       maxScore: 100,
+      isPeerReview: 0,
+    ).toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+
+  await dbRef.insert(
+    'assignmentQuestions',
+    AssignmentQuestionInfo(
+      assignTitle: 'Weekly assignment #2: Nodal and Loop Analysis',
+      courseID: 'ECE 20100',
+      content: 'Calculate using nodal analysis',
+      dueDate: 1894166399000,
+      instrEmail: 'teacher@purdue.edu',
+      maxScore: 100,
+      isPeerReview: 0,
+    ).toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+
+  await dbRef.insert(
+    'assignmentQuestions',
+    AssignmentQuestionInfo(
+      assignTitle: 'Weekly assignment #3: Circuit Simplification',
+      courseID: 'ECE 20100',
+      content: 'Suppose a diagram',
+      dueDate: 1894166399000,
+      instrEmail: 'teacher@purdue.edu',
+      maxScore: 100,
+      isPeerReview: 1,
+      peerReviewCount: 3,
+      reviewDueDate: 2194166399000,
     ).toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );

@@ -16,10 +16,13 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
   final FocusNode myFocusNode = FocusNode();
   final AssignmentQuestionInfo assignQInfo;
   final contentController = TextEditingController();
-  DateTime dueDate;
+  DateTime dueDate, reviewDueDate;
+  bool isPeerReview = false;
+  int peerReviewCount = 0;
 
   _TeacherAssignUpdatePageState(this.assignQInfo) {
     dueDate = DateTime.fromMillisecondsSinceEpoch(assignQInfo.dueDate);
+    reviewDueDate = dueDate;
     contentController.text = assignQInfo.content;
   }
 
@@ -48,7 +51,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(
-                      left: 25.0, right: 25.0, top: 25.0),
+                      left: 25.0, top: 25.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -60,9 +63,9 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 45.0),
+                          padding: EdgeInsets.only(top: 25.0),
                           child: Text(
-                            'Change assignment question',
+                            'Assignment question',
                             style: TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold
@@ -74,7 +77,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      left: 25.0, right: 25.0, top: 20.0),
+                      left: 25.0, top: 20.0, right: 25.0,),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -92,13 +95,13 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      left: 25.0, right: 25.0, top: 25.0),
+                      left: 25.0, top: 25.0),
                     child: Row(
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.only(top: 10.0),
                           child: Text(
-                            'Change assignment due date',
+                            'Assignment due date',
                             style: TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold
@@ -112,7 +115,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(
-                          left: 25.0, right: 25.0, top: 20.0),
+                          left: 25.0,),
                         child: DropdownButton(
                           value: dueDate.month,
                           items: List<int>.generate(12, (i) => i + 1)
@@ -133,7 +136,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                          left: 25.0, right: 25.0, top: 20.0),
+                          left: 25.0,),
                         child: DropdownButton(
                           value: dueDate.day,
                           items: List<int>.generate(31, (i) => i + 1)
@@ -154,7 +157,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                          left: 25.0, right: 25.0, top: 20.0),
+                          left: 25.0,),
                         child: DropdownButton(
                           value: dueDate.year,
                           items: List<int>.generate(1000, (i) => i + 2000)
@@ -173,13 +176,9 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                           ),
                         )
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
                       Padding(
                         padding: EdgeInsets.only(
-                          left: 25.0, right: 25.0, top: 5.0),
+                          left: 25.0,),
                         child: DropdownButton(
                           value: dueDate.hour,
                           items: List<int>.generate(24, (i) => i)
@@ -200,7 +199,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                          left: 25.0, right: 25.0, top: 5.0),
+                          left: 25.0,),
                         child: DropdownButton(
                           value: dueDate.minute,
                           items: List<int>.generate(60, (i) => i)
@@ -217,6 +216,121 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                               newValue,
                             )
                           ),
+                        )
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 25.0, top: 25.0),
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 0.0),
+                          child: Text(
+                            'Peer review options',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 25.0,),
+                        child: DropdownButton(
+                          value: isPeerReview,
+                          items: [
+                            DropdownMenuItem(child: Text('enable'), value: true),
+                            DropdownMenuItem(child: Text('disable'), value: false),
+                          ],
+                          onChanged: (bool option) => 
+                            setState(() => isPeerReview = option),
+                        )
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 25.0,),
+                        child: DropdownButton(
+                          value: peerReviewCount,
+                          items: List.generate(10, (index) => 
+                            DropdownMenuItem(
+                              child: Text(index.toString()),
+                              value: index,
+                            )
+                          ),
+                          onChanged: isPeerReview ? (int option) => 
+                            setState(() => peerReviewCount = option) : null,
+                        )
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 25.0,),
+                        child: DropdownButton(
+                          value: reviewDueDate.month,
+                          items: List<int>.generate(12, (i) => i + 1)
+                            .map<DropdownMenuItem<int>>((i) => DropdownMenuItem(
+                              value: i,
+                              child: Text(i.toString()),
+                            )).toList(),
+                          onChanged: !isPeerReview ? null : (int newValue) =>
+                            setState(() => reviewDueDate = DateTime(
+                              reviewDueDate.year,
+                              newValue,
+                              reviewDueDate.day,
+                              reviewDueDate.hour,
+                              reviewDueDate.minute,
+                            )),
+                        )
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 25.0,),
+                        child: DropdownButton(
+                          value: reviewDueDate.day,
+                          items: List<int>.generate(31, (i) => i + 1)
+                            .map<DropdownMenuItem<int>>((i) => DropdownMenuItem(
+                              value: i,
+                              child: Text(i.toString()),
+                            )).toList(),
+                          onChanged: !isPeerReview ? null : (int newValue) =>
+                            setState(() => reviewDueDate = DateTime(
+                              reviewDueDate.year,
+                              reviewDueDate.month,
+                              newValue,
+                              reviewDueDate.hour,
+                              reviewDueDate.minute,
+                            )),
+                        )
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 25.0,),
+                        child: DropdownButton(
+                          value: reviewDueDate.year,
+                          items: List<int>.generate(1000, (i) => i + 2000)
+                            .map<DropdownMenuItem<int>>((i) => DropdownMenuItem(
+                              value: i,
+                              child: Text(i.toString()),
+                            )).toList(),
+                          onChanged: !isPeerReview ? null : (int newValue) =>
+                            setState(() => reviewDueDate = DateTime(
+                              newValue,
+                              reviewDueDate.month,
+                              reviewDueDate.day,
+                              reviewDueDate.hour,
+                              reviewDueDate.minute,
+                            )),
                         )
                       ),
                     ],
@@ -264,17 +378,19 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
       join(await getDatabasesPath(), 'learningApp_database.db'));
 
     final Database dbRef = await db;
-    
+
     await dbRef.update(
       'assignmentQuestions',
       AssignmentQuestionInfo(
         assignTitle: assignQInfo.assignTitle,
         courseID: assignQInfo.courseID,
-        imageB64: assignQInfo.imageB64,
         content: contentController.text,
         dueDate: dueDate.millisecondsSinceEpoch,
         instrEmail: assignQInfo.instrEmail,
         maxScore: assignQInfo.maxScore,
+        isPeerReview: isPeerReview ? 1 : 0,
+        peerReviewCount: peerReviewCount,
+        reviewDueDate: reviewDueDate.millisecondsSinceEpoch,
       ).toMap(),
       where: 'assignTitle = ? AND courseID = ?',
       whereArgs: [assignQInfo.assignTitle, assignQInfo.courseID],
@@ -287,7 +403,6 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
 
   @override
   void dispose() {
-    // Clean up the controller when the Widget is disposed
     myFocusNode.dispose();
     contentController.dispose();
     super.dispose();

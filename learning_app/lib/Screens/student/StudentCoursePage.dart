@@ -150,11 +150,13 @@ class _StudentCoursePageState extends State<StudentCoursePage> {
       return AssignmentQuestionInfo(
         assignTitle: res[i]['assignTitle'],
         courseID: res[i]['courseID'],
-        imageB64: res[i]['imageB64'],
         content: res[i]['content'],
         dueDate: res[i]['dueDate'],
         instrEmail: res[i]['instrEmail'],
         maxScore: res[i]['maxScore'],
+        isPeerReview: res[i]['isPeerReview'],
+        peerReviewCount: res[i]['peerReviewCount'],
+        reviewDueDate: res[i]['reviewDueDate'],
       );
     });
 
