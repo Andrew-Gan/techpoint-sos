@@ -30,4 +30,5 @@ AVD Android 4.1 and above
 ## References
 [Item listing and generation](https://codelabs.developers.google.com/codelabs/first-flutter-app-pt1)  
 [UI interaction and navigation](https://codelabs.developers.google.com/codelabs/first-flutter-app-pt2)  
-[Input fields and design](https://github.com/flutter-devs/flutter_profileview_demo)
+[Input fields and design](https://github.com/flutter-devs/flutter_profileview_demo)  
+[SQLite data persistence](https://flutter.dev/docs/cookbook/persistence/sqlite)  
