@@ -2,6 +2,7 @@ push:
 	@cd learning_app; \
 	flutter clean; \
 	cd ..; \
+	git pull; \
 	git add .; \
 	read -p "Commit message: " MSG; \
 	git commit -m "$$MSG"; \

@@ -10,7 +10,8 @@ class StudentAssignSubmitPage extends StatefulWidget {
   StudentAssignSubmitPage(this.studentEmail, this.assignQInfo);
 
   @override
-  State<StudentAssignSubmitPage> createState() =>_StudentAssignSubmitPageState(studentEmail, assignQInfo);
+  State<StudentAssignSubmitPage> createState() =>
+    _StudentAssignSubmitPageState(studentEmail, assignQInfo);
 }
 
 class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {

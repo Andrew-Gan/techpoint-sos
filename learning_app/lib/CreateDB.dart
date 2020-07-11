@@ -81,6 +81,26 @@ class AssignmentSubmissionInfo implements SQLiteInfo {
   }
 }
 
+class PeerReviewInfo implements SQLiteInfo {
+  final String tableName = 'peerReview';
+  final String courseID, assignTitle, content, reviewerEmail, reviewedEmail,
+    instrEmail;
+
+  PeerReviewInfo({this.courseID, this.assignTitle, this.content,
+    this.reviewerEmail, this.reviewedEmail, this.instrEmail,});
+  
+  Map<String, dynamic> toMap() {
+    return {
+      'courseID': courseID,
+      'assignTitle': assignTitle,
+      'content': content,
+      'reviewerEmail': reviewerEmail,
+      'reviewedEmail': reviewedEmail,
+      'instrEmail': instrEmail,
+    };
+  }
+}
+
 void createDB() async {
   final Future<Database> db = openDatabase(
     join(await getDatabasesPath(), 'learningApp_database.db'),
@@ -101,8 +121,8 @@ void createDB() async {
         'remarks TEXT, UNIQUE(assignTitle, courseID, studentEmail))',
       );
       await db.execute(
-        'CREATE TABLE reviews(courseID TEXT, assignTitle TEXT,'
-        'reviewerEmail TEXT, authorEmail TEXT, instrEmail TEXT)',
+        'CREATE TABLE peerReviews(courseID TEXT, assignTitle TEXT, content TEXT'
+        'reviewerEmail TEXT, reviewedEmail TEXT, instrEmail TEXT)',
       );
     },
     version: 1
