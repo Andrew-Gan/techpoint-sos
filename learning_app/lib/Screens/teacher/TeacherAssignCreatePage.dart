@@ -4,33 +4,26 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
 
-import 'dart:developer';
-
-class TeacherAssignUpdatePage extends StatefulWidget {
-  final AssignmentQuestionInfo assignQInfo;
-  TeacherAssignUpdatePage(this.assignQInfo);
+class TeacherAssignCreatePage extends StatefulWidget {
+  final String courseID, instrEmail;
+  TeacherAssignCreatePage(this.courseID, this.instrEmail);
 
   @override
-  State<TeacherAssignUpdatePage> createState() =>
-    _TeacherAssignUpdatePageState(assignQInfo);
+  State<TeacherAssignCreatePage> createState() =>
+    _TeacherAssignCreatePageState(courseID, instrEmail);
 }
 
-class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
-  final FocusNode myFocusNode = FocusNode();
-  final AssignmentQuestionInfo assignQInfo;
+class _TeacherAssignCreatePageState extends State<TeacherAssignCreatePage> {
+  final String courseID, instrEmail;
   final titleController = TextEditingController();
   final contentController = TextEditingController();
-  DateTime dueDate, reviewDueDate;
+  DateTime dueDate = DateTime.now(), reviewDueDate = DateTime.now();
   bool isPeerReview = false;
   int peerReviewCount = 0;
 
-  _TeacherAssignUpdatePageState(this.assignQInfo) {
-    dueDate = DateTime.fromMillisecondsSinceEpoch(assignQInfo.dueDate);
-    reviewDueDate = dueDate;
-    contentController.text = assignQInfo.content;
-  }
+  _TeacherAssignCreatePageState(this.courseID, this.instrEmail);
 
-  bool isUpdated = false;
+  bool isCreated = false;
 
   @override
   void initState() => super.initState();
@@ -41,7 +34,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
-        title: Text('Update assignment'),
+        title: Text('Add assignment'),
       ),
       body: Container(
         color: Colors.blueGrey,
@@ -55,16 +48,21 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(
-                      left: 25.0, top: 25.0),
+                      left: 25.0, top: 25.0, right: 25.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          assignQInfo.assignTitle,
+                          'Assignment title',
                           style: TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold
                           ),
+                        ),
+                        TextField(
+                          controller: titleController,
+                          decoration: InputDecoration(border: OutlineInputBorder()),
+                          enabled: true,
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 25.0),
@@ -76,27 +74,16 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 25.0, top: 20.0, right: 25.0,),
-                    child: Row(
-                      children: <Widget>[
-                        Flexible(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                            ),
-                            maxLines: 5,
-                            controller: contentController,
-                            enabled: true,
-                            focusNode: myFocusNode,
+                        TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
                           ),
+                          maxLines: 3,
+                          controller: contentController,
+                          enabled: true,
                         ),
                       ],
-                    )
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
@@ -119,8 +106,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                   Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 25.0,),
+                        padding: EdgeInsets.only(left: 25.0,),
                         child: DropdownButton(
                           value: dueDate.month,
                           items: List<int>.generate(12, (i) => i + 1)
@@ -140,8 +126,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                         )
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 25.0,),
+                        padding: EdgeInsets.only(left: 25.0,),
                         child: DropdownButton(
                           value: dueDate.day,
                           items: List<int>.generate(31, (i) => i + 1)
@@ -161,8 +146,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                         )
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 25.0,),
+                        padding: EdgeInsets.only(left: 25.0,),
                         child: DropdownButton(
                           value: dueDate.year,
                           items: List<int>.generate(1000, (i) => i + 2000)
@@ -182,8 +166,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                         )
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 25.0,),
+                        padding: EdgeInsets.only(left: 25.0,),
                         child: DropdownButton(
                           value: dueDate.hour,
                           items: List<int>.generate(24, (i) => i)
@@ -203,8 +186,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                         )
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 25.0,),
+                        padding: EdgeInsets.only(left: 25.0,),
                         child: DropdownButton(
                           value: dueDate.minute,
                           items: List<int>.generate(60, (i) => i)
@@ -226,8 +208,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                      left: 25.0, top: 25.0),
+                    padding: EdgeInsets.only(left: 25.0, top: 25.0),
                     child: Row(
                       children: <Widget>[
                         Padding(
@@ -247,8 +228,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 25.0,),
+                        padding: EdgeInsets.only(left: 25.0,),
                         child: DropdownButton(
                           value: isPeerReview,
                           items: [
@@ -260,8 +240,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                         )
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 25.0,),
+                        padding: EdgeInsets.only(left: 25.0,),
                         child: DropdownButton(
                           value: peerReviewCount,
                           items: List.generate(10, (index) => 
@@ -279,8 +258,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                   Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 25.0,),
+                        padding: EdgeInsets.only(left: 25.0,),
                         child: DropdownButton(
                           value: reviewDueDate.month,
                           items: List<int>.generate(12, (i) => i + 1)
@@ -299,8 +277,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                         )
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 25.0,),
+                        padding: EdgeInsets.only(left: 25.0,),
                         child: DropdownButton(
                           value: reviewDueDate.day,
                           items: List<int>.generate(31, (i) => i + 1)
@@ -319,8 +296,7 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                         )
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 25.0,),
+                        padding: EdgeInsets.only(left: 25.0,),
                         child: DropdownButton(
                           value: reviewDueDate.year,
                           items: List<int>.generate(1000, (i) => i + 2000)
@@ -354,14 +330,14 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
                         '',
                         style: TextStyle(fontSize: 16.0,),
                       ),
-                      visible: isUpdated,
+                      visible: isCreated,
                     ),
                   ),
                   Center(
                     heightFactor: 2.0,
                     child: OutlineButton(
-                      onPressed: onUpdatePress,
-                      child: Text('UPDATE'),
+                      onPressed: onCreatePress,
+                      child: Text('CREATE'),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -376,39 +352,36 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
     );
   }
 
-  void onUpdatePress() async {
-    isUpdated = true;
+  void onCreatePress() async {
+    isCreated = true;
 
     final Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'));
 
     final Database dbRef = await db;
 
-    await dbRef.update(
+    await dbRef.insert(
       'assignmentQuestions',
       AssignmentQuestionInfo(
-        assignTitle: assignQInfo.assignTitle,
-        courseID: assignQInfo.courseID,
+        assignTitle: titleController.text,
+        courseID: courseID,
         content: contentController.text,
         dueDate: dueDate.millisecondsSinceEpoch,
-        instrEmail: assignQInfo.instrEmail,
-        maxScore: assignQInfo.maxScore,
+        instrEmail: instrEmail,
+        maxScore: 100,
         isPeerReview: isPeerReview ? 1 : 0,
         peerReviewCount: peerReviewCount,
         reviewDueDate: reviewDueDate.millisecondsSinceEpoch,
       ).toMap(),
-      where: 'assignTitle = ? AND courseID = ?',
-      whereArgs: [assignQInfo.assignTitle, assignQInfo.courseID],
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      conflictAlgorithm: ConflictAlgorithm.ignore,
     );
     dbRef.close();
 
-    setState(() => isUpdated = true);
+    setState(() => isCreated = true);
   }
 
   @override
   void dispose() {
-    myFocusNode.dispose();
     titleController.dispose();
     contentController.dispose();
     super.dispose();

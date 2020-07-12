@@ -82,8 +82,8 @@ class _StudentCoursePageState extends State<StudentCoursePage> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(left: 20.0, top: 20.0),
-                            height: 200.0,
+                            padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0,),
+                            height: 400.0,
                             child: ListView.builder(
                               padding: EdgeInsets.all(0.0),
                               itemBuilder: (context, i) {
@@ -114,9 +114,10 @@ class _StudentCoursePageState extends State<StudentCoursePage> {
       ),
       trailing: Icon(Icons.chevron_right),
       onTap: () async {
+        int now = DateTime.now().millisecondsSinceEpoch;
         var assignQInfo = await _queryAssignInfo(assignQTitles[i]);
         var assignSInfo = await _queryAssignSubmits(assignQTitles[i]);
-        if(assignSInfo == null) {
+        if(assignQInfo.dueDate > now || assignSInfo == null) {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) =>
               StudentAssignSubmitPage(email, assignQInfo)),

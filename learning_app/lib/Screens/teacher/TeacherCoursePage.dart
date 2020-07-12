@@ -1,10 +1,14 @@
 import '../../CreateDB.dart';
 import 'TeacherAssignUpdatePage.dart';
+import 'TeacherAssignCreatePage.dart';
 import 'TeacherAssignSubmissionsPage.dart';
 import 'package:flutter/material.dart';
+
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
+import 'dart:developer';
 
 class TeacherCoursePage extends StatefulWidget {
   final String email;
@@ -68,8 +72,8 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(left: 20.0, top: 20.0),
-                            height: 200.0,
+                            padding: EdgeInsets.only(left: 20.0, top: 20.0,),
+                            height: 350.0,
                             child: ListView.builder(
                               padding: EdgeInsets.all(0.0),
                               itemBuilder: (context, i) {
@@ -81,6 +85,14 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                             ),
                           ),
                         ],
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) =>
+                            TeacherAssignCreatePage(courseID, email)
+                          )
+                        ),
                       ),
                     ],
                   ),
