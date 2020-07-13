@@ -9,21 +9,11 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class TeacherCoursePage extends StatefulWidget {
-  final String email;
+class TeacherCoursePage extends StatelessWidget {
   final String courseID;
+  final String email;
   final List<String> assignQTitles;
   TeacherCoursePage(this.email, this.courseID, this.assignQTitles);
-
-  @override
-  State<TeacherCoursePage> createState() => _TeacherCoursePageState(email, courseID, assignQTitles);
-}
-
-class _TeacherCoursePageState extends State<TeacherCoursePage> {
-  final String courseID;
-  final String email;
-  final List<String> assignQTitles;
-  _TeacherCoursePageState(this.email, this.courseID, this.assignQTitles);
 
   @override
   Widget build(BuildContext context) {
@@ -33,83 +23,71 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
         title: Text('Course'),
       ),
       body: Container(
-        color: Colors.blueGrey,
-        child: ListView(
+        height: MediaQuery.of(context).size.height - 80,
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height - 80,
-                  color: Colors.white,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 20.0, left: 20.0),
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          color: Colors.white,
-                          child: Text(
-                            courseID,
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(left: 20.0, top: 50.0),
-                            child: Text(
-                              'Assignments',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 20.0, top: 20.0,),
-                            height: 350.0,
-                            child: ListView.builder(
-                              padding: EdgeInsets.all(0.0),
-                              itemBuilder: (context, i) {
-                                final index = i ~/ 2;
-                                if (index >= assignQTitles.length) return null;
-                                if (i.isOdd) return Divider();
-                                return _buildRow(context, index);
-                              }
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.add_box),
-                            onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) =>
-                                TeacherAssignCreatePage(courseID, email)
-                              )
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add_box), 
-                            onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) =>
-                                TeacherPeerCreatePage(courseID, email, assignQTitles)
-                              )
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+            Padding(
+              padding: EdgeInsets.only(top: 25.0, left: 25.0),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                color: Colors.white,
+                child: Text(
+                  courseID,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold
                   ),
                 ),
-              ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 25.0, top: 30.0),
+              child: Text(
+                'Assignments',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 25.0, top: 25.0, right: 10.0),
+              height: 380.0,
+              child: ListView.builder(
+                padding: EdgeInsets.all(0.0),
+                itemBuilder: (context, i) {
+                  final index = i ~/ 2;
+                  if (index >= assignQTitles.length) return null;
+                  if (i.isOdd) return Divider();
+                  return _buildRow(context, index);
+                }
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 25.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OutlineButton(
+                    child: Text('Add assignment'),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) =>
+                        TeacherAssignCreatePage(courseID, email)
+                      )
+                    ),
+                  ),
+                  OutlineButton(
+                    child: Text('Add peer review'),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) =>
+                        TeacherPeerCreatePage(courseID, email, assignQTitles)
+                      )
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -156,9 +134,6 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
       )
     );
   }
-
-  @override
-  void dispose() => super.dispose();
 
   Future<AssignmentQuestionInfo> _queryAssignInfo(String assignTitle, String courseID) async {
     Future<Database> db = openDatabase(

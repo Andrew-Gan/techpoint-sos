@@ -37,126 +37,107 @@ class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
         title: Text('Assignment'),
       ),
       body: Container(
-        color: Colors.blueGrey,
+        height: MediaQuery.of(context).size.height - 80,
+        color: Colors.white,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height - 80,
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Padding(
+              padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+              child: Text(
+                assignQInfo.assignTitle,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 25.0, top: 10.0),
+              child: Text(
+                assignQInfo.content,
+                maxLines: 3,
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                left: 25.0, right: 25.0, top: 80.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 25.0, right: 25.0, top: 25.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              assignQInfo.assignTitle,
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 10.0),
-                              child: Text(
-                                assignQInfo.content,
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 25.0, right: 25.0, top: 40.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        Flexible(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                            ),
-                            maxLines: 14,
-                            controller: ansController,
-                            enabled: true,
-                          ),
-                        ),
-                      ],
-                    )
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25.0),
-                    child: Visibility(
-                      child: Text(
-                        'Assignment successfully submitted on\n' +
-                          DateTime.now().year.toString() + '-' +
-                          DateTime.now().month.toString() + '-' +
-                          DateTime.now().day.toString() + ' at ' +
-                          DateTime.now().hour.toString() + ':' +
-                          DateTime.now().minute.toString(),
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.red,
-                        ),
+                  Flexible(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
                       ),
-                      replacement: Text(
-                        '',
-                        style: TextStyle(fontSize: 16.0,),
-                      ),
-                      visible: isSubmitted && isSuccess,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25.0),
-                    child: Visibility(
-                      child: Text(
-                        'Submission failed.\nAssignment was due on ' +
-                        dueDate.year.toString() + '-' +
-                        dueDate.month.toString() + '-' +
-                        dueDate.day.toString() + ' at ' +
-                        dueDate.hour.toString() + ':' +
-                        dueDate.minute.toString(),
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.red,
-                        ),
-                      ),
-                      replacement: Text(
-                        '',
-                        style: TextStyle(fontSize: 16.0,),
-                      ),
-                      visible: isSubmitted && !isSuccess,
-                    ),
-                  ),
-                  Center(
-                    heightFactor: 2.0,
-                    child: OutlineButton(
-                      onPressed: onSubmitPress,
-                      child: Text('SUBMIT'),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
+                      maxLines: 12,
+                      controller: ansController,
+                      enabled: true,
                     ),
                   ),
                 ],
+              )
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 25.0),
+              child: Visibility(
+                child: Text(
+                  'Assignment successfully submitted on\n' +
+                    DateTime.now().year.toString() + '-' +
+                    DateTime.now().month.toString() + '-' +
+                    DateTime.now().day.toString() + ' at ' +
+                    DateTime.now().hour.toString() + ':' +
+                    DateTime.now().minute.toString(),
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.red,
+                  ),
+                ),
+                replacement: Text(
+                  '',
+                  style: TextStyle(fontSize: 16.0,),
+                ),
+                visible: isSubmitted && isSuccess,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 25.0),
+              child: Visibility(
+                child: Text(
+                  'Submission failed.\nAssignment was due on ' +
+                  dueDate.year.toString() + '-' +
+                  dueDate.month.toString() + '-' +
+                  dueDate.day.toString() + ' at ' +
+                  dueDate.hour.toString() + ':' +
+                  dueDate.minute.toString(),
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.red,
+                  ),
+                ),
+                replacement: Text(
+                  '',
+                  style: TextStyle(fontSize: 16.0,),
+                ),
+                visible: isSubmitted && !isSuccess,
+              ),
+            ),
+            Center(
+              heightFactor: 2.0,
+              child: OutlineButton(
+                onPressed: onSubmitPress,
+                child: Text('SUBMIT'),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
               ),
             ),
           ],
         ),
-      )
+      ),
     );
   }
 

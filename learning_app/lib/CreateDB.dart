@@ -147,8 +147,8 @@ void createDB() async {
   await dbRef.insert(
     'accounts',
     AccountInfo(
-      name: 'Paul Ryan',
-      email: 'paul@purdue.edu',
+      name: 'Borja Peleato',
+      email: 'borja@purdue.edu',
       major: '',
       year: '',
       college: 'Purdue University',
