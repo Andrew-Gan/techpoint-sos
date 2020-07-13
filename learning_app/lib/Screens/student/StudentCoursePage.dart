@@ -7,24 +7,12 @@ import 'StudentAssignSubmitPage.dart';
 import 'StudentAssignReviewPage.dart';
 import 'package:flutter/material.dart';
 
-class StudentCoursePage extends StatefulWidget {
-  final String email;
+class StudentCoursePage extends StatelessWidget {
   final String courseID;
+  final String email;
   final List<String> assignQTitles;
   final int score;
   StudentCoursePage(this.email, this.courseID, this.assignQTitles, this.score);
-
-  @override
-  State<StudentCoursePage> createState() => 
-    _StudentCoursePageState(email, courseID, assignQTitles, score);
-}
-
-class _StudentCoursePageState extends State<StudentCoursePage> {
-  final String courseID;
-  final String email;
-  final List<String> assignQTitles;
-  final int score;
-  _StudentCoursePageState(this.email, this.courseID, this.assignQTitles, this.score);
 
   @override
   Widget build(BuildContext context) {
@@ -34,78 +22,86 @@ class _StudentCoursePageState extends State<StudentCoursePage> {
         title: Text('Course'),
       ),
       body: Container(
-        color: Colors.blueGrey,
-        child: ListView(
+        height: MediaQuery.of(context).size.height - 80,
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height - 80,
-                  color: Colors.white,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 20.0, left: 50.0),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              color: Colors.white,
-                              child: Text(
-                                courseID,
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(top: 20.0, left: 90.0),
-                              width: 250.0,
-                              height: 80.0,
-                              child: Text(
-                                score.toString() + ' / 1000',
-                                style: TextStyle(fontSize: 30.0),
-                              ),
-                            ),
-                          ],
-                        ),
+            Padding(
+              padding: EdgeInsets.only(top: 20.0, left: 50.0),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    color: Colors.white,
+                    child: Text(
+                      courseID,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(left: 20.0, top: 50.0),
-                            child: Text(
-                              'Assignments',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0,),
-                            height: 400.0,
-                            child: ListView.builder(
-                              padding: EdgeInsets.all(0.0),
-                              itemBuilder: (context, i) {
-                                final index = i ~/ 2;
-                                if (index >= assignQTitles.length) return null;
-                                if (i.isOdd) return Divider();
-                                return _buildRow(context, index);
-                              }
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
+                  Container(
+                    padding: EdgeInsets.only(top: 20.0, left: 80.0),
+                    width: 250.0,
+                    height: 80.0,
+                    child: Text(
+                      score.toString() + ' / 1000',
+                      style: TextStyle(fontSize: 30.0),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 25.0, top: 25.0),
+              child: Text(
+                'Assignments',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0,),
+              height: 150.0,
+              child: ListView.builder(
+                padding: EdgeInsets.all(0.0),
+                itemBuilder: (context, i) {
+                  final index = i ~/ 2;
+                  if (index >= assignQTitles.length) return null;
+                  if (i.isOdd) return Divider();
+                  return _buildRow(context, index);
+                }
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 25.0, top: 50.0),
+              child: Text(
+                'Peer Reviews to do',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0,),
+              height: 150.0,
+              child: ListView.builder(
+                padding: EdgeInsets.all(0.0),
+                itemBuilder: (context, i) {
+                  final index = i ~/ 2;
+                  if (index >= assignQTitles.length) return null;
+                  if (i.isOdd) return Divider();
+                  return _buildRow(context, index);
+                }
+              ),
             ),
           ],
         ),
-      )
+      ),
     );
   }
 
@@ -191,7 +187,4 @@ class _StudentCoursePageState extends State<StudentCoursePage> {
       remarks: res.first['remarks'],
     );
   }
-
-  @override
-  void dispose() => super.dispose();
 }

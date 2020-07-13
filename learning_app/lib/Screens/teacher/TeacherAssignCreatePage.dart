@@ -17,9 +17,7 @@ class _TeacherAssignCreatePageState extends State<TeacherAssignCreatePage> {
   final String courseID, instrEmail;
   final titleController = TextEditingController();
   final contentController = TextEditingController();
-  DateTime dueDate = DateTime.now(), reviewDueDate = DateTime.now();
-  bool isPeerReview = false;
-  int peerReviewCount = 0;
+  DateTime dueDate = DateTime.now();
 
   _TeacherAssignCreatePageState(this.courseID, this.instrEmail);
 
@@ -208,115 +206,6 @@ class _TeacherAssignCreatePageState extends State<TeacherAssignCreatePage> {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.0, top: 25.0),
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(top: 0.0),
-                          child: Text(
-                            'Peer review options',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(left: 25.0,),
-                        child: DropdownButton(
-                          value: isPeerReview,
-                          items: [
-                            DropdownMenuItem(child: Text('enable'), value: true),
-                            DropdownMenuItem(child: Text('disable'), value: false),
-                          ],
-                          onChanged: (bool option) => 
-                            setState(() => isPeerReview = option),
-                        )
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 25.0,),
-                        child: DropdownButton(
-                          value: peerReviewCount,
-                          items: List.generate(10, (index) => 
-                            DropdownMenuItem(
-                              child: Text(index.toString()),
-                              value: index,
-                            )
-                          ),
-                          onChanged: isPeerReview ? (int option) => 
-                            setState(() => peerReviewCount = option) : null,
-                        )
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 25.0,),
-                        child: DropdownButton(
-                          value: reviewDueDate.month,
-                          items: List<int>.generate(12, (i) => i + 1)
-                            .map<DropdownMenuItem<int>>((i) => DropdownMenuItem(
-                              value: i,
-                              child: Text(i.toString()),
-                            )).toList(),
-                          onChanged: !isPeerReview ? null : (int newValue) =>
-                            setState(() => reviewDueDate = DateTime(
-                              reviewDueDate.year,
-                              newValue,
-                              reviewDueDate.day,
-                              reviewDueDate.hour,
-                              reviewDueDate.minute,
-                            )),
-                        )
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 25.0,),
-                        child: DropdownButton(
-                          value: reviewDueDate.day,
-                          items: List<int>.generate(31, (i) => i + 1)
-                            .map<DropdownMenuItem<int>>((i) => DropdownMenuItem(
-                              value: i,
-                              child: Text(i.toString()),
-                            )).toList(),
-                          onChanged: !isPeerReview ? null : (int newValue) =>
-                            setState(() => reviewDueDate = DateTime(
-                              reviewDueDate.year,
-                              reviewDueDate.month,
-                              newValue,
-                              reviewDueDate.hour,
-                              reviewDueDate.minute,
-                            )),
-                        )
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 25.0,),
-                        child: DropdownButton(
-                          value: reviewDueDate.year,
-                          items: List<int>.generate(1000, (i) => i + 2000)
-                            .map<DropdownMenuItem<int>>((i) => DropdownMenuItem(
-                              value: i,
-                              child: Text(i.toString()),
-                            )).toList(),
-                          onChanged: !isPeerReview ? null : (int newValue) =>
-                            setState(() => reviewDueDate = DateTime(
-                              newValue,
-                              reviewDueDate.month,
-                              reviewDueDate.day,
-                              reviewDueDate.hour,
-                              reviewDueDate.minute,
-                            )),
-                        )
-                      ),
-                    ],
-                  ),
-                  Padding(
                     padding: EdgeInsets.only(left: 25.0),
                     child: Visibility(
                       child: Text(
@@ -369,9 +258,6 @@ class _TeacherAssignCreatePageState extends State<TeacherAssignCreatePage> {
         dueDate: dueDate.millisecondsSinceEpoch,
         instrEmail: instrEmail,
         maxScore: 100,
-        isPeerReview: isPeerReview ? 1 : 0,
-        peerReviewCount: peerReviewCount,
-        reviewDueDate: reviewDueDate.millisecondsSinceEpoch,
       ).toMap(),
       conflictAlgorithm: ConflictAlgorithm.ignore,
     );

@@ -54,9 +54,6 @@ class AssignmentQuestionInfo implements SQLiteInfo {
       'dueDate': dueDate,
       'instrEmail': instrEmail,
       'maxScore': maxScore,
-      'isPeerReview': isPeerReview,
-      'peerReviewCount': peerReviewCount,
-      'reviewDueDate': reviewDueDate,
     };
   }
 }
@@ -114,8 +111,7 @@ void createDB() async {
       await db.execute(
         'CREATE TABLE assignmentQuestions(assignTitle TEXT UNIQUE, courseID TEXT'
         'UNIQUE, content TEXT, dueDate INTEGER, instrEmail TEXT,'
-        'maxScore INTEGER, isPeerReview INTEGER, peerReviewCount INTEGER,'
-        'reviewDueDate INTEGER)',
+        'maxScore INTEGER)',
       );
       await db.execute(
         'CREATE TABLE assignmentSubmissions(assignTitle TEXT, courseID TEXT,'
@@ -159,51 +155,6 @@ void createDB() async {
       password: '123456',
       regCourse: 'ECE 20100',
       privilege: AccountPrivilege.teacher.index,
-    ).toMap(),
-    conflictAlgorithm: ConflictAlgorithm.replace,
-  );
-
-  // assignment info for testing
-  await dbRef.insert(
-    'assignmentQuestions',
-    AssignmentQuestionInfo(
-      assignTitle: 'Weekly assignment #1: Voltage and Resistance',
-      courseID: 'ECE 20100',
-      content: 'Suppose a diagram',
-      dueDate: 1594166399000,
-      instrEmail: 'teacher@purdue.edu',
-      maxScore: 100,
-      isPeerReview: 0,
-    ).toMap(),
-    conflictAlgorithm: ConflictAlgorithm.replace,
-  );
-
-  await dbRef.insert(
-    'assignmentQuestions',
-    AssignmentQuestionInfo(
-      assignTitle: 'Weekly assignment #2: Nodal and Loop Analysis',
-      courseID: 'ECE 20100',
-      content: 'Calculate using nodal analysis',
-      dueDate: 1894166399000,
-      instrEmail: 'teacher@purdue.edu',
-      maxScore: 100,
-      isPeerReview: 0,
-    ).toMap(),
-    conflictAlgorithm: ConflictAlgorithm.replace,
-  );
-
-  await dbRef.insert(
-    'assignmentQuestions',
-    AssignmentQuestionInfo(
-      assignTitle: 'Weekly assignment #3: Circuit Simplification',
-      courseID: 'ECE 20100',
-      content: 'Suppose a diagram',
-      dueDate: 1894166399000,
-      instrEmail: 'teacher@purdue.edu',
-      maxScore: 100,
-      isPeerReview: 1,
-      peerReviewCount: 3,
-      reviewDueDate: 2194166399000,
     ).toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
