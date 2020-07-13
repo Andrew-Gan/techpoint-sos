@@ -40,11 +40,10 @@ class AccountInfo implements SQLiteInfo {
 class AssignmentQuestionInfo implements SQLiteInfo {
   final String tableName = 'assignmentQuestions';
   final String assignTitle, courseID, content, instrEmail;
-  final int dueDate, maxScore, isPeerReview, peerReviewCount, reviewDueDate;
+  final int dueDate, maxScore;
 
   AssignmentQuestionInfo({this.assignTitle, this.courseID, this.content,
-    this.dueDate, this.instrEmail, this.maxScore, this.isPeerReview,
-    this.peerReviewCount, this.reviewDueDate});
+    this.dueDate, this.instrEmail, this.maxScore,});
 
   Map<String, dynamic> toMap() {
     return {
@@ -80,7 +79,7 @@ class AssignmentSubmissionInfo implements SQLiteInfo {
 }
 
 class PeerReviewInfo implements SQLiteInfo {
-  final String tableName = 'peerReview';
+  final String tableName = 'peerReviews';
   final String courseID, assignTitle, content, reviewerEmail, reviewedEmail,
     instrEmail;
 
@@ -119,7 +118,7 @@ void createDB() async {
         'remarks TEXT, UNIQUE(assignTitle, courseID, studentEmail))',
       );
       await db.execute(
-        'CREATE TABLE peerReviews(courseID TEXT, assignTitle TEXT, content TEXT'
+        'CREATE TABLE peerReviews(courseID TEXT, assignTitle TEXT, content TEXT,'
         'reviewerEmail TEXT, reviewedEmail TEXT, instrEmail TEXT)',
       );
     },
@@ -132,8 +131,8 @@ void createDB() async {
   await dbRef.insert(
     'accounts',
     AccountInfo(
-      name: 'Andrew Gan',
-      email: 'gan35@purdue.edu',
+      name: 'Student 00',
+      email: 'student00@purdue.edu',
       major: 'Computer Engineering',
       year: 'Senior',
       college: 'Purdue University',
@@ -147,8 +146,38 @@ void createDB() async {
   await dbRef.insert(
     'accounts',
     AccountInfo(
-      name: 'Borja Peleato',
-      email: 'borja@purdue.edu',
+      name: 'Student 01',
+      email: 'student01@purdue.edu',
+      major: 'Computer Engineering',
+      year: 'Senior',
+      college: 'Purdue University',
+      password: '123456',
+      regCourse: 'ECE 20100,ECE 20200',
+      privilege: AccountPrivilege.student.index,
+    ).toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+
+  await dbRef.insert(
+    'accounts',
+    AccountInfo(
+      name: 'Student 02',
+      email: 'student02@purdue.edu',
+      major: 'Computer Engineering',
+      year: 'Senior',
+      college: 'Purdue University',
+      password: '123456',
+      regCourse: 'ECE 20100,ECE 20200',
+      privilege: AccountPrivilege.student.index,
+    ).toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+
+  await dbRef.insert(
+    'accounts',
+    AccountInfo(
+      name: 'Some teacher',
+      email: 'teacher00@purdue.edu',
       major: '',
       year: '',
       college: 'Purdue University',

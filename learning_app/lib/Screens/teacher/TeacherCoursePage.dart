@@ -156,9 +156,6 @@ class TeacherCoursePage extends StatelessWidget {
         dueDate: res[i]['dueDate'],
         instrEmail: res[i]['instrEmail'],
         maxScore: res[i]['maxScore'],
-        isPeerReview: res[i]['isPeerReview'],
-        peerReviewCount: res[i]['peerReviewCount'],
-        reviewDueDate: res[i]['reviewDueDate'],
       );
     });
 

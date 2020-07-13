@@ -248,18 +248,18 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
 
     var res = await dbRef.query(
       'assignmentSubmissions',
-      where: 'chosenAssignTitle = ? AND chosenCourseID = ?',
+      where: 'assignTitle = ? AND courseID = ?',
       whereArgs: [chosenAssignTitle, chosenCourseID],
     );
 
     for(int i = 0; i < res.length; i++) {
-      for(int n = 0; n < chosenNum; n++) {
-        await dbRef.insert(
+      for(int n = 1; n < chosenNum + 1; n++) {
+        dbRef.insert(
           'peerReviews',
           PeerReviewInfo(
             courseID: chosenCourseID,
             assignTitle: chosenAssignTitle,
-            content: res[i]['content'],
+            content: null,
             reviewerEmail: res[i]['studentEmail'],
             reviewedEmail: res[(i + n) % res.length]['studentEmail'],
             instrEmail: res[i]['instrEmail'],
@@ -270,7 +270,6 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
     }
 
     dbRef.close();
-
     setState(() => isCreated = true);
   }
 

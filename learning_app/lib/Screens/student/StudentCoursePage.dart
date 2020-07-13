@@ -152,9 +152,6 @@ class StudentCoursePage extends StatelessWidget {
       dueDate: res.first['dueDate'],
       instrEmail: res.first['instrEmail'],
       maxScore: res.first['maxScore'],
-      isPeerReview: res.first['isPeerReview'],
-      peerReviewCount: res.first['peerReviewCount'],
-      reviewDueDate: res.first['reviewDueDate'],
     );
   }
 
