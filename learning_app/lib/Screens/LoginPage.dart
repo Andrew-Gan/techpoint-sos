@@ -67,13 +67,14 @@ class _LoginPageState extends State<LoginPage> {
         title: Text('Login'),
       ),
       body: Container(
-        color: Colors.blueGrey,
+        color: Colors.white,
+        height: MediaQuery.of(context).size.height - 80,
         child: ListView(
           children: <Widget>[
             Column(
               children: <Widget>[
                 Container(
-                  height: 260.0,
+                  height: 200.0,
                   color: Colors.white,
                   child: Column(
                     children: <Widget>[

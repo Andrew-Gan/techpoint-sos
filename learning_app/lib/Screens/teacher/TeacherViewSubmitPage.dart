@@ -146,7 +146,7 @@ class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
                   Center(
                     child: OutlineButton(
                       onPressed: onUpdatePress,
-                      child: Text('UPDATE'),
+                      child: Text('GRADE'),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),

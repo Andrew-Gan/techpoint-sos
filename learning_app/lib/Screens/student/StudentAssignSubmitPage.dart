@@ -89,7 +89,7 @@ class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                             ),
-                            maxLines: 15,
+                            maxLines: 14,
                             controller: ansController,
                             enabled: true,
                           ),
@@ -123,7 +123,7 @@ class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
                     padding: EdgeInsets.only(left: 25.0),
                     child: Visibility(
                       child: Text(
-                        'Submission failed.\nAssignment was due on\n' +
+                        'Submission failed.\nAssignment was due on ' +
                         dueDate.year.toString() + '-' +
                         dueDate.month.toString() + '-' +
                         dueDate.day.toString() + ' at ' +

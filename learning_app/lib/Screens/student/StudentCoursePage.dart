@@ -11,18 +11,20 @@ class StudentCoursePage extends StatefulWidget {
   final String email;
   final String courseID;
   final List<String> assignQTitles;
-  StudentCoursePage(this.email, this.courseID, this.assignQTitles);
+  final int score;
+  StudentCoursePage(this.email, this.courseID, this.assignQTitles, this.score);
 
   @override
   State<StudentCoursePage> createState() => 
-    _StudentCoursePageState(email, courseID, assignQTitles);
+    _StudentCoursePageState(email, courseID, assignQTitles, score);
 }
 
 class _StudentCoursePageState extends State<StudentCoursePage> {
   final String courseID;
   final String email;
   final List<String> assignQTitles;
-  _StudentCoursePageState(this.email, this.courseID, this.assignQTitles);
+  final int score;
+  _StudentCoursePageState(this.email, this.courseID, this.assignQTitles, this.score);
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,7 @@ class _StudentCoursePageState extends State<StudentCoursePage> {
                               width: 250.0,
                               height: 80.0,
                               child: Text(
-                                '0 / 1000',
+                                score.toString() + ' / 1000',
                                 style: TextStyle(fontSize: 30.0),
                               ),
                             ),
@@ -147,21 +149,17 @@ class _StudentCoursePageState extends State<StudentCoursePage> {
 
     dbRef.close();
 
-    var queryRes = List.generate(res.length, (i) {
-      return AssignmentQuestionInfo(
-        assignTitle: res[i]['assignTitle'],
-        courseID: res[i]['courseID'],
-        content: res[i]['content'],
-        dueDate: res[i]['dueDate'],
-        instrEmail: res[i]['instrEmail'],
-        maxScore: res[i]['maxScore'],
-        isPeerReview: res[i]['isPeerReview'],
-        peerReviewCount: res[i]['peerReviewCount'],
-        reviewDueDate: res[i]['reviewDueDate'],
-      );
-    });
-
-    return queryRes.first;
+    return AssignmentQuestionInfo(
+      assignTitle: res.first['assignTitle'],
+      courseID: res.first['courseID'],
+      content: res.first['content'],
+      dueDate: res.first['dueDate'],
+      instrEmail: res.first['instrEmail'],
+      maxScore: res.first['maxScore'],
+      isPeerReview: res.first['isPeerReview'],
+      peerReviewCount: res.first['peerReviewCount'],
+      reviewDueDate: res.first['reviewDueDate'],
+    );
   }
 
   Future<AssignmentSubmissionInfo> _queryAssignSubmits(String assignTitle) async {

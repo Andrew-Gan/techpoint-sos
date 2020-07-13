@@ -258,12 +258,15 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
       trailing: Icon(Icons.chevron_right),
       onTap: () async {
         assignQTitles = await _queryAssignmentTitles(courseID);
+        int score = await _queryCourseScore(courseID);
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) {
             if(userinfo.privilege == AccountPrivilege.student.index)
-              return StudentCoursePage(userinfo.email, courseID, assignQTitles);
+              return StudentCoursePage(userinfo.email, courseID, assignQTitles, score);
+              
             else if(userinfo.privilege == AccountPrivilege.teacher.index)
               return TeacherCoursePage(userinfo.email, courseID, assignQTitles);
+
             else return null;
           }
         ),);
@@ -295,5 +298,28 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
     );
 
     return queryRes;
+  }
+
+  Future<int> _queryCourseScore(String courseID) async {
+    int sum = 0;
+
+    Future<Database> db = openDatabase(
+      join(await getDatabasesPath(), 'learningApp_database.db'),
+    );
+    Database dbRef = await db;
+
+    for(int i = 0; i < assignQTitles.length; i++) {
+      final res = await dbRef.query(
+        'assignmentSubmissions',
+        distinct: true,
+        where: 'studentEmail = ? AND courseID = ? AND assignTitle = ?',
+        whereArgs: [userinfo.email, courseID, assignQTitles[i]],
+      );
+
+      sum += (res.length > 0) ? res.first['recScore'] : 0;
+    }
+
+    dbRef.close();
+    return sum;
   }
 }

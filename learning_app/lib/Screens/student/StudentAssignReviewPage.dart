@@ -4,15 +4,10 @@ import '../../CreateDB.dart';
 class StudentAssignReviewPage extends StatelessWidget {
   final AssignmentQuestionInfo assignQInfo;
   final AssignmentSubmissionInfo assignSInfo;
-
   final FocusNode myFocusNode = FocusNode();
-  DateTime submitDate;
-
-  StudentAssignReviewPage(this.assignQInfo, this.assignSInfo) {
-    submitDate = DateTime.fromMillisecondsSinceEpoch(assignSInfo.submitDate);
-  }
   final ansController = TextEditingController();
-  bool isSubmitted = false, isSuccess = false;
+
+  StudentAssignReviewPage(this.assignQInfo, this.assignSInfo);
 
   @override
   Widget build(BuildContext context) {
