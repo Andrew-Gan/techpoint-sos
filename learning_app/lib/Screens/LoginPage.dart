@@ -11,7 +11,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final FocusNode myFocusNode = FocusNode();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isInvalid = false;
@@ -71,153 +70,83 @@ class _LoginPageState extends State<LoginPage> {
         height: MediaQuery.of(context).size.height - 80,
         child: ListView(
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                Container(
-                  height: 200.0,
-                  color: Colors.white,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 100.0),
-                        child: Stack(fit: StackFit.loose, children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                  width: 300.0,
-                                  height: 100.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    image: DecorationImage(
-                                      image: ExactAssetImage(
-                                          'assets/images/login.png'),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )),
-                            ],
-                          ),
-                        ]),
-                      )
-                    ],
+            Container(
+              padding: EdgeInsets.all(100.0),
+              width: 30.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                image: DecorationImage(
+                  image: ExactAssetImage('assets/images/login.png'),
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+              child: Text(
+                'Email ID',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: 25.0, right: 25.0, top: 2.0),
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: "Enter email ID"),
+                controller: emailController,
+                enabled: true,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+              child: Text(
+                'Password',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
+              child: TextField(
+                decoration: const InputDecoration(hintText: "Enter password"),
+                controller: passwordController,
+                enabled: true,
+                obscureText: true,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 35.0),
+              child: Visibility(
+                child: Text(
+                  'Incorrect email or password provided',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.red,
                   ),
                 ),
-                Container(
-                  color: Color(0xffFFFFFF),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    'Email ID',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Flexible(
-                                child: TextField(
-                                  decoration: const InputDecoration(
-                                      hintText: "Enter email ID"),
-                                  controller: emailController,
-                                  enabled: true,
-                                ),
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    'Password',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Flexible(
-                                child: TextField(
-                                  decoration: const InputDecoration(
-                                      hintText: "Enter password"),
-                                  controller: passwordController,
-                                  enabled: true,
-                                  obscureText: true,
-                                ),
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 35.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Visibility(
-                                child: Text(
-                                  'Incorrect email or password provided',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                replacement: Text(
-                                  '',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                                visible: isInvalid,
-                              ),
-                            ],
-                          )),
-                      Center(
-                          heightFactor: 2,
-                          child: OutlineButton(
-                            onPressed: onLoginPress,
-                            child: Text('LOGIN'),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0)),
-                          )),
-                    ],
+                replacement: Text(
+                  '',
+                  style: TextStyle(
+                    fontSize: 16.0,
                   ),
                 ),
-              ],
+                visible: isInvalid,
+              ),
+            ),
+            Center(
+              heightFactor: 2,
+              child: OutlineButton(
+                onPressed: onLoginPress,
+                child: Text('LOGIN'),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
+              ),
             ),
           ],
         ),
@@ -227,8 +156,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    // Clean up the controller when the Widget is disposed
-    myFocusNode.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
