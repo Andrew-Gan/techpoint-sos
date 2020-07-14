@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'dart:developer';
-
 abstract class SQLiteInfo {
   final String tableName = '';
   Map<String, dynamic> toMap();
