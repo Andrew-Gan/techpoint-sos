@@ -1,8 +1,6 @@
 import 'dart:async';
-import '../Constant/Constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../CreateDB.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -22,7 +20,7 @@ class SplashScreenState extends State<SplashScreen>
   }
 
   void navigationPage() {
-    Navigator.of(context).pushReplacementNamed(PROFILE);
+    Navigator.of(context).pushReplacementNamed('/ProfilePage');
   }
 
   @override

@@ -1,4 +1,3 @@
-import 'Constant/Constant.dart';
 import 'Screens/SplashScreen.dart';
 import 'Screens/LoginPage.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,7 @@ main() {
           primaryColorDark: Colors.blue),
       home: SplashScreen(),
       routes: <String, WidgetBuilder>{
-        PROFILE: (BuildContext context) => LoginPage(),
+        '/ProfilePage': (BuildContext context) => LoginPage(),
       },
     )
   );
