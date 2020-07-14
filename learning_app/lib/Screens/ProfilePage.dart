@@ -7,10 +7,10 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class StudentProfilePage extends StatelessWidget {
+class ProfilePage extends StatelessWidget {
   final AccountInfo userinfo;
 
-  StudentProfilePage(this.userinfo);
+  ProfilePage(this.userinfo);
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,15 @@ class StudentProfilePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         title: Text('Profile'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.star),
+            onPressed: null,
+          ),
+        ],
       ),
       body: Container(
+        width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height - 80,
         color: Colors.white,
         child: Column(
@@ -159,10 +166,12 @@ class StudentProfilePage extends StatelessWidget {
       onTap: () async {
         var assignQTitles = await _queryAssignmentTitles(courseID);
         int score = await _queryCourseScore(courseID, assignQTitles);
+        var peerReviews = await _queryPeerReviewInfo();
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) {
             if(userinfo.privilege == AccountPrivilege.student.index)
-              return StudentCoursePage(userinfo.email, courseID, assignQTitles, score);
+              return StudentCoursePage(userinfo.email, courseID, assignQTitles,
+                score, peerReviews);
               
             else if(userinfo.privilege == AccountPrivilege.teacher.index)
               return TeacherCoursePage(userinfo.email, courseID, assignQTitles);
@@ -218,5 +227,21 @@ class StudentProfilePage extends StatelessWidget {
 
     dbRef.close();
     return sum;
+  }
+
+  Future<List<String>> _queryPeerReviewInfo() async {
+    Future<Database> db = openDatabase(
+      join(await getDatabasesPath(), 'learningApp_database.db')
+    );
+    Database dbRef = await db;
+
+    var res = await dbRef.query(
+      'peerReviews',
+      where: 'reviewerEmail = ?',
+      whereArgs: [userinfo.email],
+    );
+
+    List<String> ret = List.generate(res.length, (index) => res[index]['assignTitle']);
+    return ret.toSet().toList();
   }
 }

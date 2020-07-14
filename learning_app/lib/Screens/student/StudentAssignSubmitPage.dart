@@ -37,6 +37,7 @@ class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
         title: Text('Assignment'),
       ),
       body: Container(
+        width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height - 80,
         color: Colors.white,
         child: Column(

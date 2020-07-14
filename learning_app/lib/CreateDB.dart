@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'dart:developer';
+
 abstract class SQLiteInfo {
   final String tableName = '';
   Map<String, dynamic> toMap();
@@ -82,9 +84,10 @@ class PeerReviewInfo implements SQLiteInfo {
   final String tableName = 'peerReviews';
   final String courseID, assignTitle, content, reviewerEmail, reviewedEmail,
     instrEmail;
+  final int dueDate;
 
   PeerReviewInfo({this.courseID, this.assignTitle, this.content,
-    this.reviewerEmail, this.reviewedEmail, this.instrEmail,});
+    this.reviewerEmail, this.reviewedEmail, this.instrEmail, this.dueDate,});
   
   Map<String, dynamic> toMap() {
     return {
@@ -94,6 +97,7 @@ class PeerReviewInfo implements SQLiteInfo {
       'reviewerEmail': reviewerEmail,
       'reviewedEmail': reviewedEmail,
       'instrEmail': instrEmail,
+      'dueDate': dueDate,
     };
   }
 }
@@ -102,33 +106,40 @@ void createDB() async {
   final Future<Database> db = openDatabase(
     join(await getDatabasesPath(), 'learningApp_database.db'),
 
-    onCreate: (db, version) async {
-      await db.execute(
+    // all time entries are stored as milliseconds since unix epoch time
+
+    onCreate: (db, version) {
+      db.execute(
         'CREATE TABLE accounts(name TEXT, email TEXT UNIQUE, password TEXT,'
-        'major TEXT, year TEXT, college TEXT, regCourse TEXT, privilege INTEGER)',
+        'major TEXT, year TEXT, college TEXT, regCourse TEXT, privilege INTEGER)'
       );
-      await db.execute(
+      db.execute(
         'CREATE TABLE assignmentQuestions(assignTitle TEXT UNIQUE, courseID TEXT'
         'UNIQUE, content TEXT, dueDate INTEGER, instrEmail TEXT,'
         'maxScore INTEGER)',
       );
-      await db.execute(
+      db.execute(
         'CREATE TABLE assignmentSubmissions(assignTitle TEXT, courseID TEXT,'
         'content TEXT, submitDate INTEGER, studentEmail TEXT, recScore INTEGER,'
-        'remarks TEXT, UNIQUE(assignTitle, courseID, studentEmail))',
+        'remarks TEXT, UNIQUE(assignTitle, courseID, studentEmail))'
       );
-      await db.execute(
+      db.execute(
         'CREATE TABLE peerReviews(courseID TEXT, assignTitle TEXT, content TEXT,'
-        'reviewerEmail TEXT, reviewedEmail TEXT, instrEmail TEXT)',
+        'reviewerEmail TEXT, reviewedEmail TEXT, instrEmail TEXT, dueDate INTEGER,'
+        'UNIQUE(courseID, assignTitle, reviewerEmail, reviewedEmail))'
       );
     },
-    version: 1
+    onOpen: (db) => insertTestInfo(db),
+    version: 1,
   );
 
   final Database dbRef = await db;
+  dbRef.close();
+}
 
+void insertTestInfo(Database dbRef) async {
   // user info for testing
-  await dbRef.insert(
+  dbRef.insert(
     'accounts',
     AccountInfo(
       name: 'Student 00',
@@ -143,7 +154,7 @@ void createDB() async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
-  await dbRef.insert(
+  dbRef.insert(
     'accounts',
     AccountInfo(
       name: 'Student 01',
@@ -158,7 +169,7 @@ void createDB() async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
-  await dbRef.insert(
+  dbRef.insert(
     'accounts',
     AccountInfo(
       name: 'Student 02',
@@ -173,7 +184,7 @@ void createDB() async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
-  await dbRef.insert(
+  dbRef.insert(
     'accounts',
     AccountInfo(
       name: 'Some teacher',
@@ -187,6 +198,4 @@ void createDB() async {
     ).toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
-
-  dbRef.close();
 }

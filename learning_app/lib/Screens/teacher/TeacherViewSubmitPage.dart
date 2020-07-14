@@ -42,6 +42,7 @@ class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
         title: Text('Student Submission'),
       ),
       body: Container(
+        width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height - 80,
         color: Colors.white,
         child: Column(

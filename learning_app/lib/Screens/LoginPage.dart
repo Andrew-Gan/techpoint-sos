@@ -20,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    createDB();
     void onLoginPress() async {
       final Future<Database> db = openDatabase(
         join(await getDatabasesPath(), 'learningApp_database.db'),
@@ -54,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() => isInvalid = false);
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) =>
-            StudentProfilePage(queryRes.first),
+            ProfilePage(queryRes.first),
           )
         );
       }
@@ -67,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Container(
         color: Colors.white,
+        width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height - 80,
         child: ListView(
           children: <Widget>[

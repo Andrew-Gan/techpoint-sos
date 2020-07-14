@@ -35,6 +35,7 @@ class _TeacherAssignCreatePageState extends State<TeacherAssignCreatePage> {
         title: Text('Add assignment'),
       ),
       body: Container(
+        width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height - 80,
         color: Colors.white,
         child: Column(

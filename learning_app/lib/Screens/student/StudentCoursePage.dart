@@ -8,11 +8,11 @@ import 'StudentAssignReviewPage.dart';
 import 'package:flutter/material.dart';
 
 class StudentCoursePage extends StatelessWidget {
-  final String courseID;
-  final String email;
-  final List<String> assignQTitles;
+  final String courseID, email;
+  final List<String> assignQTitles, peerReviews;
   final int score;
-  StudentCoursePage(this.email, this.courseID, this.assignQTitles, this.score);
+  StudentCoursePage(this.email, this.courseID, this.assignQTitles, this.score,
+    this.peerReviews);
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +22,7 @@ class StudentCoursePage extends StatelessWidget {
         title: Text('Course'),
       ),
       body: Container(
+        width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height - 80,
         color: Colors.white,
         child: Column(
@@ -72,7 +73,7 @@ class StudentCoursePage extends StatelessWidget {
                   final index = i ~/ 2;
                   if (index >= assignQTitles.length) return null;
                   if (i.isOdd) return Divider();
-                  return _buildRow(context, index);
+                  return _buildAssignRow(context, index);
                 }
               ),
             ),
@@ -93,9 +94,9 @@ class StudentCoursePage extends StatelessWidget {
                 padding: EdgeInsets.all(0.0),
                 itemBuilder: (context, i) {
                   final index = i ~/ 2;
-                  if (index >= assignQTitles.length) return null;
+                  if (index >= peerReviews.length) return null;
                   if (i.isOdd) return Divider();
-                  return _buildRow(context, index);
+                  return _buildPeerReviewRow(context, index);
                 }
               ),
             ),
@@ -105,7 +106,7 @@ class StudentCoursePage extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(BuildContext context, int i) {
+  Widget _buildAssignRow(BuildContext context, int i) {
     return ListTile(
       title: Text(
         assignQTitles[i],
@@ -126,6 +127,25 @@ class StudentCoursePage extends StatelessWidget {
             MaterialPageRoute(builder: (context) =>
               StudentAssignReviewPage(assignQInfo, assignSInfo)),
           );
+        }
+      },
+    );
+  }
+
+  Widget _buildPeerReviewRow(BuildContext context, int i) {
+    return ListTile(
+      title: Text(
+        peerReviews[i],
+      ),
+      trailing: Icon(Icons.chevron_right),
+      onTap: () async {
+        int now = DateTime.now().millisecondsSinceEpoch;
+        var peerReviewInfo = await _queryPeerReviewInfo(peerReviews[i]);
+        if(peerReviewInfo.first.dueDate > now) {
+          // call Abdullah's peer review submissions page
+        }
+        else {
+          // call peer review outcome page
         }
       },
     );
@@ -182,6 +202,31 @@ class StudentCoursePage extends StatelessWidget {
       studentEmail: res.first['studentEmail'],
       recScore: res.first['recScore'],
       remarks: res.first['remarks'],
+    );
+  }
+
+  Future<List<PeerReviewInfo>> _queryPeerReviewInfo(String assignTitle) async {
+    Future<Database> db = openDatabase(
+      join(await getDatabasesPath(), 'learningApp_database.db')
+    );
+    Database dbRef = await db;
+
+    var res = await dbRef.query(
+      'peerReviews',
+      where: 'courseID = ? AND assignTitle = ? AND reviewerEmail = ?',
+      whereArgs: [courseID, assignTitle, email],
+    );
+
+    return List.generate(res.length, (index) => 
+      PeerReviewInfo(
+        courseID: res[index]['courseID'],
+        assignTitle: res[index]['assignTitle'],
+        content: res[index]['content'],
+        reviewerEmail: res[index]['reviewerEmail'],
+        reviewedEmail: res[index]['reviewedEmail'],
+        instrEmail: res[index]['instrEmail'],
+        dueDate: res[index]['dueDate'],
+      )
     );
   }
 }

@@ -40,6 +40,7 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
         title: Text('Add peer review component'),
       ),
       body: Container(
+        width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height - 80,
         color: Colors.white,
         child: Column(
@@ -239,8 +240,6 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
   }
 
   void onCreatePress() async {
-    isCreated = true;
-
     final Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'));
 
@@ -254,7 +253,7 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
 
     for(int i = 0; i < res.length; i++) {
       for(int n = 1; n < chosenNum + 1; n++) {
-        dbRef.insert(
+        await dbRef.insert(
           'peerReviews',
           PeerReviewInfo(
             courseID: chosenCourseID,
@@ -263,13 +262,14 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
             reviewerEmail: res[i]['studentEmail'],
             reviewedEmail: res[(i + n) % res.length]['studentEmail'],
             instrEmail: res[i]['instrEmail'],
+            dueDate: dueDate.millisecondsSinceEpoch,
           ).toMap(),
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
       }
     }
 
-    dbRef.close();
+    await dbRef.close();
     setState(() => isCreated = true);
   }
 
