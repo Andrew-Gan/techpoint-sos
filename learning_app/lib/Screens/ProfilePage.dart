@@ -15,6 +15,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         title: Text('Profile'),
@@ -25,133 +26,137 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height - 80,
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 20.0, left: 50.0),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    width: 100.0,
-                    height: 100.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: ExactAssetImage('assets/images/as.png'),
+      body: ListView(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height - 80,
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 50.0),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        width: 100.0,
+                        height: 100.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: ExactAssetImage('assets/images/as.png'),
+                          ),
+                        )
                       ),
-                    )
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(left: 45.0, right: 25.0,),
+                              child: Text(
+                                'Name',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 45.0,
+                                right: 25.0,
+                                top: 5.0,
+                              ),
+                              child: Text(
+                                userinfo.name,
+                                style: TextStyle(fontSize: 16.0,),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 45.0,
+                                right: 25.0,
+                                top: 15.0
+                              ),
+                              child: Text(
+                                'Email ID',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              )
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 45.0,
+                                right: 25.0,
+                                top: 5.0,
+                              ),
+                              child: Text(
+                                userinfo.email,
+                                style: TextStyle(fontSize: 16.0,),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 45.0,
+                                right: 25.0,
+                                top: 15.0,
+                              ),
+                              child: Text(
+                                'College',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 45.0,
+                                right: 25.0,
+                                top: 5.0,
+                              ),
+                              child: Text(
+                                userinfo.college,
+                                style: TextStyle(fontSize: 16.0,),
+                              ),
+                            ),
+                          ],
+                        ),
+                    ],
                   ),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 45.0, right: 25.0,),
-                          child: Text(
-                            'Name',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: 45.0,
-                            right: 25.0,
-                            top: 5.0,
-                          ),
-                          child: Text(
-                            userinfo.name,
-                            style: TextStyle(fontSize: 16.0,),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: 45.0,
-                            right: 25.0,
-                            top: 15.0
-                          ),
-                          child: Text(
-                            'Email ID',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold
-                            ),
-                          )
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: 45.0,
-                            right: 25.0,
-                            top: 5.0,
-                          ),
-                          child: Text(
-                            userinfo.email,
-                            style: TextStyle(fontSize: 16.0,),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: 45.0,
-                            right: 25.0,
-                            top: 15.0,
-                          ),
-                          child: Text(
-                            'College',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: 45.0,
-                            right: 25.0,
-                            top: 5.0,
-                          ),
-                          child: Text(
-                            userinfo.college,
-                            style: TextStyle(fontSize: 16.0,),
-                          ),
-                        ),
-                      ],
-                    ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.0, top: 50.0),
-              child: Text(
-                'Registered courses',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
                 ),
-              ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20.0, top: 50.0),
+                  child: Text(
+                    'Registered courses',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 20.0, top: 20.0),
+                  height: 200.0,
+                  child: ListView.builder(
+                    padding: EdgeInsets.all(0.0),
+                    itemBuilder: (context, i) {
+                      final index = i ~/ 2;
+                      if (index >= userinfo.regCourse.split(',').length)
+                        return null;
+                      if (i.isOdd) return Divider();
+                      return _buildRow(context, index);
+                    }
+                  ),
+                ),
+              ],
             ),
-            Container(
-              padding: EdgeInsets.only(left: 20.0, top: 20.0),
-              height: 200.0,
-              child: ListView.builder(
-                padding: EdgeInsets.all(0.0),
-                itemBuilder: (context, i) {
-                  final index = i ~/ 2;
-                  if (index >= userinfo.regCourse.split(',').length)
-                    return null;
-                  if (i.isOdd) return Divider();
-                  return _buildRow(context, index);
-                }
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        ]
+      )
     );
   }
 

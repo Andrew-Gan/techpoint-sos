@@ -17,91 +17,96 @@ class StudentCoursePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         title: Text('Course'),
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height - 80,
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 20.0, left: 50.0),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    color: Colors.white,
-                    child: Text(
-                      courseID,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold
+      body: ListView(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height - 80,
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 50.0),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        color: Colors.white,
+                        child: Text(
+                          courseID,
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
                       ),
+                      Container(
+                        padding: EdgeInsets.only(top: 20.0, left: 80.0),
+                        width: 250.0,
+                        height: 80.0,
+                        child: Text(
+                          score.toString() + ' / 1000',
+                          style: TextStyle(fontSize: 30.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 25.0, top: 25.0),
+                  child: Text(
+                    'Assignments',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(top: 20.0, left: 80.0),
-                    width: 250.0,
-                    height: 80.0,
-                    child: Text(
-                      score.toString() + ' / 1000',
-                      style: TextStyle(fontSize: 30.0),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0,),
+                  height: 150.0,
+                  child: ListView.builder(
+                    padding: EdgeInsets.all(0.0),
+                    itemBuilder: (context, i) {
+                      final index = i ~/ 2;
+                      if (index >= assignQTitles.length) return null;
+                      if (i.isOdd) return Divider();
+                      return _buildAssignRow(context, index);
+                    }
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 25.0, top: 50.0),
+                  child: Text(
+                    'Peer Reviews to do',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 25.0, top: 25.0),
-              child: Text(
-                'Assignments',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
                 ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0,),
-              height: 150.0,
-              child: ListView.builder(
-                padding: EdgeInsets.all(0.0),
-                itemBuilder: (context, i) {
-                  final index = i ~/ 2;
-                  if (index >= assignQTitles.length) return null;
-                  if (i.isOdd) return Divider();
-                  return _buildAssignRow(context, index);
-                }
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 25.0, top: 50.0),
-              child: Text(
-                'Peer Reviews to do',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
+                Container(
+                  padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0,),
+                  height: 150.0,
+                  child: ListView.builder(
+                    padding: EdgeInsets.all(0.0),
+                    itemBuilder: (context, i) {
+                      final index = i ~/ 2;
+                      if (index >= peerReviews.length) return null;
+                      if (i.isOdd) return Divider();
+                      return _buildPeerReviewRow(context, index);
+                    }
+                  ),
                 ),
-              ),
+              ],
             ),
-            Container(
-              padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0,),
-              height: 150.0,
-              child: ListView.builder(
-                padding: EdgeInsets.all(0.0),
-                itemBuilder: (context, i) {
-                  final index = i ~/ 2;
-                  if (index >= peerReviews.length) return null;
-                  if (i.isOdd) return Divider();
-                  return _buildPeerReviewRow(context, index);
-                }
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

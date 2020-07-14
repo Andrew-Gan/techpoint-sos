@@ -18,81 +18,86 @@ class TeacherCoursePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         title: Text('Course'),
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height - 80,
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 25.0, left: 25.0),
-              child: Container(
-                alignment: Alignment.centerLeft,
-                color: Colors.white,
-                child: Text(
-                  courseID,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 25.0, top: 30.0),
-              child: Text(
-                'Assignments',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 25.0, top: 25.0, right: 10.0),
-              height: 380.0,
-              child: ListView.builder(
-                padding: EdgeInsets.all(0.0),
-                itemBuilder: (context, i) {
-                  final index = i ~/ 2;
-                  if (index >= assignQTitles.length) return null;
-                  if (i.isOdd) return Divider();
-                  return _buildRow(context, index);
-                }
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 25.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  OutlineButton(
-                    child: Text('Add assignment'),
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) =>
-                        TeacherAssignCreatePage(courseID, email)
-                      )
+      body: ListView(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height - 80,
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 25.0, left: 25.0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    color: Colors.white,
+                    child: Text(
+                      courseID,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold
+                      ),
                     ),
                   ),
-                  OutlineButton(
-                    child: Text('Add peer review'),
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) =>
-                        TeacherPeerCreatePage(courseID, email, assignQTitles)
-                      )
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 25.0, top: 30.0),
+                  child: Text(
+                    'Assignments',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 25.0, top: 25.0, right: 10.0),
+                  height: 380.0,
+                  child: ListView.builder(
+                    padding: EdgeInsets.all(0.0),
+                    itemBuilder: (context, i) {
+                      final index = i ~/ 2;
+                      if (index >= assignQTitles.length) return null;
+                      if (i.isOdd) return Divider();
+                      return _buildRow(context, index);
+                    }
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      OutlineButton(
+                        child: Text('Add assignment'),
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) =>
+                            TeacherAssignCreatePage(courseID, email)
+                          )
+                        ),
+                      ),
+                      OutlineButton(
+                        child: Text('Add peer review'),
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) =>
+                            TeacherPeerCreatePage(courseID, email, assignQTitles)
+                          )
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      )
+          )
+        ],
+      ),
     );
   }
 
