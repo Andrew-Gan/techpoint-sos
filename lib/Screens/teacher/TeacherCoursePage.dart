@@ -155,14 +155,7 @@ class TeacherCoursePage extends StatelessWidget {
     dbRef.close();
 
     var queryRes = List.generate(res.length, (i) {
-      return AssignmentQuestionInfo(
-        assignTitle: res[i]['assignTitle'],
-        courseID: res[i]['courseID'],
-        content: res[i]['content'],
-        dueDate: res[i]['dueDate'],
-        instrEmail: res[i]['instrEmail'],
-        maxScore: res[i]['maxScore'],
-      );
+      return AssignmentQuestionInfo.fromMap(res[i]);
     });
 
     return queryRes.first;
@@ -183,17 +176,8 @@ class TeacherCoursePage extends StatelessWidget {
     );
     dbRef.close();
 
-    List<AssignmentSubmissionInfo> queryRes = List.generate(res.length, (i) {
-      return AssignmentSubmissionInfo(
-        assignTitle: res[i]['assignTitle'],
-        courseID: res[i]['courseID'],
-        content: res[i]['content'],
-        submitDate: res[i]['submitDate'],
-        studentEmail: res[i]['studentEmail'],
-        recScore: res[i]['recScore'],
-        remarks: res[i]['remarks'],
-      );
-    });
+    List<AssignmentSubmissionInfo> queryRes = List.generate(res.length, (i) => 
+      AssignmentSubmissionInfo.fromMap(res[i]));
 
     return queryRes;
   }

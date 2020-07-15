@@ -4,6 +4,8 @@ import 'package:sqflite/sqflite.dart';
 
 abstract class SQLiteInfo {
   static String tableName = '';
+  SQLiteInfo();
+  SQLiteInfo.fromMap(Map<String, dynamic> map);
   Map<String, dynamic> toMap();
 }
 
@@ -23,6 +25,19 @@ class AccountInfo implements SQLiteInfo {
   AccountInfo({this.name, this.email, this.major,this.year, this.college,
     this.password, this.regCourse, this.privilege, this.receivedScore, 
     this.deductedScore});
+  
+  AccountInfo.fromMap(Map<String, dynamic> map) {
+    this.name = map['name'];
+    this.email = map['email'];
+    this.major = map['major'];
+    this.year = map['year'];
+    this.college = map['college'];
+    this.password = map['password'];
+    this.regCourse = map['regCourse'];
+    this.privilege = map['privilege'];
+    this.receivedScore = map['receivedScore'];
+    this.deductedScore = map['deductedScore'];
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -48,6 +63,15 @@ class AssignmentQuestionInfo implements SQLiteInfo {
   AssignmentQuestionInfo({this.assignTitle, this.courseID, this.content,
     this.dueDate, this.instrEmail, this.maxScore,});
 
+  AssignmentQuestionInfo.fromMap(Map<String, dynamic> map) {
+    this.assignTitle = map['assignTitle'];
+    this.courseID = map['courseID'];
+    this.content = map['content'];
+    this.dueDate = map['dueDate'];
+    this.instrEmail = map['instrEmail'];
+    this.maxScore = map['maxScore'];
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'assignTitle': assignTitle,
@@ -67,6 +91,16 @@ class AssignmentSubmissionInfo implements SQLiteInfo {
 
   AssignmentSubmissionInfo({this.assignTitle, this.courseID, this.content,
     this.submitDate, this.studentEmail, this.recScore, this.remarks,});
+
+  AssignmentSubmissionInfo.fromMap(Map<String, dynamic> map) {
+    this.assignTitle = map['assignTitle'];
+    this.courseID = map['courseID'];
+    this.content = map['content'];
+    this.submitDate = map['submitDate'];
+    this.studentEmail = map['studentEmail'];
+    this.recScore = map['recScore'];
+    this.remarks = map['remarks'];
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -88,6 +122,16 @@ class PeerReviewInfo implements SQLiteInfo {
 
   PeerReviewInfo({this.courseID, this.assignTitle, this.content,
     this.reviewerEmail, this.reviewedEmail, this.instrEmail, this.dueDate,});
+  
+  PeerReviewInfo.fromMap(Map<String, dynamic> map) {
+    this.assignTitle = map['assignTitle'];
+    this.courseID = map['courseID'];
+    this.content = map['content'];
+    this.dueDate = map['dueDate'];
+    this.reviewerEmail = map['reviewerEmail'];
+    this.reviewedEmail = map['reviewedEmail'];
+    this.instrEmail = map['instrEmail'];
+  }
   
   Map<String, dynamic> toMap() {
     return {

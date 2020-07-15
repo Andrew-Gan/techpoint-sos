@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // createDB();
+    createDB();
     void onLoginPress() async {
       final Future<Database> db = openDatabase(
         join(await getDatabasesPath(), 'learningApp_database.db'),
@@ -33,19 +33,8 @@ class _LoginPageState extends State<LoginPage> {
         where: 'email = ? AND password = ?',
         whereArgs: [emailController.text, passwordController.text],
       );
-      List<AccountInfo> queryRes = List.generate(res.length, (i) {
-        return AccountInfo(
-          name: res[i]['name'],
-          email: res[i]['email'],
-          major: res[i]['major'],
-          year: res[i]['year'],
-          college: res[i]['college'],
-          regCourse: res[i]['regCourse'],
-          privilege: res[i]['privilege'],
-          receivedScore: res[i]['receivedScore'],
-          deductedScore: res[i]['deductedScore'],
-        );
-      });
+      List<AccountInfo> queryRes = List.generate(res.length, (i) => 
+        AccountInfo.fromMap(res[i]));
 
       dbRef.close();
       emailController.clear();

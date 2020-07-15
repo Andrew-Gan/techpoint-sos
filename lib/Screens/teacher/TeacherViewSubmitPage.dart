@@ -180,18 +180,7 @@ class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
       where: 'email = ?',
       whereArgs: [assignSInfo.studentEmail],
     );
-    AccountInfo studentInfo = AccountInfo(
-      name: res.first['name'],
-      email: res.first['email'],
-      major: res.first['major'],
-      year: res.first['year'],
-      college: res.first['college'],
-      password: res.first['password'],
-      regCourse: res.first['regCourse'],
-      privilege: res.first['privilege'],
-      receivedScore: res.first['receivedScore'],
-      deductedScore: res.first['deductedScore'],
-    );
+    AccountInfo studentInfo = AccountInfo.fromMap(res.first);
 
     studentInfo.receivedScore += (newScore - assignSInfo.recScore);
 

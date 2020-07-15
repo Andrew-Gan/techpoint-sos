@@ -7,20 +7,22 @@ import '../../CreateDB.dart';
 class StudentRewardPage extends StatefulWidget {
   final int points;
   final List<RewardInfo> rewards;
+  final List<int> redeems;
   final String email;
-  StudentRewardPage(this.email, this.points, this.rewards);
+  StudentRewardPage(this.email, this.points, this.rewards, this.redeems);
 
   @override
   State<StudentRewardPage> createState() =>
-    _StudentRewardPageState(email, points, rewards);
+    _StudentRewardPageState(email, points, rewards, redeems);
 }
 
 class _StudentRewardPageState extends State<StudentRewardPage> {
   int points;
   final List<RewardInfo> rewards;
+  final List<int> redeems;
   final String email;
 
-  _StudentRewardPageState(this.email, this.points, this.rewards);
+  _StudentRewardPageState(this.email, this.points, this.rewards, this.redeems);
 
   @override
   void initState() => super.initState();
@@ -64,24 +66,24 @@ class _StudentRewardPageState extends State<StudentRewardPage> {
   }
 
   Widget _buildRewardRow(BuildContext context, int i) {
-    bool isRedeemed = false;
     return ListTile(
       title: Text(
         rewards[i].title,
       ),
       trailing: Icon(
         Icons.redeem,
-        color: isRedeemed ? Colors.red : null,
+        color: redeems.contains(rewards[i].rewardID) ? Colors.red : null,
       ),
       onTap: () async {
-        isRedeemed = true;
-        onRedeemPress(rewards[i].rewardID);
+        onRedeemPress(rewards[i]);
         setState(() => points -= rewards[i].cost);
       }
     );
   }
 
-  void onRedeemPress(int rewardID) async {
+  void onRedeemPress(RewardInfo reward) async {
+    if(redeems.contains(reward.rewardID)) return;
+
     final Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'));
 
@@ -90,13 +92,29 @@ class _StudentRewardPageState extends State<StudentRewardPage> {
     await dbRef.insert(
       RedeemedRewardInfo.tableName,
       RedeemedRewardInfo(
-        rewardID: rewardID,
+        rewardID: reward.rewardID,
         studentEmail: email,
         redeemDate: DateTime.now().millisecondsSinceEpoch,
       ).toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
+    redeems.add(reward.rewardID);
+
+    var res = await dbRef.query(
+      AccountInfo.tableName,
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+
+    AccountInfo userInfo = AccountInfo.fromMap(res.first);
+    userInfo.deductedScore += reward.cost;
+
+    await dbRef.update(
+      AccountInfo.tableName,
+      userInfo.toMap(),
+    );
+    
     dbRef.close();
   }
 

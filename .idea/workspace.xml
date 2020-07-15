@@ -5,18 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0275312c-f543-4969-8faf-f1183ecc27d0" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/CreateDB.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/CreateDB.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/LoginPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/LoginPage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/ProfilePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ProfilePage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/student/StudentAssignSubmitPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/student/StudentAssignSubmitPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/student/StudentCoursePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/student/StudentCoursePage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/teacher/TeacherAssignCreatePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/teacher/TeacherAssignCreatePage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/teacher/TeacherAssignUpdatePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/teacher/TeacherAssignUpdatePage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/teacher/TeacherCoursePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/teacher/TeacherCoursePage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/teacher/TeacherPeerCreatePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/teacher/TeacherPeerCreatePage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/teacher/TeacherViewSubmitPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/teacher/TeacherViewSubmitPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/student/StudentRewardPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/student/StudentRewardPage.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,9 +105,9 @@
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="485" y="188" width="1022" height="737" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1594734570183" />
-    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1594751400247">
+    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1594777457694">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1594751400247" />
+    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1594777457694" />
   </component>
 </project>

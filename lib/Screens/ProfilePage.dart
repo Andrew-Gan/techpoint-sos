@@ -261,6 +261,12 @@ class ProfilePage extends StatelessWidget {
       RewardInfo.tableName,
     );
 
+    var redeem = await dbRef.query(
+      RedeemedRewardInfo.tableName,
+      where: 'studentEmail = ?',
+      whereArgs: [userinfo.email],
+    );
+
     var rewardList = List.generate(res.length, (i) => 
       RewardInfo(
         rewardID: res[i]['rewardID'],
@@ -272,8 +278,15 @@ class ProfilePage extends StatelessWidget {
       ),
     );
 
+    List<int> redeemList = List.generate(redeem.length, (i) => redeem[i]['rewardID']);
+
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => StudentRewardPage(userinfo.email, userinfo.receivedScore - userinfo.deductedScore, rewardList),)
+      MaterialPageRoute(builder: (context) => StudentRewardPage(
+        userinfo.email, 
+        userinfo.receivedScore - userinfo.deductedScore,
+        rewardList,
+        redeemList,
+      ),)
     );
   }
 }

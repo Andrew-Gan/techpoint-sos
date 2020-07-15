@@ -170,14 +170,7 @@ class StudentCoursePage extends StatelessWidget {
 
     dbRef.close();
 
-    return AssignmentQuestionInfo(
-      assignTitle: res.first['assignTitle'],
-      courseID: res.first['courseID'],
-      content: res.first['content'],
-      dueDate: res.first['dueDate'],
-      instrEmail: res.first['instrEmail'],
-      maxScore: res.first['maxScore'],
-    );
+    return AssignmentQuestionInfo.fromMap(res.first);
   }
 
   Future<AssignmentSubmissionInfo> _queryAssignSubmits(String assignTitle) async {
@@ -199,15 +192,7 @@ class StudentCoursePage extends StatelessWidget {
       return null;
     }
 
-    return AssignmentSubmissionInfo(
-      assignTitle: res.first['assignTitle'],
-      courseID: res.first['courseID'],
-      content: res.first['content'],
-      submitDate: res.first['submitDate'],
-      studentEmail: res.first['studentEmail'],
-      recScore: res.first['recScore'],
-      remarks: res.first['remarks'],
-    );
+    return AssignmentSubmissionInfo.fromMap(res.first);
   }
 
   Future<List<PeerReviewInfo>> _queryPeerReviewInfo(String assignTitle) async {
