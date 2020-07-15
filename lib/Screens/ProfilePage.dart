@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import '../CreateDB.dart';
 import 'teacher/TeacherCoursePage.dart';
 import 'student/StudentCoursePage.dart';
-import '../CreateDB.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'student/StudentRewardPage.dart';
 
 class ProfilePage extends StatelessWidget {
   final AccountInfo userinfo;
@@ -22,7 +23,7 @@ class ProfilePage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.star),
-            onPressed: null,
+            onPressed: () => _onRewardPress(context),
           ),
         ],
       ),
@@ -36,95 +37,95 @@ class ProfilePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 20.0, left: 50.0),
+                  padding: EdgeInsets.only(top: 20.0),
                   child: Row(
                     children: <Widget>[
-                      Container(
-                        width: 100.0,
-                        height: 100.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: ExactAssetImage('assets/images/as.png'),
-                          ),
-                        )
-                      ),
                       Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(left: 45.0, right: 25.0,),
-                              child: Text(
-                                'Name',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold
-                                ),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(left: 25.0, right: 25.0,),
+                            child: Text(
+                              'Name',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: 45.0,
-                                right: 25.0,
-                                top: 5.0,
-                              ),
-                              child: Text(
-                                userinfo.name,
-                                style: TextStyle(fontSize: 16.0,),
-                              ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 25.0,
+                              right: 25.0,
+                              top: 5.0,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: 45.0,
-                                right: 25.0,
-                                top: 15.0
-                              ),
-                              child: Text(
-                                'Email ID',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold
-                                ),
-                              )
+                            child: Text(
+                              userinfo.name,
+                              style: TextStyle(fontSize: 16.0,),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: 45.0,
-                                right: 25.0,
-                                top: 5.0,
-                              ),
-                              child: Text(
-                                userinfo.email,
-                                style: TextStyle(fontSize: 16.0,),
-                              ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 25.0,
+                              right: 25.0,
+                              top: 15.0
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: 45.0,
-                                right: 25.0,
-                                top: 15.0,
+                            child: Text(
+                              'Email ID',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold
                               ),
-                              child: Text(
-                                'College',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
+                            )
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 25.0,
+                              right: 25.0,
+                              top: 5.0,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: 45.0,
-                                right: 25.0,
-                                top: 5.0,
-                              ),
-                              child: Text(
-                                userinfo.college,
-                                style: TextStyle(fontSize: 16.0,),
-                              ),
+                            child: Text(
+                              userinfo.email,
+                              style: TextStyle(fontSize: 16.0,),
                             ),
-                          ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 25.0,
+                              right: 25.0,
+                              top: 15.0,
+                            ),
+                            child: Text(
+                              'College',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 25.0,
+                              right: 25.0,
+                              top: 5.0,
+                            ),
+                            child: Text(
+                              userinfo.college,
+                              style: TextStyle(fontSize: 16.0,),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 65.0),
+                        child: Text(
+                          (userinfo.receivedScore - userinfo.deductedScore).toString(),
+                          style: TextStyle(
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold
+                          ),
                         ),
+                      ),
                     ],
                   ),
                 ),
@@ -195,7 +196,7 @@ class ProfilePage extends StatelessWidget {
     Database dbRef = await db;
 
     final res = await dbRef.query(
-      'assignmentQuestions',
+      AssignmentQuestionInfo.tableName,
       distinct: true,
       where: 'courseID = ?',
       whereArgs: [courseID],
@@ -221,7 +222,7 @@ class ProfilePage extends StatelessWidget {
 
     for(int i = 0; i < assignQTitles.length; i++) {
       final res = await dbRef.query(
-        'assignmentSubmissions',
+        AssignmentSubmissionInfo.tableName,
         distinct: true,
         where: 'studentEmail = ? AND courseID = ? AND assignTitle = ?',
         whereArgs: [userinfo.email, courseID, assignQTitles[i]],
@@ -241,12 +242,38 @@ class ProfilePage extends StatelessWidget {
     Database dbRef = await db;
 
     var res = await dbRef.query(
-      'peerReviews',
+      PeerReviewInfo.tableName,
       where: 'reviewerEmail = ?',
       whereArgs: [userinfo.email],
     );
 
     List<String> ret = List.generate(res.length, (index) => res[index]['assignTitle']);
     return ret.toSet().toList();
+  }
+
+  void _onRewardPress(BuildContext context) async {
+    Future<Database> db = openDatabase(
+      join(await getDatabasesPath(), 'learningApp_database.db')
+    );
+    Database dbRef = await db;
+
+    var res = await dbRef.query(
+      RewardInfo.tableName,
+    );
+
+    var rewardList = List.generate(res.length, (i) => 
+      RewardInfo(
+        rewardID: res[i]['rewardID'],
+        title: res[i]['title'],
+        desc: res[i]['desc'],
+        cost: res[i]['cost'],
+        hasLimit: res[i]['hasLimit'],
+        redeemLimit: res[i]['redeemLimit'],
+      ),
+    );
+
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => StudentRewardPage(userinfo.email, userinfo.receivedScore - userinfo.deductedScore, rewardList),)
+    );
   }
 }

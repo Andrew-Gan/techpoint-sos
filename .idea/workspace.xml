@@ -5,17 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0275312c-f543-4969-8faf-f1183ecc27d0" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/CourseDetailsPage.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/CoursePage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/CreateDB.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/CreateDB.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/LoginPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/LoginPage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/ProfilePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ProfilePage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/RegCoursePage.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/SplashScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/SplashScreen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/create_db.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/student/StudentAssignSubmitPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/student/StudentAssignSubmitPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/student/StudentCoursePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/student/StudentCoursePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/teacher/TeacherAssignCreatePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/teacher/TeacherAssignCreatePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/teacher/TeacherAssignUpdatePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/teacher/TeacherAssignUpdatePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/teacher/TeacherCoursePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/teacher/TeacherCoursePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/teacher/TeacherPeerCreatePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/teacher/TeacherPeerCreatePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/teacher/TeacherViewSubmitPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/teacher/TeacherViewSubmitPage.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,53 +35,13 @@
     </option>
   </component>
   <component name="ProjectId" id="1eBua8d3yJFfm4ce5idKzIuwtr7" />
-  <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="AndroidView">
-        <subPane>
-          <expand>
-            <path>
-              <item name="learningApp" type="1abcf292:AndroidViewProjectNode" />
-              <item name="learningApp" type="e9137016:NonAndroidModuleNode" />
-            </path>
-            <path>
-              <item name="learningApp" type="1abcf292:AndroidViewProjectNode" />
-              <item name="learningApp_android" type="e9137016:NonAndroidModuleNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="flutter_profileview_demo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="flutter_profileview_demo" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-        <option name="show-excluded-files" value="false" />
-      </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="learningApp" type="58d84e3e:PackageViewProjectNode" />
-              <item name="learningApp" type="616d4139:PackageViewModuleNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.project.structure.last.selected" value="SDK Location" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
@@ -147,13 +108,13 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="485" y="188" width="1022" height="737" key="SettingsEditor" timestamp="1594352374639">
+    <state x="485" y="188" width="1022" height="737" key="SettingsEditor" timestamp="1594734570183">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state x="485" y="188" width="1022" height="737" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1594352374639" />
-    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1594655105467">
+    <state x="485" y="188" width="1022" height="737" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1594734570183" />
+    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1594751400247">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1594655105467" />
+    <state x="172" y="127" width="1648" height="853" key="com.android.tools.idea.avdmanager.AvdListDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1594751400247" />
   </component>
 </project>

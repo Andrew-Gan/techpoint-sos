@@ -250,7 +250,7 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
     final Database dbRef = await db;
 
     var res = await dbRef.query(
-      'assignmentSubmissions',
+      AssignmentSubmissionInfo.tableName,
       where: 'assignTitle = ? AND courseID = ?',
       whereArgs: [chosenAssignTitle, chosenCourseID],
     );
@@ -258,7 +258,7 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
     for(int i = 0; i < res.length; i++) {
       for(int n = 1; n < chosenNum + 1; n++) {
         await dbRef.insert(
-          'peerReviews',
+          PeerReviewInfo.tableName,
           PeerReviewInfo(
             courseID: chosenCourseID,
             assignTitle: chosenAssignTitle,

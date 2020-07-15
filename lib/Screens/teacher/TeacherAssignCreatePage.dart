@@ -241,7 +241,7 @@ class _TeacherAssignCreatePageState extends State<TeacherAssignCreatePage> {
     final Database dbRef = await db;
 
     await dbRef.insert(
-      'assignmentQuestions',
+      AssignmentQuestionInfo.tableName,
       AssignmentQuestionInfo(
         assignTitle: titleController.text,
         courseID: courseID,

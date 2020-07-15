@@ -15,7 +15,6 @@ class StudentAssignSubmitPage extends StatefulWidget {
 }
 
 class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
-  final FocusNode myFocusNode = FocusNode();
   final String studentEmail;
   final AssignmentQuestionInfo assignQInfo;
   DateTime dueDate;
@@ -159,7 +158,7 @@ class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
 
     final Database dbRef = await db;
     await dbRef.insert(
-      'assignmentSubmissions',
+      AssignmentSubmissionInfo.tableName,
       AssignmentSubmissionInfo(
         assignTitle: assignQInfo.assignTitle,
         courseID: assignQInfo.courseID,
@@ -180,8 +179,6 @@ class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
 
   @override
   void dispose() {
-    // Clean up the controller when the Widget is disposed
-    myFocusNode.dispose();
     ansController.dispose();
     super.dispose();
   }

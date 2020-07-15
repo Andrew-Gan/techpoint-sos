@@ -4,6 +4,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
 
+import 'dart:developer';
+
 class TeacherViewSubmitPage extends StatefulWidget {
   final AssignmentQuestionInfo assignQInfo;
   final AssignmentSubmissionInfo assignSInfo;
@@ -15,7 +17,6 @@ class TeacherViewSubmitPage extends StatefulWidget {
 }
 
 class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
-  final FocusNode myFocusNode = FocusNode();
   final AssignmentQuestionInfo assignQInfo;
   final AssignmentSubmissionInfo assignSInfo;
   final remarksController = TextEditingController();
@@ -168,24 +169,48 @@ class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
   }
 
   void onUpdatePress() async {
-    isGraded = true;
-
     final Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'));
 
     final Database dbRef = await db;
+
+    // update student accumulated score
+    // account for difference between previous score and new score
+
+    var res = await dbRef.query(
+      AccountInfo.tableName,
+      where: 'email = ?',
+      whereArgs: [assignSInfo.studentEmail],
+    );
+    AccountInfo studentInfo = AccountInfo(
+      name: res.first['name'],
+      email: res.first['email'],
+      major: res.first['major'],
+      year: res.first['year'],
+      college: res.first['college'],
+      password: res.first['password'],
+      regCourse: res.first['regCourse'],
+      privilege: res.first['privilege'],
+      receivedScore: res.first['receivedScore'],
+      deductedScore: res.first['deductedScore'],
+    );
+
+    studentInfo.receivedScore += (newScore - assignSInfo.recScore);
+
+    dbRef.update(
+      AccountInfo.tableName,
+      studentInfo.toMap(),
+      where: 'email = ?',
+      whereArgs: [assignSInfo.studentEmail],
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+
+    assignSInfo.recScore = newScore;
+    assignSInfo.remarks = remarksController.text;
     
     await dbRef.update(
-      'assignmentSubmissions',
-      AssignmentSubmissionInfo(
-        assignTitle: assignSInfo.assignTitle,
-        courseID: assignSInfo.courseID,
-        content: assignSInfo.content,
-        submitDate: assignSInfo.submitDate,
-        studentEmail: assignSInfo.studentEmail,
-        recScore: newScore,
-        remarks: remarksController.text,
-      ).toMap(),
+      AssignmentSubmissionInfo.tableName,
+      assignSInfo.toMap(),
       where: 'assignTitle = ? AND courseID = ? AND studentEmail = ?',
       whereArgs: [assignSInfo.assignTitle, assignSInfo.courseID, assignSInfo.studentEmail],
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -198,8 +223,6 @@ class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
 
   @override
   void dispose() {
-    // Clean up the controller when the Widget is disposed
-    myFocusNode.dispose();
     remarksController.dispose();
     super.dispose();
   }

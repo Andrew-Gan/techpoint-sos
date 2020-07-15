@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    createDB();
+    // createDB();
     void onLoginPress() async {
       final Future<Database> db = openDatabase(
         join(await getDatabasesPath(), 'learningApp_database.db'),
@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
 
       final Database dbRef = await db; // capture a reference of the future type
       final List<Map<String, dynamic>> res = await dbRef.query(
-        'accounts',
+        AccountInfo.tableName,
         distinct: true,
         where: 'email = ? AND password = ?',
         whereArgs: [emailController.text, passwordController.text],
@@ -42,6 +42,8 @@ class _LoginPageState extends State<LoginPage> {
           college: res[i]['college'],
           regCourse: res[i]['regCourse'],
           privilege: res[i]['privilege'],
+          receivedScore: res[i]['receivedScore'],
+          deductedScore: res[i]['deductedScore'],
         );
       });
 

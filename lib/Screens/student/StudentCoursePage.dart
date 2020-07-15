@@ -163,7 +163,7 @@ class StudentCoursePage extends StatelessWidget {
     Database dbRef = await db;
 
     var res = await dbRef.query(
-      'assignmentQuestions',
+      AssignmentQuestionInfo.tableName,
       where: 'assignTitle = ? AND courseID = ?',
       whereArgs: [assignTitle, courseID],
     );
@@ -187,7 +187,7 @@ class StudentCoursePage extends StatelessWidget {
     Database dbRef = await db;
 
     var res = await dbRef.query(
-      'assignmentSubmissions',
+      AssignmentSubmissionInfo.tableName,
       where: 'assignTitle = ? AND courseID = ? AND studentEmail = ?',
       whereArgs: [assignTitle, courseID, email],
       orderBy: 'submitDate DESC'
@@ -217,7 +217,7 @@ class StudentCoursePage extends StatelessWidget {
     Database dbRef = await db;
 
     var res = await dbRef.query(
-      'peerReviews',
+      PeerReviewInfo.tableName,
       where: 'courseID = ? AND assignTitle = ? AND reviewerEmail = ?',
       whereArgs: [courseID, assignTitle, email],
     );

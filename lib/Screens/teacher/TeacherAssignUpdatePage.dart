@@ -242,16 +242,12 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
 
     final Database dbRef = await db;
 
+    assignQInfo.content = contentController.text;
+    assignQInfo.dueDate = dueDate.millisecondsSinceEpoch;
+
     await dbRef.update(
-      'assignmentQuestions',
-      AssignmentQuestionInfo(
-        assignTitle: assignQInfo.assignTitle,
-        courseID: assignQInfo.courseID,
-        content: contentController.text,
-        dueDate: dueDate.millisecondsSinceEpoch,
-        instrEmail: assignQInfo.instrEmail,
-        maxScore: assignQInfo.maxScore,
-      ).toMap(),
+      AssignmentQuestionInfo.tableName,
+      assignQInfo.toMap(),
       where: 'assignTitle = ? AND courseID = ?',
       whereArgs: [assignQInfo.assignTitle, assignQInfo.courseID],
       conflictAlgorithm: ConflictAlgorithm.replace,

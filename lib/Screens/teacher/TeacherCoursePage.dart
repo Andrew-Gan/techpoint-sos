@@ -148,7 +148,7 @@ class TeacherCoursePage extends StatelessWidget {
     Database dbRef = await db;
 
     var res = await dbRef.query(
-      'assignmentQuestions',
+      AssignmentQuestionInfo.tableName,
       where: 'assignTitle = ? AND courseID = ?',
       whereArgs: [assignTitle, courseID],
     );
@@ -176,7 +176,7 @@ class TeacherCoursePage extends StatelessWidget {
 
     final Database dbRef = await db;
     final List<Map<String, dynamic>> res = await dbRef.query(
-      'assignmentSubmissions',
+      AssignmentSubmissionInfo.tableName,
       distinct: true,
       where: 'assignTitle = ? AND courseID = ?',
       whereArgs: [assignQTitles.assignTitle, assignQTitles.courseID],
