@@ -4,8 +4,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
 
-import 'dart:developer';
-
 class TeacherViewSubmitPage extends StatefulWidget {
   final AssignmentQuestionInfo assignQInfo;
   final AssignmentSubmissionInfo assignSInfo;
