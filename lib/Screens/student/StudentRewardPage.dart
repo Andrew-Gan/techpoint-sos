@@ -18,6 +18,7 @@ class StudentRewardPage extends StatefulWidget {
 
 class _StudentRewardPageState extends State<StudentRewardPage> {
   int points;
+  bool isInsufficient = false;
   final List<RewardInfo> rewards;
   final List<int> redeems;
   final String email;
@@ -44,6 +45,24 @@ class _StudentRewardPageState extends State<StudentRewardPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(left: 25.0, top: 25.0),
+                  child: Text(
+                    'Available points: ' + points.toString(),
+                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 25.0, top: 15.0),
+                  child: Visibility(
+                    child: Text(
+                      'You have insufficient points!',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    replacement: Text(''),
+                    visible: isInsufficient,
+                  ),
+                ),
                 Container(
                   padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0,),
                   height: 150.0,
@@ -68,7 +87,7 @@ class _StudentRewardPageState extends State<StudentRewardPage> {
   Widget _buildRewardRow(BuildContext context, int i) {
     return ListTile(
       title: Text(
-        rewards[i].title,
+        rewards[i].title + '\ncost: ' + rewards[i].cost.toString(),
       ),
       trailing: Icon(
         Icons.redeem,
@@ -76,19 +95,42 @@ class _StudentRewardPageState extends State<StudentRewardPage> {
       ),
       onTap: () async {
         onRedeemPress(rewards[i]);
-        setState(() => points -= rewards[i].cost);
       }
     );
   }
 
   void onRedeemPress(RewardInfo reward) async {
+    // do nothing if user already claimed reward
     if(redeems.contains(reward.rewardID)) return;
 
     final Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'));
-
     final Database dbRef = await db;
 
+    // query student info
+    var res = await dbRef.query(
+      AccountInfo.tableName,
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+    AccountInfo userInfo = AccountInfo.fromMap(res.first);
+
+    // display error message if student has insufficient score
+    if(userInfo.receivedScore - userInfo.deductedScore < reward.cost) {
+      setState(() => isInsufficient = true);
+      return;
+    }
+
+    // deduct from student score and update row
+    userInfo.deductedScore += reward.cost;
+    await dbRef.update(
+      AccountInfo.tableName,
+      userInfo.toMap(),
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+
+    // register score transaction to database
     await dbRef.insert(
       RedeemedRewardInfo.tableName,
       RedeemedRewardInfo(
@@ -100,24 +142,11 @@ class _StudentRewardPageState extends State<StudentRewardPage> {
     );
 
     redeems.add(reward.rewardID);
-
-    var res = await dbRef.query(
-      AccountInfo.tableName,
-      where: 'email = ?',
-      whereArgs: [email],
-    );
-
-    AccountInfo userInfo = AccountInfo.fromMap(res.first);
-    userInfo.deductedScore += reward.cost;
-
-    await dbRef.update(
-      AccountInfo.tableName,
-      userInfo.toMap(),
-      where: 'email = ?',
-      whereArgs: [email],
-    );
-    
     dbRef.close();
+    setState(() {
+      isInsufficient = false;
+      setState(() => points -= reward.cost);
+    });
   }
 
   @override

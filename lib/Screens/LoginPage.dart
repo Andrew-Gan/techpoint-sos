@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    createDB();
+    // createDB();
     void onLoginPress() async {
       final Future<Database> db = openDatabase(
         join(await getDatabasesPath(), 'learningApp_database.db'),
