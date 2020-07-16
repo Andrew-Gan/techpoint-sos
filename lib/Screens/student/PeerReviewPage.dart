@@ -140,15 +140,7 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
       return null;
     }
 
-    return AssignmentSubmissionInfo(
-      assignTitle: res.first['assignTitle'],
-      courseID: res.first['courseID'],
-      content: res.first['content'],
-      submitDate: res.first['submitDate'],
-      studentEmail: res.first['studentEmail'],
-      recScore: res.first['recScore'],
-      remarks: res.first['remarks'],
-    );
+    return AssignmentSubmissionInfo.fromMap(res.first);
   }
 
   @override

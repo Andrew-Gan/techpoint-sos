@@ -72,7 +72,7 @@ class StudentCoursePage extends StatelessWidget {
                     top: 20.0,
                     right: 20.0,
                   ),
-                  height: 150.0,
+                  height: 300.0,
                   child: ListView.builder(
                       padding: EdgeInsets.all(0.0),
                       itemBuilder: (context, i) {
@@ -80,32 +80,6 @@ class StudentCoursePage extends StatelessWidget {
                         if (index >= assignQTitles.length) return null;
                         if (i.isOdd) return Divider();
                         return _buildAssignRow(context, index);
-                      }),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 25.0, top: 50.0),
-                  child: Text(
-                    'Peer Reviews to do',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(
-                    left: 20.0,
-                    top: 20.0,
-                    right: 20.0,
-                  ),
-                  height: 150.0,
-                  child: ListView.builder(
-                      padding: EdgeInsets.all(0.0),
-                      itemBuilder: (context, i) {
-                        final index = i ~/ 2;
-                        if (index >= peerReviews.length) return null;
-                        if (i.isOdd) return Divider();
-                        return _buildPeerReviewRow(context, index);
                       }),
                 ),
               ],
@@ -153,24 +127,6 @@ class StudentCoursePage extends StatelessWidget {
     );
   }
 
-  Widget _buildPeerReviewRow(BuildContext context, int i) {
-    return ListTile(
-      title: Text(
-        peerReviews[i],
-      ),
-      trailing: Icon(Icons.chevron_right),
-      onTap: () async {
-        int now = DateTime.now().millisecondsSinceEpoch;
-        var peerReviewInfo = await _queryPeerReviewInfo(peerReviews[i]);
-        if (peerReviewInfo.first.dueDate > now) {
-          // call Abdullah's peer review submissions page
-        } else {
-          // call peer review outcome page
-        }
-      },
-    );
-  }
-
   Future<AssignmentQuestionInfo> _queryAssignInfo(String assignTitle) async {
     Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'),
@@ -207,29 +163,5 @@ class StudentCoursePage extends StatelessWidget {
     }
 
     return AssignmentSubmissionInfo.fromMap(res.first);
-  }
-
-  Future<List<PeerReviewInfo>> _queryPeerReviewInfo(String assignTitle) async {
-    Future<Database> db =
-        openDatabase(join(await getDatabasesPath(), 'learningApp_database.db'));
-    Database dbRef = await db;
-
-    var res = await dbRef.query(
-      PeerReviewInfo.tableName,
-      where: 'courseID = ? AND assignTitle = ? AND reviewerEmail = ?',
-      whereArgs: [courseID, assignTitle, email],
-    );
-
-    return List.generate(
-        res.length,
-        (index) => PeerReviewInfo(
-              courseID: res[index]['courseID'],
-              assignTitle: res[index]['assignTitle'],
-              content: res[index]['content'],
-              reviewerEmail: res[index]['reviewerEmail'],
-              reviewedEmail: res[index]['reviewedEmail'],
-              instrEmail: res[index]['instrEmail'],
-              dueDate: res[index]['dueDate'],
-            ));
   }
 }

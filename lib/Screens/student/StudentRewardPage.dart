@@ -113,6 +113,8 @@ class _StudentRewardPageState extends State<StudentRewardPage> {
     await dbRef.update(
       AccountInfo.tableName,
       userInfo.toMap(),
+      where: 'email = ?',
+      whereArgs: [email],
     );
     
     dbRef.close();
