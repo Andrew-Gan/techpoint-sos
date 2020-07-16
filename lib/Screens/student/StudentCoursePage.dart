@@ -6,13 +6,14 @@ import '../../CreateDB.dart';
 import 'StudentAssignSubmitPage.dart';
 import 'StudentAssignReviewPage.dart';
 import 'package:flutter/material.dart';
+import './PeerReviewPage.dart';
 
 class StudentCoursePage extends StatelessWidget {
   final String courseID, email;
   final List<String> assignQTitles, peerReviews;
   final int score;
   StudentCoursePage(this.email, this.courseID, this.assignQTitles, this.score,
-    this.peerReviews);
+      this.peerReviews);
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +41,7 @@ class StudentCoursePage extends StatelessWidget {
                         child: Text(
                           courseID,
                           style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold
-                          ),
+                              fontSize: 20.0, fontWeight: FontWeight.bold),
                         ),
                       ),
                       Container(
@@ -68,17 +67,20 @@ class StudentCoursePage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0,),
+                  padding: EdgeInsets.only(
+                    left: 20.0,
+                    top: 20.0,
+                    right: 20.0,
+                  ),
                   height: 150.0,
                   child: ListView.builder(
-                    padding: EdgeInsets.all(0.0),
-                    itemBuilder: (context, i) {
-                      final index = i ~/ 2;
-                      if (index >= assignQTitles.length) return null;
-                      if (i.isOdd) return Divider();
-                      return _buildAssignRow(context, index);
-                    }
-                  ),
+                      padding: EdgeInsets.all(0.0),
+                      itemBuilder: (context, i) {
+                        final index = i ~/ 2;
+                        if (index >= assignQTitles.length) return null;
+                        if (i.isOdd) return Divider();
+                        return _buildAssignRow(context, index);
+                      }),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, top: 50.0),
@@ -91,23 +93,36 @@ class StudentCoursePage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0,),
+                  padding: EdgeInsets.only(
+                    left: 20.0,
+                    top: 20.0,
+                    right: 20.0,
+                  ),
                   height: 150.0,
                   child: ListView.builder(
-                    padding: EdgeInsets.all(0.0),
-                    itemBuilder: (context, i) {
-                      final index = i ~/ 2;
-                      if (index >= peerReviews.length) return null;
-                      if (i.isOdd) return Divider();
-                      return _buildPeerReviewRow(context, index);
-                    }
-                  ),
+                      padding: EdgeInsets.all(0.0),
+                      itemBuilder: (context, i) {
+                        final index = i ~/ 2;
+                        if (index >= peerReviews.length) return null;
+                        if (i.isOdd) return Divider();
+                        return _buildPeerReviewRow(context, index);
+                      }),
                 ),
               ],
             ),
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: () async {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return PeerReviewPage(email, courseID, assignQTitles);
+            }));
+            // Add your onPressed code here!
+          },
+          label: Text('Peer Review'),
+          //icon: Icon(Icons.thumb_up),
+          backgroundColor: Colors.grey),
     );
   }
 
@@ -121,16 +136,17 @@ class StudentCoursePage extends StatelessWidget {
         int now = DateTime.now().millisecondsSinceEpoch;
         var assignQInfo = await _queryAssignInfo(assignQTitles[i]);
         var assignSInfo = await _queryAssignSubmits(assignQTitles[i]);
-        if(assignQInfo.dueDate > now || assignSInfo == null) {
+        if (assignQInfo.dueDate > now || assignSInfo == null) {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) =>
-              StudentAssignSubmitPage(email, assignQInfo)),
+            MaterialPageRoute(
+                builder: (context) =>
+                    StudentAssignSubmitPage(email, assignQInfo)),
           );
-        }
-        else {
+        } else {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) =>
-              StudentAssignReviewPage(assignQInfo, assignSInfo)),
+            MaterialPageRoute(
+                builder: (context) =>
+                    StudentAssignReviewPage(assignQInfo, assignSInfo)),
           );
         }
       },
@@ -146,10 +162,9 @@ class StudentCoursePage extends StatelessWidget {
       onTap: () async {
         int now = DateTime.now().millisecondsSinceEpoch;
         var peerReviewInfo = await _queryPeerReviewInfo(peerReviews[i]);
-        if(peerReviewInfo.first.dueDate > now) {
+        if (peerReviewInfo.first.dueDate > now) {
           // call Abdullah's peer review submissions page
-        }
-        else {
+        } else {
           // call peer review outcome page
         }
       },
@@ -173,22 +188,21 @@ class StudentCoursePage extends StatelessWidget {
     return AssignmentQuestionInfo.fromMap(res.first);
   }
 
-  Future<AssignmentSubmissionInfo> _queryAssignSubmits(String assignTitle) async {
+  Future<AssignmentSubmissionInfo> _queryAssignSubmits(
+      String assignTitle) async {
     Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'),
     );
     Database dbRef = await db;
 
-    var res = await dbRef.query(
-      AssignmentSubmissionInfo.tableName,
-      where: 'assignTitle = ? AND courseID = ? AND studentEmail = ?',
-      whereArgs: [assignTitle, courseID, email],
-      orderBy: 'submitDate DESC'
-    );
+    var res = await dbRef.query(AssignmentSubmissionInfo.tableName,
+        where: 'assignTitle = ? AND courseID = ? AND studentEmail = ?',
+        whereArgs: [assignTitle, courseID, email],
+        orderBy: 'submitDate DESC');
 
     dbRef.close();
 
-    if(res.length < 1) {
+    if (res.length < 1) {
       return null;
     }
 
@@ -196,9 +210,8 @@ class StudentCoursePage extends StatelessWidget {
   }
 
   Future<List<PeerReviewInfo>> _queryPeerReviewInfo(String assignTitle) async {
-    Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db')
-    );
+    Future<Database> db =
+        openDatabase(join(await getDatabasesPath(), 'learningApp_database.db'));
     Database dbRef = await db;
 
     var res = await dbRef.query(
@@ -207,16 +220,16 @@ class StudentCoursePage extends StatelessWidget {
       whereArgs: [courseID, assignTitle, email],
     );
 
-    return List.generate(res.length, (index) => 
-      PeerReviewInfo(
-        courseID: res[index]['courseID'],
-        assignTitle: res[index]['assignTitle'],
-        content: res[index]['content'],
-        reviewerEmail: res[index]['reviewerEmail'],
-        reviewedEmail: res[index]['reviewedEmail'],
-        instrEmail: res[index]['instrEmail'],
-        dueDate: res[index]['dueDate'],
-      )
-    );
+    return List.generate(
+        res.length,
+        (index) => PeerReviewInfo(
+              courseID: res[index]['courseID'],
+              assignTitle: res[index]['assignTitle'],
+              content: res[index]['content'],
+              reviewerEmail: res[index]['reviewerEmail'],
+              reviewedEmail: res[index]['reviewedEmail'],
+              instrEmail: res[index]['instrEmail'],
+              dueDate: res[index]['dueDate'],
+            ));
   }
 }
