@@ -5,20 +5,20 @@ import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
 
 class StudentAssignSubmitPage extends StatefulWidget {
-  final String studentEmail;
+  final int studentID;
   final AssignmentQuestionInfo assignQInfo;
-  StudentAssignSubmitPage(this.studentEmail, this.assignQInfo);
+  StudentAssignSubmitPage(this.studentID, this.assignQInfo);
 
   @override
   State<StudentAssignSubmitPage> createState() =>
-    _StudentAssignSubmitPageState(studentEmail, assignQInfo);
+    _StudentAssignSubmitPageState(studentID, assignQInfo);
 }
 
 class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
-  final String studentEmail;
+  final int studentID;
   final AssignmentQuestionInfo assignQInfo;
   DateTime dueDate;
-  _StudentAssignSubmitPageState(this.studentEmail, this.assignQInfo) {
+  _StudentAssignSubmitPageState(this.studentID, this.assignQInfo) {
     dueDate = DateTime.fromMillisecondsSinceEpoch(assignQInfo.dueDate);
   }
   final ansController = TextEditingController();
@@ -160,11 +160,11 @@ class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
     await dbRef.insert(
       AssignmentSubmissionInfo.tableName,
       AssignmentSubmissionInfo(
-        assignTitle: assignQInfo.assignTitle,
+        assignID: assignQInfo.assignID,
         courseID: assignQInfo.courseID,
+        studentID: studentID,
         content: ansController.text,
         submitDate: DateTime.now().millisecondsSinceEpoch,
-        studentEmail: studentEmail,
         recScore: 0,
         remarks: '',
       ).toMap(),
@@ -173,7 +173,6 @@ class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
     dbRef.close();
 
     ansController.clear();
-
     setState(() => isSuccess = true);
   }
 

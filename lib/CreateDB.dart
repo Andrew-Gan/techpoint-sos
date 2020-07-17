@@ -4,6 +4,8 @@ import 'package:sqflite/sqflite.dart';
 
 const dbUrl = '';
 
+// not all columns must be contained in the classes that represent the table
+
 abstract class SQLiteInfo {
   static String tableName = '';
   SQLiteInfo();
@@ -21,20 +23,21 @@ enum AccountPrivilege {
 
 class AccountInfo implements SQLiteInfo {
   static String tableName = 'accounts';
-  String name, email, major, year, college, password, regCourse;
-  int privilege, receivedScore, deductedScore;
+  String name, email, password, major, year, college, regCourse;
+  int accountID, privilege, receivedScore, deductedScore;
 
-  AccountInfo({this.name, this.email, this.major,this.year, this.college,
-    this.password, this.regCourse, this.privilege, this.receivedScore, 
+  AccountInfo({this.name, this.email, this.password, this.major,this.year,
+    this.college, this.regCourse, this.privilege, this.receivedScore, 
     this.deductedScore});
   
   AccountInfo.fromMap(Map<String, dynamic> map) {
+    this.accountID = map['accountID'];
     this.name = map['name'];
     this.email = map['email'];
+    this.password = map['password'];
     this.major = map['major'];
     this.year = map['year'];
     this.college = map['college'];
-    this.password = map['password'];
     this.regCourse = map['regCourse'];
     this.privilege = map['privilege'];
     this.receivedScore = map['receivedScore'];
@@ -43,12 +46,13 @@ class AccountInfo implements SQLiteInfo {
 
   Map<String, dynamic> toMap() {
     return {
+      'accountID': accountID,
       'name': name,
       'email': email,
+      'password': password,
       'major': major,
       'year': year,
       'college': college,
-      'password': password,
       'regCourse': regCourse,
       'privilege': privilege,
       'receivedScore': receivedScore,
@@ -59,28 +63,30 @@ class AccountInfo implements SQLiteInfo {
 
 class AssignmentQuestionInfo implements SQLiteInfo {
   static String tableName = 'assignmentQuestions';
-  String assignTitle, courseID, content, instrEmail;
-  int dueDate, maxScore;
+  int assignID, dueDate, maxScore, instrID;
+  String assignTitle, courseID, content;
 
-  AssignmentQuestionInfo({this.assignTitle, this.courseID, this.content,
-    this.dueDate, this.instrEmail, this.maxScore,});
+  AssignmentQuestionInfo({this.assignTitle, this.courseID,
+    this.content, this.dueDate, this.instrID, this.maxScore,});
 
   AssignmentQuestionInfo.fromMap(Map<String, dynamic> map) {
-    this.assignTitle = map['assignTitle'];
+    this.assignID = map['assignID'];
     this.courseID = map['courseID'];
+    this.assignTitle = map['assignTitle'];
     this.content = map['content'];
     this.dueDate = map['dueDate'];
-    this.instrEmail = map['instrEmail'];
+    this.instrID = map['instrID'];
     this.maxScore = map['maxScore'];
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'assignID': assignID,
       'assignTitle': assignTitle,
       'courseID': courseID,
       'content': content,
       'dueDate': dueDate,
-      'instrEmail': instrEmail,
+      'instrID': instrID,
       'maxScore': maxScore,
     };
   }
@@ -88,29 +94,31 @@ class AssignmentQuestionInfo implements SQLiteInfo {
 
 class AssignmentSubmissionInfo implements SQLiteInfo {
   static String tableName = 'assignmentSubmissions';
-  String assignTitle, courseID, content, studentEmail, remarks;
-  int submitDate, recScore;
+  String content, remarks, courseID;
+  int submitID, assignID, submitDate, studentID, recScore;
 
-  AssignmentSubmissionInfo({this.assignTitle, this.courseID, this.content,
-    this.submitDate, this.studentEmail, this.recScore, this.remarks,});
+  AssignmentSubmissionInfo({this.assignID, this.courseID, this.studentID, this.content,
+    this.submitDate, this.recScore, this.remarks,});
 
   AssignmentSubmissionInfo.fromMap(Map<String, dynamic> map) {
-    this.assignTitle = map['assignTitle'];
     this.courseID = map['courseID'];
+    this.submitID = map['submitID'];
+    this.assignID = map['assignID'];
+    this.studentID = map['studentID'];
     this.content = map['content'];
     this.submitDate = map['submitDate'];
-    this.studentEmail = map['studentEmail'];
     this.recScore = map['recScore'];
     this.remarks = map['remarks'];
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'assignTitle': assignTitle,
-      'courseID': courseID,
+      'submitID': submitID,
+      'assignID': assignID,
       'content': content,
       'submitDate': submitDate,
-      'studentEmail': studentEmail,
+      'courseID': courseID,
+      'studentID': studentID,
       'recScore': recScore,
       'remarks': remarks,
     };
@@ -119,30 +127,30 @@ class AssignmentSubmissionInfo implements SQLiteInfo {
 
 class PeerReviewInfo implements SQLiteInfo {
   static String tableName = 'peerReviews';
-  String courseID, assignTitle, content, reviewerEmail, reviewedEmail, instrEmail;
-  int dueDate;
+  String content;
+  int peerID, submitID, dueDate, reviewerID, reviewedID, instrID;
 
-  PeerReviewInfo({this.courseID, this.assignTitle, this.content,
-    this.reviewerEmail, this.reviewedEmail, this.instrEmail, this.dueDate,});
+  PeerReviewInfo({this.submitID, this.content,
+    this.reviewerID, this.reviewedID, this.instrID, this.dueDate,});
   
   PeerReviewInfo.fromMap(Map<String, dynamic> map) {
-    this.assignTitle = map['assignTitle'];
-    this.courseID = map['courseID'];
+    this.peerID = map['peerID'];
+    this.submitID = map['submitID'];
     this.content = map['content'];
     this.dueDate = map['dueDate'];
-    this.reviewerEmail = map['reviewerEmail'];
-    this.reviewedEmail = map['reviewedEmail'];
-    this.instrEmail = map['instrEmail'];
+    this.reviewerID = map['reviewerID'];
+    this.reviewedID = map['reviewedID'];
+    this.instrID = map['instrID'];
   }
   
   Map<String, dynamic> toMap() {
     return {
-      'courseID': courseID,
-      'assignTitle': assignTitle,
+      'peerID': peerID,
+      'submitID': submitID,
       'content': content,
-      'reviewerEmail': reviewerEmail,
-      'reviewedEmail': reviewedEmail,
-      'instrEmail': instrEmail,
+      'reviewerID': reviewerID,
+      'reviewedID': reviewedID,
+      'instrID': instrID,
       'dueDate': dueDate,
     };
   }
@@ -153,8 +161,17 @@ class RewardInfo implements SQLiteInfo {
   int rewardID, hasLimit, redeemLimit, cost;
   String title, desc;
 
-  RewardInfo({this.rewardID, this.title, this.desc, this.cost,
+  RewardInfo({this.title, this.desc, this.cost,
     this.hasLimit, this.redeemLimit,});
+  
+  RewardInfo.fromMap(Map<String, dynamic> map) {
+    this.rewardID = map['rewardID'];
+    this.hasLimit = map['hasLimit'];
+    this.redeemLimit = map['redeemLimit'];
+    this.cost = map['cost'];
+    this.title = map['title'];
+    this.desc = map['desc'];
+  }
   
   Map<String, dynamic> toMap() {
     return {
@@ -170,15 +187,22 @@ class RewardInfo implements SQLiteInfo {
 
 class RedeemedRewardInfo implements SQLiteInfo {
   static String tableName = 'redeemedRewards';
-  int rewardID, redeemDate;
-  String studentEmail;
+  int redeemedID, studentID, rewardID, redeemDate;
 
-  RedeemedRewardInfo({this.rewardID, this.studentEmail, this.redeemDate,});
+  RedeemedRewardInfo({this.rewardID, this.studentID, this.redeemDate,});
   
+  RedeemedRewardInfo.fromMap(Map<String, dynamic> map) {
+    this.redeemedID = map['redeemedID'];
+    this.studentID = map['studentID'];
+    this.rewardID = map['rewardID'];
+    this.redeemDate = map['redeemDate'];
+  }
+
   Map<String, dynamic> toMap() {
     return {
+      'redeemedID': redeemedID,
       'rewardID': rewardID,
-      'studentEmail': studentEmail,
+      'studentID': studentID,
       'redeemDate': redeemDate,
     };
   }
@@ -190,47 +214,51 @@ void createDB() async {
 
     // all time entries are stored as milliseconds since unix epoch time
 
-    onCreate: (db, version) {
-      db.execute(
-        'CREATE TABLE accounts(name TEXT, email TEXT UNIQUE, password TEXT,'
-        'major TEXT, year TEXT, college TEXT, regCourse TEXT, receivedScore INTEGER,'
-        'deductedScore INTEGER, privilege INTEGER)'
+    onOpen: (db) async {
+      // delete all tables
+      await db.execute('DROP TABLE IF EXISTS accounts');
+      await db.execute('DROP TABLE IF EXISTS assignmentQuestions');
+      await db.execute('DROP TABLE IF EXISTS assignmentSubmissions');
+      await db.execute('DROP TABLE IF EXISTS peerReviews');
+      await db.execute('DROP TABLE IF EXISTS rewardsList');
+      await db.execute('DROP TABLE IF EXISTS redeemedRewards');
+
+      // create tables
+      await db.execute(
+        'CREATE TABLE accounts(accountID INTEGER PRIMARY KEY, name TEXT, email TEXT UNIQUE,'
+        'password TEXT, major TEXT, year TEXT, college TEXT, regCourse TEXT,'
+        'receivedScore INTEGER, deductedScore INTEGER, privilege INTEGER)'
       );
-      db.execute(
-        'CREATE TABLE assignmentQuestions(assignTitle TEXT UNIQUE, courseID TEXT'
-        'UNIQUE, content TEXT, dueDate INTEGER, instrEmail TEXT,'
-        'maxScore INTEGER)',
+      await db.execute(
+        'CREATE TABLE assignmentQuestions(assignID INTEGER PRIMARY KEY,'
+        'assignTitle TEXT, courseID TEXT, content TEXT, dueDate INTEGER,'
+        'instrID INTEGER, maxScore INTEGER)'
       );
-      db.execute(
-        'CREATE TABLE assignmentSubmissions(assignTitle TEXT, courseID TEXT,'
-        'content TEXT, submitDate INTEGER, studentEmail TEXT, recScore INTEGER,'
-        'remarks TEXT, UNIQUE(assignTitle, courseID, studentEmail))'
+      await db.execute(
+        'CREATE TABLE assignmentSubmissions(submitID INTEGER PRIMARY KEY, courseID TEXT,'
+        'assignID INTEGER, content TEXT, submitDate INTEGER, studentID INTEGER,'
+        'recScore INTEGER, remarks TEXT, UNIQUE(assignID, studentID))'
       );
-      db.execute(
-        'CREATE TABLE peerReviews(courseID TEXT, assignTitle TEXT, content TEXT,'
-        'reviewerEmail TEXT, reviewedEmail TEXT, instrEmail TEXT, dueDate INTEGER,'
-        'UNIQUE(courseID, assignTitle, reviewerEmail, reviewedEmail))'
+      await db.execute(
+        'CREATE TABLE peerReviews(peerID INTEGER PRIMARY KEY, submitID INTEGER,'
+        'content TEXT, reviewerID INTEGER, reviewedID INTEGER, instrID INTEGER,'
+        'dueDate INTEGER)'
       );
-      db.execute(
+      await db.execute(
         'CREATE TABLE rewardsList(rewardID INTEGER PRIMARY KEY, title TEXT,'
         'desc TEXT, cost INTEGER, hasLimit INTEGER, redeemLimit INTEGER)'
       );
-      db.execute(
-        'CREATE TABLE redeemedRewards(studentEmail TEXT, rewardID INTEGER,'
-        'redeemDate INTEGER)'
+      await db.execute(
+        'CREATE TABLE redeemedRewards(redeemedID INTEGER PRIMARY KEY,'
+        'studentID INTEGER, rewardID INTEGER, redeemDate INTEGER)'
       );
     },
-    onOpen: (db) => insertTestInfo(db),
     version: 1,
   );
 
   final Database dbRef = await db;
-  dbRef.close();
-}
-
-void insertTestInfo(Database dbRef) async {
-  // user info for testing
-  dbRef.insert(
+  
+  await dbRef.insert(
     AccountInfo.tableName,
     AccountInfo(
       name: 'Student 00',
@@ -247,7 +275,7 @@ void insertTestInfo(Database dbRef) async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
-  dbRef.insert(
+  await dbRef.insert(
     AccountInfo.tableName,
     AccountInfo(
       name: 'Student 01',
@@ -264,7 +292,7 @@ void insertTestInfo(Database dbRef) async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
-  dbRef.insert(
+  await dbRef.insert(
     AccountInfo.tableName,
     AccountInfo(
       name: 'Student 02',
@@ -281,7 +309,7 @@ void insertTestInfo(Database dbRef) async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
-  dbRef.insert(
+  await dbRef.insert(
     AccountInfo.tableName,
     AccountInfo(
       name: 'Some teacher',
@@ -298,7 +326,7 @@ void insertTestInfo(Database dbRef) async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
-  dbRef.insert(
+  await dbRef.insert(
     RewardInfo.tableName,
     RewardInfo(
       title: 'Wiley dining court discount 10\%',
@@ -309,7 +337,9 @@ void insertTestInfo(Database dbRef) async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 
-  dbRef.insert(
+  print('called');
+
+  await dbRef.insert(
     RewardInfo.tableName,
     RewardInfo(
       title: 'Early course registration for fall 2020',
@@ -320,4 +350,6 @@ void insertTestInfo(Database dbRef) async {
     ).toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
+
+  dbRef.close();
 }

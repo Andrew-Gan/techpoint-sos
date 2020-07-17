@@ -5,25 +5,26 @@ import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
 
 class StudentRewardPage extends StatefulWidget {
-  final int points;
+  final AccountInfo studentInfo;
   final List<RewardInfo> rewards;
   final List<int> redeems;
-  final String email;
-  StudentRewardPage(this.email, this.points, this.rewards, this.redeems);
+  StudentRewardPage(this.studentInfo, this.rewards, this.redeems);
 
   @override
   State<StudentRewardPage> createState() =>
-    _StudentRewardPageState(email, points, rewards, redeems);
+    _StudentRewardPageState(studentInfo, rewards, redeems);
 }
 
 class _StudentRewardPageState extends State<StudentRewardPage> {
   int points;
   bool isInsufficient = false;
+  final AccountInfo studentInfo;
   final List<RewardInfo> rewards;
   final List<int> redeems;
-  final String email;
 
-  _StudentRewardPageState(this.email, this.points, this.rewards, this.redeems);
+  _StudentRewardPageState(this.studentInfo, this.rewards, this.redeems) {
+    points = studentInfo.receivedScore - studentInfo.deductedScore;
+  }
 
   @override
   void initState() => super.initState();
@@ -107,27 +108,19 @@ class _StudentRewardPageState extends State<StudentRewardPage> {
       join(await getDatabasesPath(), 'learningApp_database.db'));
     final Database dbRef = await db;
 
-    // query student info
-    var res = await dbRef.query(
-      AccountInfo.tableName,
-      where: 'email = ?',
-      whereArgs: [email],
-    );
-    AccountInfo userInfo = AccountInfo.fromMap(res.first);
-
     // display error message if student has insufficient score
-    if(userInfo.receivedScore - userInfo.deductedScore < reward.cost) {
+    if((studentInfo.receivedScore - studentInfo.deductedScore) < reward.cost) {
       setState(() => isInsufficient = true);
       return;
     }
 
     // deduct from student score and update row
-    userInfo.deductedScore += reward.cost;
+    studentInfo.deductedScore += reward.cost;
     await dbRef.update(
       AccountInfo.tableName,
-      userInfo.toMap(),
-      where: 'email = ?',
-      whereArgs: [email],
+      studentInfo.toMap(),
+      where: 'accountID = ?',
+      whereArgs: [studentInfo.accountID],
     );
 
     // register score transaction to database
@@ -135,7 +128,7 @@ class _StudentRewardPageState extends State<StudentRewardPage> {
       RedeemedRewardInfo.tableName,
       RedeemedRewardInfo(
         rewardID: reward.rewardID,
-        studentEmail: email,
+        studentID: studentInfo.accountID,
         redeemDate: DateTime.now().millisecondsSinceEpoch,
       ).toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,

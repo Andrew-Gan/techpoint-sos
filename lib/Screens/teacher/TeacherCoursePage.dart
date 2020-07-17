@@ -11,9 +11,9 @@ import 'package:sqflite/sqflite.dart';
 
 class TeacherCoursePage extends StatelessWidget {
   final String courseID;
-  final String email;
-  final List<String> assignQTitles;
-  TeacherCoursePage(this.email, this.courseID, this.assignQTitles);
+  final int instrID;
+  final List<AssignmentQuestionInfo> assignQInfos;
+  TeacherCoursePage(this.instrID, this.courseID, this.assignQInfos);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class TeacherCoursePage extends StatelessWidget {
                     padding: EdgeInsets.all(0.0),
                     itemBuilder: (context, i) {
                       final index = i ~/ 2;
-                      if (index >= assignQTitles.length) return null;
+                      if (index >= assignQInfos.length) return null;
                       if (i.isOdd) return Divider();
                       return _buildRow(context, index);
                     }
@@ -78,7 +78,7 @@ class TeacherCoursePage extends StatelessWidget {
                         child: Text('Add assignment'),
                         onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) =>
-                            TeacherAssignCreatePage(courseID, email)
+                            TeacherAssignCreatePage(courseID, instrID)
                           )
                         ),
                       ),
@@ -86,7 +86,7 @@ class TeacherCoursePage extends StatelessWidget {
                         child: Text('Add peer review'),
                         onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) =>
-                            TeacherPeerCreatePage(courseID, email, assignQTitles)
+                            TeacherPeerCreatePage(instrID, assignQInfos)
                           )
                         ),
                       ),
@@ -104,7 +104,7 @@ class TeacherCoursePage extends StatelessWidget {
   Widget _buildRow(BuildContext context, int i) {
     return ListTile(
       title: Text(
-        assignQTitles[i],
+        assignQInfos[i].assignTitle,
       ),
       trailing: Container(
         width: 120,
@@ -114,7 +114,7 @@ class TeacherCoursePage extends StatelessWidget {
               alignment: Alignment.centerRight,
               icon: Icon(Icons.update),
               onPressed: () async {
-                var info = await _queryAssignInfo(assignQTitles[i], courseID);
+                var info = await _queryAssignInfo(assignQInfos[i].assignID);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => TeacherAssignUpdatePage(info),
@@ -125,8 +125,8 @@ class TeacherCoursePage extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.list),
               onPressed: () async {
-                var assignQInfo = await _queryAssignInfo(assignQTitles[i], courseID);
-                var assignSInfo = await _queryAssignSubmits(assignQInfo); 
+                var assignQInfo = await _queryAssignInfo(assignQInfos[i].assignID);
+                var assignSInfo = await _queryAssignSubmits(assignQInfo);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) =>
@@ -141,7 +141,7 @@ class TeacherCoursePage extends StatelessWidget {
     );
   }
 
-  Future<AssignmentQuestionInfo> _queryAssignInfo(String assignTitle, String courseID) async {
+  Future<AssignmentQuestionInfo> _queryAssignInfo(int assignID) async {
     Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'),
     );
@@ -149,8 +149,8 @@ class TeacherCoursePage extends StatelessWidget {
 
     var res = await dbRef.query(
       AssignmentQuestionInfo.tableName,
-      where: 'assignTitle = ? AND courseID = ?',
-      whereArgs: [assignTitle, courseID],
+      where: 'assignID = ?',
+      whereArgs: [assignID],
     );
     dbRef.close();
 
@@ -162,7 +162,7 @@ class TeacherCoursePage extends StatelessWidget {
   }
 
   Future<List<AssignmentSubmissionInfo>> 
-  _queryAssignSubmits(AssignmentQuestionInfo assignQTitles) async {
+  _queryAssignSubmits(AssignmentQuestionInfo assignQInfos) async {
     final Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'),
     );
@@ -171,8 +171,8 @@ class TeacherCoursePage extends StatelessWidget {
     final List<Map<String, dynamic>> res = await dbRef.query(
       AssignmentSubmissionInfo.tableName,
       distinct: true,
-      where: 'assignTitle = ? AND courseID = ?',
-      whereArgs: [assignQTitles.assignTitle, assignQTitles.courseID],
+      where: 'assignID = ?',
+      whereArgs: [assignQInfos.assignID],
     );
     dbRef.close();
 

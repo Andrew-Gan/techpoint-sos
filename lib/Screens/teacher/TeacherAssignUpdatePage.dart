@@ -250,7 +250,6 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
       assignQInfo.toMap(),
       where: 'assignTitle = ? AND courseID = ?',
       whereArgs: [assignQInfo.assignTitle, assignQInfo.courseID],
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
     dbRef.close();
 

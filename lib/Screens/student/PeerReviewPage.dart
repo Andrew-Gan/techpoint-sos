@@ -111,15 +111,7 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
 
     return List.generate(
         res.length,
-        (index) => PeerReviewInfo(
-              courseID: res[index]['courseID'],
-              assignTitle: res[index]['assignTitle'],
-              content: res[index]['content'],
-              reviewerEmail: res[index]['reviewerEmail'],
-              reviewedEmail: res[index]['reviewedEmail'],
-              instrEmail: res[index]['instrEmail'],
-              dueDate: res[index]['dueDate'],
-            ));
+        (index) => PeerReviewInfo.fromMap(res[index]));
   }
 
   Future<AssignmentSubmissionInfo> _queryAssignSubmits(

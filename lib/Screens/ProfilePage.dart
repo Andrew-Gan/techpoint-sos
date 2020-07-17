@@ -170,17 +170,15 @@ class ProfilePage extends StatelessWidget {
       ),
       trailing: Icon(Icons.chevron_right),
       onTap: () async {
-        var assignQTitles = await _queryAssignmentTitles(courseID);
-        int score = await _queryCourseScore(courseID, assignQTitles);
-        var peerReviews = await _queryPeerReviewInfo();
+        var assignQInfos = await _queryAssignmentInfos(courseID);
+        int score = await _queryCourseScore(courseID);
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) {
             if(userinfo.privilege == AccountPrivilege.student.index)
-              return StudentCoursePage(userinfo.email, courseID, assignQTitles,
-                score, peerReviews);
+              return StudentCoursePage(userinfo, courseID, assignQInfos, score);
               
             else if(userinfo.privilege == AccountPrivilege.teacher.index)
-              return TeacherCoursePage(userinfo.email, courseID, assignQTitles);
+              return TeacherCoursePage(userinfo.accountID, courseID, assignQInfos);
 
             else return null;
           }
@@ -189,7 +187,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Future<List<String>> _queryAssignmentTitles(String courseID) async {
+  Future<List<AssignmentQuestionInfo>> _queryAssignmentInfos(String courseID) async {
     Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'),
     );
@@ -205,14 +203,15 @@ class ProfilePage extends StatelessWidget {
 
     dbRef.close();
 
-    List<String> queryRes = List.generate(
-      res.length, (i) => res[i]['assignTitle']
+    List<AssignmentQuestionInfo> queryRes = List.generate(
+      res.length,
+      (i) => AssignmentQuestionInfo.fromMap(res[i]),
     );
 
     return queryRes;
   }
 
-  Future<int> _queryCourseScore(String courseID, List<String> assignQTitles) async {
+  Future<int> _queryCourseScore(String courseID) async {
     int sum = 0;
 
     Future<Database> db = openDatabase(
@@ -220,35 +219,17 @@ class ProfilePage extends StatelessWidget {
     );
     Database dbRef = await db;
 
-    for(int i = 0; i < assignQTitles.length; i++) {
-      final res = await dbRef.query(
-        AssignmentSubmissionInfo.tableName,
-        distinct: true,
-        where: 'studentEmail = ? AND courseID = ? AND assignTitle = ?',
-        whereArgs: [userinfo.email, courseID, assignQTitles[i]],
-      );
+    final res = await dbRef.query(
+      AssignmentSubmissionInfo.tableName,
+      distinct: true,
+      where: 'studentID = ? AND courseID = ?',
+      whereArgs: [userinfo.accountID, courseID],
+    );
 
-      sum += (res.length > 0) ? res.first['recScore'] : 0;
-    }
+    for(int i = 0; i < res.length; i++) sum += res[i]['recScore'];
 
     dbRef.close();
     return sum;
-  }
-
-  Future<List<String>> _queryPeerReviewInfo() async {
-    Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db')
-    );
-    Database dbRef = await db;
-
-    var res = await dbRef.query(
-      PeerReviewInfo.tableName,
-      where: 'reviewerEmail = ?',
-      whereArgs: [userinfo.email],
-    );
-
-    List<String> ret = List.generate(res.length, (index) => res[index]['assignTitle']);
-    return ret.toSet().toList();
   }
 
   void _onRewardPress(BuildContext context) async {
@@ -263,27 +244,16 @@ class ProfilePage extends StatelessWidget {
 
     var redeem = await dbRef.query(
       RedeemedRewardInfo.tableName,
-      where: 'studentEmail = ?',
-      whereArgs: [userinfo.email],
+      where: 'studentID = ?',
+      whereArgs: [userinfo.accountID],
     );
 
-    var rewardList = List.generate(res.length, (i) => 
-      RewardInfo(
-        rewardID: res[i]['rewardID'],
-        title: res[i]['title'],
-        desc: res[i]['desc'],
-        cost: res[i]['cost'],
-        hasLimit: res[i]['hasLimit'],
-        redeemLimit: res[i]['redeemLimit'],
-      ),
-    );
-
+    var rewardList = List.generate(res.length, (i) => RewardInfo.fromMap(res[i]));
     List<int> redeemList = List.generate(redeem.length, (i) => redeem[i]['rewardID']);
 
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => StudentRewardPage(
-        userinfo.email, 
-        userinfo.receivedScore - userinfo.deductedScore,
+        userinfo,
         rewardList,
         redeemList,
       ),)

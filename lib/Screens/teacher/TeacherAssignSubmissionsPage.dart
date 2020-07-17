@@ -81,7 +81,7 @@ class TeacherAssignSubmissionsPage extends StatelessWidget {
       DateTime.fromMillisecondsSinceEpoch(assignSInfo[i].submitDate);
     return ListTile(
       title: Text(
-        assignSInfo[i].studentEmail + '\n' + submitDate.year.toString() + '-' +
+        assignSInfo[i].studentID.toString() + '\n' + submitDate.year.toString() + '-' +
           submitDate.month.toString() + '-' + submitDate.day.toString() + ', ' +
           submitDate.hour.toString() + ':' + submitDate.minute.toString(),
       ),

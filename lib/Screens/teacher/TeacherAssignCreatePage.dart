@@ -5,21 +5,23 @@ import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
 
 class TeacherAssignCreatePage extends StatefulWidget {
-  final String courseID, instrEmail;
-  TeacherAssignCreatePage(this.courseID, this.instrEmail);
+  final int instrID;
+  final String courseID;
+  TeacherAssignCreatePage(this.courseID, this.instrID);
 
   @override
   State<TeacherAssignCreatePage> createState() =>
-    _TeacherAssignCreatePageState(courseID, instrEmail);
+    _TeacherAssignCreatePageState(courseID, instrID);
 }
 
 class _TeacherAssignCreatePageState extends State<TeacherAssignCreatePage> {
-  final String courseID, instrEmail;
+  final String courseID;
+  final int instrID;
   final titleController = TextEditingController();
   final contentController = TextEditingController();
   DateTime dueDate = DateTime.now();
 
-  _TeacherAssignCreatePageState(this.courseID, this.instrEmail);
+  _TeacherAssignCreatePageState(this.courseID, this.instrID);
 
   bool isCreated = false;
 
@@ -247,7 +249,7 @@ class _TeacherAssignCreatePageState extends State<TeacherAssignCreatePage> {
         courseID: courseID,
         content: contentController.text,
         dueDate: dueDate.millisecondsSinceEpoch,
-        instrEmail: instrEmail,
+        instrID: instrID,
         maxScore: 100,
       ).toMap(),
       conflictAlgorithm: ConflictAlgorithm.ignore,

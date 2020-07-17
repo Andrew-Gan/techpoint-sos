@@ -6,24 +6,24 @@ import 'dart:math';
 import '../../CreateDB.dart';
 
 class TeacherPeerCreatePage extends StatefulWidget {
-  final String chosenCourseID, instrEmail;
-  final List<String> assignQTitles;
-  TeacherPeerCreatePage(this.chosenCourseID, this.instrEmail, this.assignQTitles);
+  final int instrID;
+  final List<AssignmentQuestionInfo> assignQInfos;
+  TeacherPeerCreatePage(this.instrID, this.assignQInfos);
 
   @override
   State<TeacherPeerCreatePage> createState() =>
-    _TeacherPeerCreatePageState(chosenCourseID, instrEmail, this.assignQTitles);
+    _TeacherPeerCreatePageState(instrID, assignQInfos);
 }
 
 class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
-  final String chosenCourseID, instrEmail;
-  final List<String> assignQTitles;
-  String chosenAssignTitle;
+  int chosenAssignIndex;
+  final int instrID;
+  final List<AssignmentQuestionInfo> assignQInfos;
   int chosenNum;
   DateTime dueDate = DateTime.now();
 
-  _TeacherPeerCreatePageState(this.chosenCourseID, this.instrEmail, this.assignQTitles) {
-    chosenAssignTitle = assignQTitles.first;
+  _TeacherPeerCreatePageState(this.instrID, this.assignQInfos) {
+    chosenAssignIndex = 0;
   }
 
   bool isCreated = false;
@@ -61,15 +61,17 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, top: 5.0),
                   child: DropdownButton(
-                    value: chosenAssignTitle,
-                    items: List.generate(assignQTitles.length, (i) => 
+                    value: assignQInfos[chosenAssignIndex].assignTitle,
+                    items: List.generate(assignQInfos.length, (i) => 
                       DropdownMenuItem(
-                        child: Text(assignQTitles[i].substring(0, min(40, assignQTitles[i].length))),
-                        value: assignQTitles[i],
+                        child: Text(assignQInfos[i].assignTitle
+                          .substring(0, min(40, assignQInfos[i].assignTitle.length))
+                        ),
+                        value: assignQInfos[i].assignTitle,
                       )
                     ),
                     onChanged: (newValue) => 
-                      setState(() => chosenAssignTitle = newValue),
+                      setState(() => chosenAssignIndex = newValue),
                   ),
                 ),
                 Padding(
@@ -251,8 +253,8 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
 
     var res = await dbRef.query(
       AssignmentSubmissionInfo.tableName,
-      where: 'assignTitle = ? AND courseID = ?',
-      whereArgs: [chosenAssignTitle, chosenCourseID],
+      where: 'assignID = ?',
+      whereArgs: [assignQInfos[chosenAssignIndex].assignID],
     );
 
     for(int i = 0; i < res.length; i++) {
@@ -260,12 +262,11 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
         await dbRef.insert(
           PeerReviewInfo.tableName,
           PeerReviewInfo(
-            courseID: chosenCourseID,
-            assignTitle: chosenAssignTitle,
+            submitID: res[i]['submitID'],
             content: null,
-            reviewerEmail: res[i]['studentEmail'],
-            reviewedEmail: res[(i + n) % res.length]['studentEmail'],
-            instrEmail: res[i]['instrEmail'],
+            reviewerID: res[i]['studentID'],
+            reviewedID: res[(i + n) % res.length]['studentID'],
+            instrID: res[i]['instrID'],
             dueDate: dueDate.millisecondsSinceEpoch,
           ).toMap(),
           conflictAlgorithm: ConflictAlgorithm.replace,

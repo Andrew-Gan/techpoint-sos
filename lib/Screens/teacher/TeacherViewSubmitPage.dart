@@ -52,7 +52,7 @@ class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                   child: Text(
-                    assignSInfo.assignTitle,
+                    assignQInfo.assignTitle,
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold
@@ -62,7 +62,7 @@ class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, top: 15.0),
                   child: Text(
-                    assignSInfo.studentEmail,
+                    assignSInfo.studentID.toString(),
                     style: TextStyle(fontSize: 16.0,),
                   ),
                 ),
@@ -177,8 +177,8 @@ class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
 
     var res = await dbRef.query(
       AccountInfo.tableName,
-      where: 'email = ?',
-      whereArgs: [assignSInfo.studentEmail],
+      where: 'accountID = ?',
+      whereArgs: [assignSInfo.studentID],
     );
     AccountInfo studentInfo = AccountInfo.fromMap(res.first);
 
@@ -187,9 +187,8 @@ class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
     dbRef.update(
       AccountInfo.tableName,
       studentInfo.toMap(),
-      where: 'email = ?',
-      whereArgs: [assignSInfo.studentEmail],
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      where: 'accountID = ?',
+      whereArgs: [assignSInfo.studentID],
     );
 
     assignSInfo.recScore = newScore;
@@ -198,9 +197,8 @@ class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
     await dbRef.update(
       AssignmentSubmissionInfo.tableName,
       assignSInfo.toMap(),
-      where: 'assignTitle = ? AND courseID = ? AND studentEmail = ?',
-      whereArgs: [assignSInfo.assignTitle, assignSInfo.courseID, assignSInfo.studentEmail],
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      where: 'submitID = ?',
+      whereArgs: [assignSInfo.submitID],
     );
 
     dbRef.close();

@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 import './PeerReviewPage.dart';
 
 class StudentCoursePage extends StatelessWidget {
-  final String courseID, email;
-  final List<String> assignQTitles, peerReviews;
+  final String courseID;
+  final AccountInfo studentInfo;
+  final List<AssignmentQuestionInfo> assignQInfos;
   final int score;
-  StudentCoursePage(this.email, this.courseID, this.assignQTitles, this.score,
-      this.peerReviews);
+  StudentCoursePage(this.studentInfo, this.courseID, this.assignQInfos, this.score);
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class StudentCoursePage extends StatelessWidget {
                       padding: EdgeInsets.all(0.0),
                       itemBuilder: (context, i) {
                         final index = i ~/ 2;
-                        if (index >= assignQTitles.length) return null;
+                        if (index >= assignQInfos.length) return null;
                         if (i.isOdd) return Divider();
                         return _buildAssignRow(context, index);
                       }),
@@ -89,8 +89,9 @@ class StudentCoursePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
+            List<String> peerReviewTitles = await _queryPeerReviewInfo();
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return PeerReviewPage(email, courseID, assignQTitles);
+              return PeerReviewPage(studentInfo.email, courseID, peerReviewTitles);
             }));
             // Add your onPressed code here!
           },
@@ -102,19 +103,17 @@ class StudentCoursePage extends StatelessWidget {
 
   Widget _buildAssignRow(BuildContext context, int i) {
     return ListTile(
-      title: Text(
-        assignQTitles[i],
-      ),
+      title: Text(assignQInfos[i].assignTitle,),
       trailing: Icon(Icons.chevron_right),
       onTap: () async {
         int now = DateTime.now().millisecondsSinceEpoch;
-        var assignQInfo = await _queryAssignInfo(assignQTitles[i]);
-        var assignSInfo = await _queryAssignSubmits(assignQTitles[i]);
+        var assignQInfo = await _queryAssignInfo(assignQInfos[i].assignID);
+        var assignSInfo = await _queryAssignSubmits(assignQInfos[i].assignID);
         if (assignQInfo.dueDate > now || assignSInfo == null) {
           Navigator.of(context).push(
             MaterialPageRoute(
                 builder: (context) =>
-                    StudentAssignSubmitPage(email, assignQInfo)),
+                    StudentAssignSubmitPage(studentInfo.accountID, assignQInfo)),
           );
         } else {
           Navigator.of(context).push(
@@ -127,7 +126,7 @@ class StudentCoursePage extends StatelessWidget {
     );
   }
 
-  Future<AssignmentQuestionInfo> _queryAssignInfo(String assignTitle) async {
+  Future<AssignmentQuestionInfo> _queryAssignInfo(int assignID) async {
     Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'),
     );
@@ -135,8 +134,8 @@ class StudentCoursePage extends StatelessWidget {
 
     var res = await dbRef.query(
       AssignmentQuestionInfo.tableName,
-      where: 'assignTitle = ? AND courseID = ?',
-      whereArgs: [assignTitle, courseID],
+      where: 'assignID = ?',
+      whereArgs: [assignID],
     );
 
     dbRef.close();
@@ -144,17 +143,17 @@ class StudentCoursePage extends StatelessWidget {
     return AssignmentQuestionInfo.fromMap(res.first);
   }
 
-  Future<AssignmentSubmissionInfo> _queryAssignSubmits(
-      String assignTitle) async {
+  Future<AssignmentSubmissionInfo> _queryAssignSubmits(int assignID) async {
     Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'),
     );
     Database dbRef = await db;
 
-    var res = await dbRef.query(AssignmentSubmissionInfo.tableName,
-        where: 'assignTitle = ? AND courseID = ? AND studentEmail = ?',
-        whereArgs: [assignTitle, courseID, email],
-        orderBy: 'submitDate DESC');
+    var res = await dbRef.query(
+      AssignmentSubmissionInfo.tableName,
+      where: 'assignID = ? AND studentID = ?',
+      whereArgs: [assignID, studentInfo.accountID],
+    );
 
     dbRef.close();
 
@@ -163,5 +162,21 @@ class StudentCoursePage extends StatelessWidget {
     }
 
     return AssignmentSubmissionInfo.fromMap(res.first);
+  }
+
+  Future<List<String>> _queryPeerReviewInfo() async {
+    Future<Database> db = openDatabase(
+      join(await getDatabasesPath(), 'learningApp_database.db')
+    );
+    Database dbRef = await db;
+
+    var res = await dbRef.query(
+      PeerReviewInfo.tableName,
+      where: 'reviewerID = ?',
+      whereArgs: [studentInfo.accountID],
+    );
+
+    List<String> ret = List.generate(res.length, (index) => res[index]['assignTitle']);
+    return ret.toSet().toList();
   }
 }
