@@ -128,13 +128,14 @@ class AssignmentSubmissionInfo implements SQLiteInfo {
 class PeerReviewInfo implements SQLiteInfo {
   static String tableName = 'peerReviews';
   String content;
-  int peerID, submitID, dueDate, reviewerID, reviewedID, instrID;
+  int peerID, assignID, submitID, dueDate, reviewerID, reviewedID, instrID;
 
-  PeerReviewInfo({this.submitID, this.content,
-    this.reviewerID, this.reviewedID, this.instrID, this.dueDate,});
+  PeerReviewInfo({this.submitID, this.content, this.assignID, this.reviewerID,
+    this.reviewedID, this.instrID, this.dueDate,});
   
   PeerReviewInfo.fromMap(Map<String, dynamic> map) {
     this.peerID = map['peerID'];
+    this.assignID = map['assignID'];
     this.submitID = map['submitID'];
     this.content = map['content'];
     this.dueDate = map['dueDate'];
@@ -146,6 +147,7 @@ class PeerReviewInfo implements SQLiteInfo {
   Map<String, dynamic> toMap() {
     return {
       'peerID': peerID,
+      'assignID': assignID,
       'submitID': submitID,
       'content': content,
       'reviewerID': reviewerID,

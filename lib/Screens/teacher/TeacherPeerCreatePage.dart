@@ -262,6 +262,7 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
         await dbRef.insert(
           PeerReviewInfo.tableName,
           PeerReviewInfo(
+            assignID: assignQInfos[chosenAssignIndex].assignID,
             submitID: res[i]['submitID'],
             content: null,
             reviewerID: res[i]['studentID'],
