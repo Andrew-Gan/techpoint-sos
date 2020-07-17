@@ -20,12 +20,12 @@ Coach company: [Dewpoint](https://www.dewpoint.com/)
 ## Tools
 Flutter 1.17.5  
 Android Studio 4.0  
-AVD Android 4.1 and above  
+AVD Android 4.1  
+[xmysql](https://github.com/o1lab/xmysql)
 
 ## Preview
 <kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_login.png" width=200 height=400 /></kbd>
 <kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_profile.png" width=200 height=400 /></kbd>
-<kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_submission.png" width=200 height=400 /></kbd>
 <kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_assignment.png" width=200 height=400 /></kbd>
 
 ## References
@@ -33,3 +33,5 @@ AVD Android 4.1 and above
 [UI interaction and navigation](https://codelabs.developers.google.com/codelabs/first-flutter-app-pt2)  
 [Input fields and design](https://github.com/flutter-devs/flutter_profileview_demo)  
 [SQLite data persistence](https://flutter.dev/docs/cookbook/persistence/sqlite)  
+[Fetch data using http](https://flutter.dev/docs/cookbook/networking/fetch-data)  
+[JSON and serialization](https://flutter.dev/docs/development/data-and-backend/json)  
