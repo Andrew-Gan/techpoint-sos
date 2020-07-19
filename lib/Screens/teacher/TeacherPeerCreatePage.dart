@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:math';
+import 'TeacherPeerPairingPage.dart';
 import '../../CreateDB.dart';
 
 class TeacherPeerCreatePage extends StatefulWidget {
@@ -16,15 +17,14 @@ class TeacherPeerCreatePage extends StatefulWidget {
 }
 
 class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
-  int chosenAssignIndex;
+  int chosenAssignIndex = 0;
+  bool isAutoPairing = true;
   final int instrID;
   final List<AssignmentQuestionInfo> assignQInfos;
-  int chosenNum;
+  int chosenNum = 1;
   DateTime dueDate = DateTime.now();
 
-  _TeacherPeerCreatePageState(this.instrID, this.assignQInfos) {
-    chosenAssignIndex = 0;
-  }
+  _TeacherPeerCreatePageState(this.instrID, this.assignQInfos);
 
   bool isCreated = false;
 
@@ -61,13 +61,13 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, top: 5.0),
                   child: DropdownButton(
-                    value: assignQInfos[chosenAssignIndex].assignTitle,
+                    value:chosenAssignIndex,
                     items: List.generate(assignQInfos.length, (i) => 
                       DropdownMenuItem(
                         child: Text(assignQInfos[i].assignTitle
                           .substring(0, min(40, assignQInfos[i].assignTitle.length))
                         ),
-                        value: assignQInfos[i].assignTitle,
+                        value: i,
                       )
                     ),
                     onChanged: (newValue) => 
@@ -75,7 +75,37 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 25.0, top: 50.0),
+                  padding: EdgeInsets.only(left: 25.0, top: 25.0),
+                  child: Text(
+                    'Pairing mode',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left:25.0, top: 5.0),
+                      child: FlatButton(
+                        child: Text('Auto pairing'),
+                        onPressed: () => setState(() => isAutoPairing = true),
+                        color: isAutoPairing? Colors.blue : null,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left:25.0, top: 5.0),
+                      child: FlatButton(
+                        child: Text('Manual pairing'),
+                        onPressed: () => setState(() => isAutoPairing = false),
+                        color: !isAutoPairing? Colors.blue : null,
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 25.0, top: 25.0),
                   child: Text(
                     'Number of peer reviews',
                     style: TextStyle(
@@ -228,9 +258,9 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
                   ),
                 ),
                 Center(
-                  heightFactor: 4.0,
+                  heightFactor: 3.0,
                   child: OutlineButton(
-                    onPressed: onCreatePress,
+                    onPressed: () => onCreatePress(context),
                     child: Text('CREATE'),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -245,10 +275,10 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
     );
   }
 
-  void onCreatePress() async {
+  void onCreatePress(BuildContext context) async {
+    // query all student submissions
     final Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'));
-
     final Database dbRef = await db;
 
     var res = await dbRef.query(
@@ -257,30 +287,37 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
       whereArgs: [assignQInfos[chosenAssignIndex].assignID],
     );
 
-    for(int i = 0; i < res.length; i++) {
-      for(int n = 1; n < chosenNum + 1; n++) {
-        await dbRef.insert(
-          PeerReviewInfo.tableName,
-          PeerReviewInfo(
-            assignID: assignQInfos[chosenAssignIndex].assignID,
-            submitID: res[i]['submitID'],
-            content: null,
-            reviewerID: res[i]['studentID'],
-            reviewedID: res[(i + n) % res.length]['studentID'],
-            instrID: res[i]['instrID'],
-            dueDate: dueDate.millisecondsSinceEpoch,
-          ).toMap(),
-          conflictAlgorithm: ConflictAlgorithm.replace,
-        );
+    // determine if auto pairing is enabled
+    if(isAutoPairing) {
+      for(int i = 0; i < res.length; i++) {
+        for(int n = 1; n < chosenNum + 1; n++) {
+          await dbRef.insert(
+            PeerReviewInfo.tableName,
+            PeerReviewInfo(
+              assignID: assignQInfos[chosenAssignIndex].assignID,
+              submitID: res[i]['submitID'],
+              content: null,
+              reviewerID: res[i]['studentID'],
+              reviewedID: res[(i + n) % res.length]['studentID'],
+              instrID: res[i]['instrID'],
+              dueDate: dueDate.millisecondsSinceEpoch,
+            ).toMap(),
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+        }
       }
     }
 
-    await dbRef.close();
-    setState(() => isCreated = true);
+    else {
+      var assignSInfos = List.generate(res.length, (i) => 
+        AssignmentSubmissionInfo.fromMap(res[i]));
+      Navigator.push(context, MaterialPageRoute(
+        builder: (context) =>
+        TeacherPeerPairingPage(instrID, assignSInfos, dueDate.millisecondsSinceEpoch)
+      ));
+    }
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
+  void dispose() => super.dispose();
 }

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-const dbUrl = '';
+const dbAddr = '52.204.126.40';
 
 // not all columns must be contained in the classes that represent the table
 

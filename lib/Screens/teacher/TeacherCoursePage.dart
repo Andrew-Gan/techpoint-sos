@@ -60,7 +60,6 @@ class TeacherCoursePage extends StatelessWidget {
                   padding: EdgeInsets.only(left: 25.0, top: 25.0, right: 10.0),
                   height: 380.0,
                   child: ListView.builder(
-                    padding: EdgeInsets.all(0.0),
                     itemBuilder: (context, i) {
                       final index = i ~/ 2;
                       if (index >= assignQInfos.length) return null;
@@ -84,11 +83,14 @@ class TeacherCoursePage extends StatelessWidget {
                       ),
                       OutlineButton(
                         child: Text('Add peer review'),
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) =>
-                            TeacherPeerCreatePage(instrID, assignQInfos)
-                          )
-                        ),
+                        onPressed: () {
+                          if(assignQInfos.length == 0) return;
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) =>
+                              TeacherPeerCreatePage(instrID, assignQInfos)
+                            )
+                          );
+                        }
                       ),
                     ],
                   ),
