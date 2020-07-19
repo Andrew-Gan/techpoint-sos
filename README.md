@@ -21,7 +21,9 @@ Coach company: [Dewpoint](https://www.dewpoint.com/)
 Flutter 1.17.5  
 Android Studio 4.0  
 AVD Android 4.1  
-[xmysql](https://github.com/o1lab/xmysql)
+mySQL Workbench  
+REST API  
+[DreamFactory](https://www.dreamfactory.com/)
 
 ## Preview
 <kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_login.png" width=200 height=400 /></kbd>
@@ -35,3 +37,4 @@ AVD Android 4.1
 [SQLite data persistence](https://flutter.dev/docs/cookbook/persistence/sqlite)  
 [Fetch data using http](https://flutter.dev/docs/cookbook/networking/fetch-data)  
 [JSON and serialization](https://flutter.dev/docs/development/data-and-backend/json)  
+[HTTP status codes](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#1xx_Informational_response)  
