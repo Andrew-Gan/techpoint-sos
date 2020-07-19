@@ -2,7 +2,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:learningApp/CreateDB.dart';
 
 // constant strings used for http requests
 final serverDomain = 'purdueuniversity.apps.dreamfactory.com';
@@ -30,7 +29,7 @@ void restInit() {
 
 
 // request session token using provided credentials. Return null if invalid
-Future<AccountInfo> restLogin(String email, String password) async {
+Future<Map<String, dynamic>> restLogin(String email, String password) async {
   if(!_isInit) restInit();
   apiKey = await _storage.read(key: 'api_key');
 
@@ -66,8 +65,8 @@ Future<AccountInfo> restLogin(String email, String password) async {
 
   if(response.statusCode >= 200 && response.statusCode < 300) {
     jwToken = json.decode(response.body)['session_token'];
-    var map = await restQuery(AccountInfo.tableName, '*', 'email=$email&password=$password');
-    return AccountInfo.fromMap(map);
+    var map = await restQuery('accounts', '*', 'email=$email&password=$password');
+    return map;
   }
   
   return null;
