@@ -6,6 +6,7 @@ import '../../CreateDB.dart';
 import 'StudentAssignSubmitPage.dart';
 import 'StudentAssignReviewPage.dart';
 import 'package:flutter/material.dart';
+import './PeerReviewAssignSubmit.dart';
 
 class PeerReviewPage extends StatefulWidget {
   final String email;
@@ -91,6 +92,11 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
         var peerReviewInfo = await _queryPeerReviewInfo(peerReviews[i]);
         if (peerReviewInfo.first.dueDate > now) {
           // call Abdullah's peer review submissions page
+          () async {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return PeerReviewSubmitPage(email, peerReviewInfo[i]);
+            }));
+          };
         } else {
           // call peer review outcome page
         }
@@ -110,8 +116,7 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
     );
 
     return List.generate(
-        res.length,
-        (index) => PeerReviewInfo.fromMap(res[index]));
+        res.length, (index) => PeerReviewInfo.fromMap(res[index]));
   }
 
   Future<AssignmentSubmissionInfo> _queryAssignSubmits(
