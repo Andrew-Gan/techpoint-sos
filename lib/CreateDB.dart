@@ -1,4 +1,4 @@
-// not all columns must be contained in the classes that represent the table
+// auto increment primary keys are not included in toMap()
 // all time entries are stored as milliseconds since unix epoch time
 
 abstract class SQLiteInfo {
@@ -41,7 +41,6 @@ class AccountInfo implements SQLiteInfo {
 
   Map<String, dynamic> toMap() {
     return {
-      'accountID': accountID,
       'name': name,
       'email': email,
       'password': password,
@@ -76,7 +75,6 @@ class AssignmentQuestionInfo implements SQLiteInfo {
 
   Map<String, dynamic> toMap() {
     return {
-      'assignID': assignID,
       'assignTitle': assignTitle,
       'courseID': courseID,
       'content': content,
@@ -92,8 +90,8 @@ class AssignmentSubmissionInfo implements SQLiteInfo {
   String content, remarks, courseID;
   int submitID, assignID, submitDate, studentID, recScore;
 
-  AssignmentSubmissionInfo({this.assignID, this.courseID, this.studentID, this.content,
-    this.submitDate, this.recScore, this.remarks,});
+  AssignmentSubmissionInfo({this.assignID, this.courseID, this.studentID,
+    this.content, this.submitDate, this.recScore, this.remarks,});
 
   AssignmentSubmissionInfo.fromMap(Map<String, dynamic> map) {
     this.courseID = map['courseID'];
@@ -108,7 +106,6 @@ class AssignmentSubmissionInfo implements SQLiteInfo {
 
   Map<String, dynamic> toMap() {
     return {
-      'submitID': submitID,
       'assignID': assignID,
       'content': content,
       'submitDate': submitDate,
@@ -141,7 +138,6 @@ class PeerReviewInfo implements SQLiteInfo {
   
   Map<String, dynamic> toMap() {
     return {
-      'peerID': peerID,
       'assignID': assignID,
       'submitID': submitID,
       'content': content,
@@ -172,7 +168,6 @@ class RewardInfo implements SQLiteInfo {
   
   Map<String, dynamic> toMap() {
     return {
-      'rewardID': rewardID,
       'title': title,
       'desc': desc,
       'cost': cost,
@@ -197,7 +192,6 @@ class RedeemedRewardInfo implements SQLiteInfo {
 
   Map<String, dynamic> toMap() {
     return {
-      'redeemedID': redeemedID,
       'rewardID': rewardID,
       'studentID': studentID,
       'redeemDate': redeemDate,

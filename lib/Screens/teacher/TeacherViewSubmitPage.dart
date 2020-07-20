@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
+import '../../REST_API.dart';
 
 class TeacherViewSubmitPage extends StatefulWidget {
   final AssignmentQuestionInfo assignQInfo;
@@ -167,43 +165,33 @@ class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
   }
 
   void onUpdatePress() async {
-    final Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'));
+    // final Future<Database> db = openDatabase(
+    //   join(await getDatabasesPath(), 'learningApp_database.db'));
 
-    final Database dbRef = await db;
+    // final Database dbRef = await db;
 
-    // update student accumulated score
-    // account for difference between previous score and new score
+    // var res = await dbRef.query(
+    //   AccountInfo.tableName,
+    //   where: 'accountID = ?',
+    //   whereArgs: [assignSInfo.studentID],
+    // );
+    int accountID = assignSInfo.studentID;
+    var map = await restQuery(AccountInfo.tableName, '*', 'accountID=$accountID');
 
-    var res = await dbRef.query(
-      AccountInfo.tableName,
-      where: 'accountID = ?',
-      whereArgs: [assignSInfo.studentID],
-    );
-    AccountInfo studentInfo = AccountInfo.fromMap(res.first);
-
+    AccountInfo studentInfo = AccountInfo.fromMap(map.first);
     studentInfo.receivedScore += (newScore - assignSInfo.recScore);
 
-    dbRef.update(
-      AccountInfo.tableName,
-      studentInfo.toMap(),
-      where: 'accountID = ?',
-      whereArgs: [assignSInfo.studentID],
-    );
+    await restUpdate(AccountInfo.tableName, 'accountID=$accountID',
+      studentInfo.toMap());
 
     assignSInfo.recScore = newScore;
     assignSInfo.remarks = remarksController.text;
     
-    await dbRef.update(
-      AssignmentSubmissionInfo.tableName,
-      assignSInfo.toMap(),
-      where: 'submitID = ?',
-      whereArgs: [assignSInfo.submitID],
-    );
+    int submitID = assignSInfo.submitID;
+    bool graded = await restUpdate(AssignmentSubmissionInfo.tableName,
+      'submitID=$submitID', assignSInfo.toMap());
 
-    dbRef.close();
-
-    setState(() => isGraded = true);
+    setState(() => isGraded = graded);
   }
 
   @override

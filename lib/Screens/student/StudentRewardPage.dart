@@ -111,14 +111,14 @@ class _StudentRewardPageState extends State<StudentRewardPage> {
     // deduct from student score and update row
     studentInfo.deductedScore += reward.cost;
     int accountID = studentInfo.accountID;
-    restUpdate(AccountInfo.tableName, 'accountID=$accountID', studentInfo.toMap());
+    await restUpdate(AccountInfo.tableName, 'accountID=$accountID', studentInfo.toMap());
 
     var map = RedeemedRewardInfo(
       rewardID: reward.rewardID,
       studentID: studentInfo.accountID,
       redeemDate: DateTime.now().millisecondsSinceEpoch,
     ).toMap();
-    restInsert(RedeemedRewardInfo.tableName, map);
+    await restInsert(RedeemedRewardInfo.tableName, map);
 
     redeems.add(reward.rewardID);
     setState(() {

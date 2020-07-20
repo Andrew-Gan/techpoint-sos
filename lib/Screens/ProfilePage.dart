@@ -13,6 +13,8 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int numCourses = userinfo.regCourse == null ? 0 : userinfo.regCourse.split(',').length;
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -144,7 +146,7 @@ class ProfilePage extends StatelessWidget {
                     padding: EdgeInsets.all(0.0),
                     itemBuilder: (context, i) {
                       final index = i ~/ 2;
-                      if (index >= userinfo.regCourse.split(',').length)
+                      if (index >= numCourses)
                         return null;
                       if (i.isOdd) return Divider();
                       return _buildRow(context, index);
@@ -186,7 +188,8 @@ class ProfilePage extends StatelessWidget {
   }
 
   Future<List<AssignmentQuestionInfo>> _queryAssignmentInfos(String courseID) async {
-    var map = await restQuery(AssignmentQuestionInfo.tableName, '*', 'courseID=$courseID');
+    var map = await restQuery(AssignmentQuestionInfo.tableName, '*', 
+      'courseID=$courseID');
 
     List<AssignmentQuestionInfo> queryRes = List.generate(
       map.length,
@@ -199,7 +202,8 @@ class ProfilePage extends StatelessWidget {
   Future<int> _queryCourseScore(String courseID) async {
     int sum = 0, studentID = userinfo.accountID;
 
-    var map = await restQuery(AssignmentSubmissionInfo.tableName, 'recScore', 'studentID=$studentID&courseID=$courseID');
+    var map = await restQuery(AssignmentSubmissionInfo.tableName, 'recScore',
+      'studentID=$studentID&courseID=$courseID');
     for(int i = 0; i < map.length; i++) sum += map[i]['recScore'];
     
     return sum;
@@ -207,11 +211,18 @@ class ProfilePage extends StatelessWidget {
 
   void _onRewardPress(BuildContext context) async {
     var rewards = await restQuery(RewardInfo.tableName, '*', '');
-    List<RewardInfo> rewardList = List.generate(rewards.length, (i) => RewardInfo.fromMap(rewards[i]));
+    List<RewardInfo> rewardList = List.generate(
+      rewards.length, 
+      (i) => RewardInfo.fromMap(rewards[i])
+    );
 
     var studentID = userinfo.accountID;
-    var redeems = await restQuery(RedeemedRewardInfo.tableName, 'rewardID', 'studentID=$studentID');
-    List<int> redeemList = List.generate(redeems.length, (i) => redeems[i]['rewardID']);
+    var redeems = await restQuery(RedeemedRewardInfo.tableName, 'rewardID', 
+      'studentID=$studentID');
+    List<int> redeemList = List.generate(
+      redeems.length, 
+      (i) => redeems[i]['rewardID']
+    );
 
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => StudentRewardPage(

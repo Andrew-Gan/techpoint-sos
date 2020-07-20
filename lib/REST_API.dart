@@ -108,7 +108,8 @@ Future<bool> restInsert(String tableName, Map<String, dynamic> map) async {
 Future<bool> restUpdate(String tableName, String filter, Map<String, dynamic> map) async {
   if(!_isInit) restInit();
   var response = await http.put(
-    Uri.https(serverDomain, '/api/v2/db/_table/$tableName?filter=$filter'),
+    Uri.encodeFull('https://' + serverDomain +
+      '/api/v2/db/_table/$tableName?filter=$filter'),
     headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
@@ -117,6 +118,8 @@ Future<bool> restUpdate(String tableName, String filter, Map<String, dynamic> ma
     },
     body: json.encode({"resource":map}),
   );
+
+  print(response.body);
 
   if(response.statusCode >= 200 && response.statusCode < 300) return true;
   return false;

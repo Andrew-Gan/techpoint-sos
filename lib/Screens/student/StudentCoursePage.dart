@@ -124,14 +124,16 @@ class StudentCoursePage extends StatelessWidget {
   }
 
   Future<AssignmentQuestionInfo> _queryAssignInfo(int assignID) async {
-    var map = await restQuery(AssignmentQuestionInfo.tableName, '*', 'assignID=$assignID');
+    var map = await restQuery(AssignmentQuestionInfo.tableName, '*',
+      'assignID=$assignID');
 
     return AssignmentQuestionInfo.fromMap(map.first);
   }
 
   Future<AssignmentSubmissionInfo> _queryAssignSubmits(int assignID) async {
     int accountID = studentInfo.accountID;
-    var map = await restQuery(AssignmentSubmissionInfo.tableName, '*', 'assignID=$assignID&studentID=$accountID');
+    var map = await restQuery(AssignmentSubmissionInfo.tableName, '*',
+      'assignID=$assignID&studentID=$accountID');
 
     if (map.length < 1) return null;
     return AssignmentSubmissionInfo.fromMap(map.first);
@@ -139,9 +141,13 @@ class StudentCoursePage extends StatelessWidget {
 
   Future<List<String>> _queryPeerReviewInfo() async {
     int reviewerID = studentInfo.accountID;
-    var map = await restQuery(PeerReviewInfo.tableName, 'assignTitle', 'reviewerID=$reviewerID');
+    var map = await restQuery(PeerReviewInfo.tableName, 'assignTitle',
+      'reviewerID=$reviewerID');
     
-    List<String> ret = List.generate(map.length, (index) => map[index]['assignTitle']);
+    List<String> ret = List.generate(
+      map.length, 
+      (index) => map[index]['assignTitle']
+    );
     return ret.toSet().toList();
   }
 }

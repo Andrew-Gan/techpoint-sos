@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
+import '../../REST_API.dart';
 
 class TeacherPeerPairingPage extends StatefulWidget {
   final int instrID;
@@ -162,41 +160,31 @@ class _TeacherPeerPairingPageState extends State<TeacherPeerPairingPage> {
   }
 
   void onConfirm() async {
-    Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'),
-    );
-    Database dbRef = await db;
-
+    bool success = false;
     for(int i = 0; i < pairs.length; i++) {
-      dbRef.insert(
-        PeerReviewInfo.tableName,
-        PeerReviewInfo(
-          submitID: pairs[i][0].submitID,
-          content: null,
-          assignID: pairs[i][0].assignID,
-          reviewerID: pairs[i][1].studentID,
-          reviewedID: pairs[i][0].studentID,
-          instrID: instrID,
-          dueDate: dueDate,
-        ).toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-      dbRef.insert(
-        PeerReviewInfo.tableName,
-        PeerReviewInfo(
-          submitID: pairs[i][1].submitID,
-          content: null,
-          assignID: pairs[i][1].assignID,
-          reviewerID: pairs[i][0].studentID,
-          reviewedID: pairs[i][1].studentID,
-          instrID: instrID,
-          dueDate: dueDate,
-        ).toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
+      var map1 = PeerReviewInfo(
+        submitID: pairs[i][0].submitID,
+        content: null,
+        assignID: pairs[i][0].assignID,
+        reviewerID: pairs[i][1].studentID,
+        reviewedID: pairs[i][0].studentID,
+        instrID: instrID,
+        dueDate: dueDate,
+      ).toMap();
+      await restInsert(PeerReviewInfo.tableName, map1);
+
+      var map2 = PeerReviewInfo(
+        submitID: pairs[i][1].submitID,
+        content: null,
+        assignID: pairs[i][1].assignID,
+        reviewerID: pairs[i][0].studentID,
+        reviewedID: pairs[i][1].studentID,
+        instrID: instrID,
+        dueDate: dueDate,
+      ).toMap();
+      success = await restInsert(PeerReviewInfo.tableName, map2);
     }
-    await dbRef.close();
-    setState(() => isSuccess = true);
+    setState(() => isSuccess = success);
   }
 
   @override

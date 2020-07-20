@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'dart:math';
 import 'TeacherPeerPairingPage.dart';
 import '../../CreateDB.dart';
+import '../../REST_API.dart';
 
 class TeacherPeerCreatePage extends StatefulWidget {
   final int instrID;
@@ -276,41 +274,31 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
   }
 
   void onCreatePress(BuildContext context) async {
-    // query all student submissions
-    final Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'));
-    final Database dbRef = await db;
-
-    var res = await dbRef.query(
-      AssignmentSubmissionInfo.tableName,
-      where: 'assignID = ?',
-      whereArgs: [assignQInfos[chosenAssignIndex].assignID],
-    );
+    int assignID = assignQInfos[chosenAssignIndex].assignID;
+    var map = await restQuery(AssignmentSubmissionInfo.tableName, '*',
+      'assignID=$assignID');
 
     // determine if auto pairing is enabled
     if(isAutoPairing) {
-      for(int i = 0; i < res.length; i++) {
+      for(int i = 0; i < map.length; i++) {
         for(int n = 1; n < chosenNum + 1; n++) {
-          await dbRef.insert(
-            PeerReviewInfo.tableName,
-            PeerReviewInfo(
+            var obj = PeerReviewInfo(
               assignID: assignQInfos[chosenAssignIndex].assignID,
-              submitID: res[i]['submitID'],
+              submitID: map[i]['submitID'],
               content: null,
-              reviewerID: res[i]['studentID'],
-              reviewedID: res[(i + n) % res.length]['studentID'],
-              instrID: res[i]['instrID'],
+              reviewerID: map[i]['studentID'],
+              reviewedID: map[(i + n) % map.length]['studentID'],
+              instrID: map[i]['instrID'],
               dueDate: dueDate.millisecondsSinceEpoch,
-            ).toMap(),
-            conflictAlgorithm: ConflictAlgorithm.replace,
-          );
+            ).toMap();
+            await restInsert(PeerReviewInfo.tableName, obj);
         }
       }
     }
 
     else {
-      var assignSInfos = List.generate(res.length, (i) => 
-        AssignmentSubmissionInfo.fromMap(res[i]));
+      var assignSInfos = List.generate(map.length, (i) => 
+        AssignmentSubmissionInfo.fromMap(map[i]));
       Navigator.push(context, MaterialPageRoute(
         builder: (context) =>
         TeacherPeerPairingPage(instrID, assignSInfos, dueDate.millisecondsSinceEpoch)

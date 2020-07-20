@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
+import '../../REST_API.dart';
 
 class TeacherAssignCreatePage extends StatefulWidget {
   final int instrID;
@@ -236,27 +234,18 @@ class _TeacherAssignCreatePageState extends State<TeacherAssignCreatePage> {
 
   void onCreatePress() async {
     if(titleController.text == '' || contentController.text == '') return;
+    
+    var map = AssignmentQuestionInfo(
+      assignTitle: titleController.text,
+      courseID: courseID,
+      content: contentController.text,
+      dueDate: dueDate.millisecondsSinceEpoch,
+      instrID: instrID,
+      maxScore: 100,
+    ).toMap();
+    bool created = await restInsert(AssignmentQuestionInfo.tableName, map);
 
-    final Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'));
-
-    final Database dbRef = await db;
-
-    await dbRef.insert(
-      AssignmentQuestionInfo.tableName,
-      AssignmentQuestionInfo(
-        assignTitle: titleController.text,
-        courseID: courseID,
-        content: contentController.text,
-        dueDate: dueDate.millisecondsSinceEpoch,
-        instrID: instrID,
-        maxScore: 100,
-      ).toMap(),
-      conflictAlgorithm: ConflictAlgorithm.ignore,
-    );
-    dbRef.close();
-
-    setState(() => isCreated = true);
+    setState(() => isCreated = created);
   }
 
   @override

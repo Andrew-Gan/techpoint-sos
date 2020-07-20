@@ -1,13 +1,10 @@
 import '../../CreateDB.dart';
+import '../../REST_API.dart';
 import 'TeacherAssignUpdatePage.dart';
 import 'TeacherAssignCreatePage.dart';
 import 'TeacherPeerCreatePage.dart';
 import 'TeacherAssignSubmissionsPage.dart';
 import 'package:flutter/material.dart';
-
-import 'dart:async';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 
 class TeacherCoursePage extends StatelessWidget {
   final String courseID;
@@ -144,20 +141,11 @@ class TeacherCoursePage extends StatelessWidget {
   }
 
   Future<AssignmentQuestionInfo> _queryAssignInfo(int assignID) async {
-    Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'),
-    );
-    Database dbRef = await db;
+    var map = await restQuery(AssignmentQuestionInfo.tableName, '*',
+      'assignID=$assignID');
 
-    var res = await dbRef.query(
-      AssignmentQuestionInfo.tableName,
-      where: 'assignID = ?',
-      whereArgs: [assignID],
-    );
-    dbRef.close();
-
-    var queryRes = List.generate(res.length, (i) {
-      return AssignmentQuestionInfo.fromMap(res[i]);
+    var queryRes = List.generate(map.length, (i) {
+      return AssignmentQuestionInfo.fromMap(map[i]);
     });
 
     return queryRes.first;
@@ -165,21 +153,11 @@ class TeacherCoursePage extends StatelessWidget {
 
   Future<List<AssignmentSubmissionInfo>> 
   _queryAssignSubmits(AssignmentQuestionInfo assignQInfos) async {
-    final Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'),
-    );
+    int assignID = assignQInfos.assignID;
+    var map = await restQuery(AssignmentSubmissionInfo.tableName, '*', 'assignID=$assignID');
 
-    final Database dbRef = await db;
-    final List<Map<String, dynamic>> res = await dbRef.query(
-      AssignmentSubmissionInfo.tableName,
-      distinct: true,
-      where: 'assignID = ?',
-      whereArgs: [assignQInfos.assignID],
-    );
-    dbRef.close();
-
-    List<AssignmentSubmissionInfo> queryRes = List.generate(res.length, (i) => 
-      AssignmentSubmissionInfo.fromMap(res[i]));
+    List<AssignmentSubmissionInfo> queryRes = List.generate(map.length, (i) => 
+      AssignmentSubmissionInfo.fromMap(map[i]));
 
     return queryRes;
   }

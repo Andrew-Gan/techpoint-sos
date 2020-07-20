@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:learningApp/REST_API.dart';
 import '../../CreateDB.dart';
 
 class TeacherAssignUpdatePage extends StatefulWidget {
@@ -237,23 +235,14 @@ class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
   }
 
   void onUpdatePress() async {
-    final Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'));
-
-    final Database dbRef = await db;
-
     assignQInfo.content = contentController.text;
     assignQInfo.dueDate = dueDate.millisecondsSinceEpoch;
 
-    await dbRef.update(
-      AssignmentQuestionInfo.tableName,
-      assignQInfo.toMap(),
-      where: 'assignTitle = ? AND courseID = ?',
-      whereArgs: [assignQInfo.assignTitle, assignQInfo.courseID],
-    );
-    dbRef.close();
+    int assignID = assignQInfo.assignID;
+    bool updated = await restUpdate(AssignmentQuestionInfo.tableName, 'assignID=$assignID',
+      assignQInfo.toMap());
 
-    setState(() => isUpdated = true);
+    setState(() => isUpdated = updated);
   }
 
   @override
