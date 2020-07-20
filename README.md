@@ -12,7 +12,7 @@ Kelly Schafka, Eric Freiman, Chris Weiss
 Coach company: [Dewpoint](https://www.dewpoint.com/)  
 
 ## Tools
-[Flutter](https://flutter.dev/docs) 1.17.5
+[Flutter](https://flutter.dev/docs) 1.17.5  
 [Android Studio](https://developer.android.com/studio) 4.0  
 AVD Android 4.1  
 [mySQL Workbench](https://www.mysql.com/products/workbench/)  
@@ -37,7 +37,7 @@ You may require a second run while the emulator is being booted for the first ti
 You may refer to this [guide](https://developer.android.com/studio/debug/dev-options)  
 3. Select the android device in the drop down menu.  
 
-Note: troubleshooting by running the 'flutter doctor -v' command in the terminal.  
+Note: troubleshoot by running the 'flutter doctor -v' command in the terminal.  
 
 ## Preview
 <kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_login.png" width=200 height=400 /></kbd>
