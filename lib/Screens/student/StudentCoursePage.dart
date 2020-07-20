@@ -132,8 +132,9 @@ class StudentCoursePage extends StatelessWidget {
 
   Future<AssignmentSubmissionInfo> _queryAssignSubmits(int assignID) async {
     int accountID = studentInfo.accountID;
+    
     var map = await restQuery(AssignmentSubmissionInfo.tableName, '*',
-      'assignID=$assignID&studentID=$accountID');
+      'studentID=$accountID&assignID=$assignID');
 
     if (map.length < 1) return null;
     return AssignmentSubmissionInfo.fromMap(map.first);
@@ -148,6 +149,7 @@ class StudentCoursePage extends StatelessWidget {
       map.length, 
       (index) => map[index]['assignTitle']
     );
+    
     return ret.toSet().toList();
   }
 }

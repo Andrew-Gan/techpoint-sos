@@ -288,10 +288,12 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
               content: null,
               reviewerID: map[i]['studentID'],
               reviewedID: map[(i + n) % map.length]['studentID'],
-              instrID: map[i]['instrID'],
+              instrID: instrID,
               dueDate: dueDate.millisecondsSinceEpoch,
             ).toMap();
-            await restInsert(PeerReviewInfo.tableName, obj);
+            if(await restInsert(PeerReviewInfo.tableName, obj)) {
+              setState(() => isCreated = true);
+            }
         }
       }
     }
