@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'ProfilePage.dart';
 import '../CreateDB.dart';
+import '../REST_API.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -20,38 +18,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // createDB();
-    void onLoginPress() async {
-      final Future<Database> db = openDatabase(
-        join(await getDatabasesPath(), 'learningApp_database.db'),
-      );
-
-      final Database dbRef = await db; // capture a reference of the future type
-      final List<Map<String, dynamic>> res = await dbRef.query(
-        AccountInfo.tableName,
-        distinct: true,
-        where: 'email = ? AND password = ?',
-        whereArgs: [emailController.text, passwordController.text],
-      );
-      List<AccountInfo> queryRes = List.generate(res.length, (i) => 
-        AccountInfo.fromMap(res[i]));
-
-      dbRef.close();
-      emailController.clear();
-      passwordController.clear();
-
-      if (queryRes.length == 0)
-        setState(() => isInvalid = true);
-      else {
-        setState(() => isInvalid = false);
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) =>
-            ProfilePage(queryRes.first),
-          )
-        );
-      }
-    }
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -136,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
             Center(
               heightFactor: 2,
               child: OutlineButton(
-                onPressed: onLoginPress,
+                onPressed: () => onLoginPress(context),
                 child: Text('LOGIN'),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
@@ -146,6 +112,25 @@ class _LoginPageState extends State<LoginPage> {
         ),
       )
     );
+  }
+
+  void onLoginPress(BuildContext context) async {
+    var map = await restLogin(emailController.text, passwordController.text);
+    
+    emailController.clear();
+    passwordController.clear();
+
+    if (map == null)
+      setState(() => isInvalid = true);
+    else {
+      AccountInfo userInfo = AccountInfo.fromMap(map);
+      setState(() => isInvalid = false);
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) =>
+          ProfilePage(userInfo),
+        )
+      );
+    }
   }
 
   @override

@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
+import '../../REST_API.dart';
 
 class StudentRewardPage extends StatefulWidget {
   final AccountInfo studentInfo;
@@ -104,10 +102,6 @@ class _StudentRewardPageState extends State<StudentRewardPage> {
     // do nothing if user already claimed reward
     if(redeems.contains(reward.rewardID)) return;
 
-    final Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'));
-    final Database dbRef = await db;
-
     // display error message if student has insufficient score
     if((studentInfo.receivedScore - studentInfo.deductedScore) < reward.cost) {
       setState(() => isInsufficient = true);
@@ -116,26 +110,17 @@ class _StudentRewardPageState extends State<StudentRewardPage> {
 
     // deduct from student score and update row
     studentInfo.deductedScore += reward.cost;
-    await dbRef.update(
-      AccountInfo.tableName,
-      studentInfo.toMap(),
-      where: 'accountID = ?',
-      whereArgs: [studentInfo.accountID],
-    );
+    int accountID = studentInfo.accountID;
+    restUpdate(AccountInfo.tableName, 'accountID=$accountID', studentInfo.toMap());
 
-    // register score transaction to database
-    await dbRef.insert(
-      RedeemedRewardInfo.tableName,
-      RedeemedRewardInfo(
-        rewardID: reward.rewardID,
-        studentID: studentInfo.accountID,
-        redeemDate: DateTime.now().millisecondsSinceEpoch,
-      ).toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    var map = RedeemedRewardInfo(
+      rewardID: reward.rewardID,
+      studentID: studentInfo.accountID,
+      redeemDate: DateTime.now().millisecondsSinceEpoch,
+    ).toMap();
+    restInsert(RedeemedRewardInfo.tableName, map);
 
     redeems.add(reward.rewardID);
-    dbRef.close();
     setState(() {
       isInsufficient = false;
       setState(() => points -= reward.cost);

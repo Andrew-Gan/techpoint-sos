@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 
 // constant strings used for http requests
 final serverDomain = 'purdueuniversity.apps.dreamfactory.com';
-final httpAPIKeyMatchString = 'X-DreamFactory-API-Key';
-final httpJWTokenMatchString = 'X-DreamFactory-Session-Token';
+final apiKeyMatchString = 'X-DreamFactory-API-Key';
+final jwTokenMatchString = 'X-DreamFactory-Session-Token';
 
 // api key and session token obtained from login
 String apiKey;
@@ -27,7 +27,6 @@ void restInit() {
   _isInit = true;
 }
 
-
 // request session token using provided credentials. Return null if invalid
 Future<Map<String, dynamic>> restLogin(String email, String password) async {
   if(!_isInit) restInit();
@@ -36,13 +35,12 @@ Future<Map<String, dynamic>> restLogin(String email, String password) async {
   var response = await http.post(
     Uri.https(serverDomain, '/api/v2/user/session'),
     headers: {
-      'Content-type': 'application/json',
       'Accept': 'application/json',
-      httpAPIKeyMatchString: apiKey,
+      apiKeyMatchString: apiKey,
     },
     body: {
-    'email' : email,
-    'password' : password,
+      'email' : email,
+      'password' : password,
     }
   );
 
@@ -51,9 +49,8 @@ Future<Map<String, dynamic>> restLogin(String email, String password) async {
     var newResp = await http.post(
       Uri.https(newUrl, '/api/v2/user/session'),
       headers: {
-        'Content-type': 'application/json',
         'Accept': 'application/json',
-        httpAPIKeyMatchString: apiKey,
+        apiKeyMatchString: apiKey,
       },
       body: {
         'email' : email,
@@ -66,7 +63,7 @@ Future<Map<String, dynamic>> restLogin(String email, String password) async {
   if(response.statusCode >= 200 && response.statusCode < 300) {
     jwToken = json.decode(response.body)['session_token'];
     var map = await restQuery('accounts', '*', 'email=$email&password=$password');
-    return map;
+    return map[0];
   }
   
   return null;
@@ -74,13 +71,14 @@ Future<Map<String, dynamic>> restLogin(String email, String password) async {
 
 // terminate user token session
 Future<bool> restLogout() async {
+  if(!_isInit) restInit();
   var response = await http.delete(
     Uri.https(serverDomain, '/api/v2/user/session'),
     headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      httpAPIKeyMatchString : apiKey,
-      httpJWTokenMatchString : jwToken,
+      apiKeyMatchString : apiKey,
+      jwTokenMatchString : jwToken,
     },
   );
 
@@ -90,13 +88,14 @@ Future<bool> restLogout() async {
 
 // performs sql.insert via http POST request. Return false if insertion failed
 Future<bool> restInsert(String tableName, Map<String, dynamic> map) async {
+  if(!_isInit) restInit();
   var response = await http.post(
-    Uri.https('purdueuniversity.apps.dreamfactory.com', '/api/v2/db/_table/$tableName'),
+    Uri.https(serverDomain, '/api/v2/db/_table/$tableName'),
     headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      httpAPIKeyMatchString: apiKey,
-      httpJWTokenMatchString: jwToken
+      apiKeyMatchString: apiKey,
+      jwTokenMatchString: jwToken
     },
     body: json.encode({"resource":map}),
   );
@@ -107,13 +106,14 @@ Future<bool> restInsert(String tableName, Map<String, dynamic> map) async {
 
 // performs sql.update via http PUT request. Return false if update failed
 Future<bool> restUpdate(String tableName, String filter, Map<String, dynamic> map) async {
+  if(!_isInit) restInit();
   var response = await http.put(
-    Uri.https('purdueuniversity.apps.dreamfactory.com', '/api/v2/db/_table/$tableName?filter=$filter'),
+    Uri.https(serverDomain, '/api/v2/db/_table/$tableName?filter=$filter'),
     headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      'X-DreamFactory-API-Key': apiKey,
-      'X-DreamFactory-Session-Token': jwToken,
+      apiKeyMatchString: apiKey,
+      jwTokenMatchString: jwToken,
     },
     body: json.encode({"resource":map}),
   );
@@ -123,16 +123,17 @@ Future<bool> restUpdate(String tableName, String filter, Map<String, dynamic> ma
 }
 
 // performs sql.query via http GET request. Return null if query failed
-Future<Map<String, dynamic>> restQuery(String tableName, String fields, String filter) async {
-  var queryResp = await http.get(
+Future<List<dynamic>> restQuery(String tableName, String fields, String filter) async {
+  if(!_isInit) restInit();
+  var response = await http.get(
     Uri.encodeFull('https://' + serverDomain + '/api/v2/db/_table'
                    '/$tableName?fields=$fields&filter=$filter'),
     headers: {
-      httpAPIKeyMatchString : apiKey,
-      httpJWTokenMatchString : jwToken,
+      apiKeyMatchString : apiKey,
+      jwTokenMatchString : jwToken,
     }
   );
-
-  if(queryResp.statusCode < 200 || queryResp.statusCode > 299) return null;
-  return json.decode(queryResp.body);
+  
+  if(response.statusCode < 200 || response.statusCode > 299) return List<dynamic>();
+  return json.decode(response.body)['resource'];
 }

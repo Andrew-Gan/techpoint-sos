@@ -1,12 +1,9 @@
-import 'dart:async';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-
 import '../../CreateDB.dart';
 import 'StudentAssignSubmitPage.dart';
 import 'StudentAssignReviewPage.dart';
 import 'package:flutter/material.dart';
 import './PeerReviewPage.dart';
+import '../../REST_API.dart';
 
 class StudentCoursePage extends StatelessWidget {
   final String courseID;
@@ -127,56 +124,24 @@ class StudentCoursePage extends StatelessWidget {
   }
 
   Future<AssignmentQuestionInfo> _queryAssignInfo(int assignID) async {
-    Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'),
-    );
-    Database dbRef = await db;
+    var map = await restQuery(AssignmentQuestionInfo.tableName, '*', 'assignID=$assignID');
 
-    var res = await dbRef.query(
-      AssignmentQuestionInfo.tableName,
-      where: 'assignID = ?',
-      whereArgs: [assignID],
-    );
-
-    dbRef.close();
-
-    return AssignmentQuestionInfo.fromMap(res.first);
+    return AssignmentQuestionInfo.fromMap(map.first);
   }
 
   Future<AssignmentSubmissionInfo> _queryAssignSubmits(int assignID) async {
-    Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'),
-    );
-    Database dbRef = await db;
+    int accountID = studentInfo.accountID;
+    var map = await restQuery(AssignmentSubmissionInfo.tableName, '*', 'assignID=$assignID&studentID=$accountID');
 
-    var res = await dbRef.query(
-      AssignmentSubmissionInfo.tableName,
-      where: 'assignID = ? AND studentID = ?',
-      whereArgs: [assignID, studentInfo.accountID],
-    );
-
-    dbRef.close();
-
-    if (res.length < 1) {
-      return null;
-    }
-
-    return AssignmentSubmissionInfo.fromMap(res.first);
+    if (map.length < 1) return null;
+    return AssignmentSubmissionInfo.fromMap(map.first);
   }
 
   Future<List<String>> _queryPeerReviewInfo() async {
-    Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db')
-    );
-    Database dbRef = await db;
-
-    var res = await dbRef.query(
-      PeerReviewInfo.tableName,
-      where: 'reviewerID = ?',
-      whereArgs: [studentInfo.accountID],
-    );
-
-    List<String> ret = List.generate(res.length, (index) => res[index]['assignTitle']);
+    int reviewerID = studentInfo.accountID;
+    var map = await restQuery(PeerReviewInfo.tableName, 'assignTitle', 'reviewerID=$reviewerID');
+    
+    List<String> ret = List.generate(map.length, (index) => map[index]['assignTitle']);
     return ret.toSet().toList();
   }
 }

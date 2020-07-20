@@ -3,10 +3,8 @@ import 'package:flutter/cupertino.dart';
 import '../CreateDB.dart';
 import 'teacher/TeacherCoursePage.dart';
 import 'student/StudentCoursePage.dart';
-import 'dart:async';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'student/StudentRewardPage.dart';
+import '../REST_API.dart';
 
 class ProfilePage extends StatelessWidget {
   final AccountInfo userinfo;
@@ -188,68 +186,32 @@ class ProfilePage extends StatelessWidget {
   }
 
   Future<List<AssignmentQuestionInfo>> _queryAssignmentInfos(String courseID) async {
-    Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'),
-    );
-    Database dbRef = await db;
-
-    final res = await dbRef.query(
-      AssignmentQuestionInfo.tableName,
-      distinct: true,
-      where: 'courseID = ?',
-      whereArgs: [courseID],
-      orderBy: 'dueDate',
-    );
-
-    dbRef.close();
+    var map = await restQuery(AssignmentQuestionInfo.tableName, '*', 'courseID=$courseID');
 
     List<AssignmentQuestionInfo> queryRes = List.generate(
-      res.length,
-      (i) => AssignmentQuestionInfo.fromMap(res[i]),
+      map.length,
+      (i) => AssignmentQuestionInfo.fromMap(map[i]),
     );
 
     return queryRes;
   }
 
   Future<int> _queryCourseScore(String courseID) async {
-    int sum = 0;
+    int sum = 0, studentID = userinfo.accountID;
 
-    Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'),
-    );
-    Database dbRef = await db;
-
-    final res = await dbRef.query(
-      AssignmentSubmissionInfo.tableName,
-      distinct: true,
-      where: 'studentID = ? AND courseID = ?',
-      whereArgs: [userinfo.accountID, courseID],
-    );
-
-    for(int i = 0; i < res.length; i++) sum += res[i]['recScore'];
-
-    dbRef.close();
+    var map = await restQuery(AssignmentSubmissionInfo.tableName, 'recScore', 'studentID=$studentID&courseID=$courseID');
+    for(int i = 0; i < map.length; i++) sum += map[i]['recScore'];
+    
     return sum;
   }
 
   void _onRewardPress(BuildContext context) async {
-    Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db')
-    );
-    Database dbRef = await db;
+    var rewards = await restQuery(RewardInfo.tableName, '*', '');
+    List<RewardInfo> rewardList = List.generate(rewards.length, (i) => RewardInfo.fromMap(rewards[i]));
 
-    var res = await dbRef.query(
-      RewardInfo.tableName,
-    );
-
-    var redeem = await dbRef.query(
-      RedeemedRewardInfo.tableName,
-      where: 'studentID = ?',
-      whereArgs: [userinfo.accountID],
-    );
-
-    var rewardList = List.generate(res.length, (i) => RewardInfo.fromMap(res[i]));
-    List<int> redeemList = List.generate(redeem.length, (i) => redeem[i]['rewardID']);
+    var studentID = userinfo.accountID;
+    var redeems = await restQuery(RedeemedRewardInfo.tableName, 'rewardID', 'studentID=$studentID');
+    List<int> redeemList = List.generate(redeems.length, (i) => redeems[i]['rewardID']);
 
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => StudentRewardPage(

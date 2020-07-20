@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
+import 'package:learningApp/REST_API.dart';
 
 class StudentAssignSubmitPage extends StatefulWidget {
   final int studentID;
@@ -152,28 +150,22 @@ class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
       setState(() => isSuccess = false);
       return;
     }
+    
+    var map = AssignmentSubmissionInfo(
+      assignID: assignQInfo.assignID,
+      courseID: assignQInfo.courseID,
+      studentID: studentID,
+      content: ansController.text,
+      submitDate: DateTime.now().millisecondsSinceEpoch,
+      recScore: 0,
+      remarks: '',
+    ).toMap();
 
-    final Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'));
-
-    final Database dbRef = await db;
-    await dbRef.insert(
-      AssignmentSubmissionInfo.tableName,
-      AssignmentSubmissionInfo(
-        assignID: assignQInfo.assignID,
-        courseID: assignQInfo.courseID,
-        studentID: studentID,
-        content: ansController.text,
-        submitDate: DateTime.now().millisecondsSinceEpoch,
-        recScore: 0,
-        remarks: '',
-      ).toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    dbRef.close();
-
-    ansController.clear();
-    setState(() => isSuccess = true);
+    if(await restInsert(AssignmentSubmissionInfo.tableName, map)) {
+      ansController.clear();
+      setState(() => isSuccess = true);
+    }
+    else setState(() => isSuccess = false);
   }
 
   @override
