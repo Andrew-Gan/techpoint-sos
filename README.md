@@ -12,7 +12,7 @@ Kelly Schafka, Eric Freiman, Chris Weiss
 Coach company: [Dewpoint](https://www.dewpoint.com/)  
 
 ## Tools
-[Flutter](https://flutter.dev/docs) 1.17.5
+[Flutter](https://flutter.dev/docs) 1.17.5  
 [Android Studio](https://developer.android.com/studio) 4.0  
 AVD Android 4.1  
 [mySQL Workbench](https://www.mysql.com/products/workbench/)  
