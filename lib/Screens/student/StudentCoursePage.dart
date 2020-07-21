@@ -10,7 +10,8 @@ class StudentCoursePage extends StatelessWidget {
   final AccountInfo studentInfo;
   final List<AssignmentQuestionInfo> assignQInfos;
   final int score;
-  StudentCoursePage(this.studentInfo, this.courseID, this.assignQInfos, this.score);
+  StudentCoursePage(
+      this.studentInfo, this.courseID, this.assignQInfos, this.score);
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +87,11 @@ class StudentCoursePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            List<String> peerReviewTitles = await _queryPeerReviewInfo();
+            //changing type of peerReviewTitles from List<String> to List<PeerReviewInfo>
+            List<PeerReviewInfo> peerReviewTitles =
+                await _queryPeerReviewInfo();
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return PeerReviewPage(studentInfo.email, courseID, peerReviewTitles);
+              return PeerReviewPage(studentInfo, courseID, peerReviewTitles);
             }));
             // Add your onPressed code here!
           },
@@ -100,7 +103,9 @@ class StudentCoursePage extends StatelessWidget {
 
   Widget _buildAssignRow(BuildContext context, int i) {
     return ListTile(
-      title: Text(assignQInfos[i].assignTitle,),
+      title: Text(
+        assignQInfos[i].assignTitle,
+      ),
       trailing: Icon(Icons.chevron_right),
       onTap: () async {
         int now = DateTime.now().millisecondsSinceEpoch;
@@ -109,8 +114,8 @@ class StudentCoursePage extends StatelessWidget {
         if (assignQInfo.dueDate > now || assignSInfo == null) {
           Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) =>
-                    StudentAssignSubmitPage(studentInfo.accountID, assignQInfo)),
+                builder: (context) => StudentAssignSubmitPage(
+                    studentInfo.accountID, assignQInfo)),
           );
         } else {
           Navigator.of(context).push(
@@ -124,32 +129,40 @@ class StudentCoursePage extends StatelessWidget {
   }
 
   Future<AssignmentQuestionInfo> _queryAssignInfo(int assignID) async {
-    var map = await restQuery(AssignmentQuestionInfo.tableName, '*',
-      'assignID=$assignID');
+    var map = await restQuery(
+        AssignmentQuestionInfo.tableName, '*', 'assignID=$assignID');
 
     return AssignmentQuestionInfo.fromMap(map.first);
   }
 
   Future<AssignmentSubmissionInfo> _queryAssignSubmits(int assignID) async {
     int accountID = studentInfo.accountID;
-    
+
     var map = await restQuery(AssignmentSubmissionInfo.tableName, '*',
-      'studentID=$accountID&assignID=$assignID');
+        'studentID=$accountID&assignID=$assignID');
 
     if (map.length < 1) return null;
     return AssignmentSubmissionInfo.fromMap(map.first);
   }
 
-  Future<List<String>> _queryPeerReviewInfo() async {
+  //replacing querypeerreviewinfo with the one Andrew wrote in peerreviewpage
+  /*Future<List<String>> _queryPeerReviewInfo() async {
     int reviewerID = studentInfo.accountID;
-    var map = await restQuery(PeerReviewInfo.tableName, 'assignTitle',
-      'reviewerID=$reviewerID');
-    
-    List<String> ret = List.generate(
-      map.length, 
-      (index) => map[index]['assignTitle']
-    );
-    
+    var map = await restQuery(
+        PeerReviewInfo.tableName, 'assignTitle', 'reviewerID=$reviewerID');
+
+    List<String> ret =
+        List.generate(map.length, (index) => map[index]['assignTitle']);
+
     return ret.toSet().toList();
+  } */
+  //also removing String assignTitle as a parameter
+  Future<List<PeerReviewInfo>> _queryPeerReviewInfo() async {
+    int accountID = studentInfo.accountID;
+    var res = await restQuery(PeerReviewInfo.tableName, '*',
+        'reviewerID=$accountID&courseID=$courseID');
+
+    return List.generate(
+        res.length, (index) => PeerReviewInfo.fromMap(res[index]));
   }
 }

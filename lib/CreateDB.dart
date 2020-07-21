@@ -21,10 +21,18 @@ class AccountInfo implements SQLiteInfo {
   String name, email, password, major, year, college, regCourse;
   int accountID, privilege, receivedScore, deductedScore;
 
-  AccountInfo({this.name, this.email, this.password, this.major,this.year,
-    this.college, this.regCourse, this.privilege, this.receivedScore, 
-    this.deductedScore});
-  
+  AccountInfo(
+      {this.name,
+      this.email,
+      this.password,
+      this.major,
+      this.year,
+      this.college,
+      this.regCourse,
+      this.privilege,
+      this.receivedScore,
+      this.deductedScore});
+
   AccountInfo.fromMap(Map<String, dynamic> map) {
     this.accountID = map['accountID'];
     this.name = map['name'];
@@ -60,8 +68,14 @@ class AssignmentQuestionInfo implements SQLiteInfo {
   int assignID, dueDate, maxScore, instrID;
   String assignTitle, courseID, content;
 
-  AssignmentQuestionInfo({this.assignTitle, this.courseID,
-    this.content, this.dueDate, this.instrID, this.maxScore,});
+  AssignmentQuestionInfo({
+    this.assignTitle,
+    this.courseID,
+    this.content,
+    this.dueDate,
+    this.instrID,
+    this.maxScore,
+  });
 
   AssignmentQuestionInfo.fromMap(Map<String, dynamic> map) {
     this.assignID = map['assignID'];
@@ -90,8 +104,15 @@ class AssignmentSubmissionInfo implements SQLiteInfo {
   String content, remarks, courseID;
   int submitID, assignID, submitDate, studentID, recScore;
 
-  AssignmentSubmissionInfo({this.assignID, this.courseID, this.studentID,
-    this.content, this.submitDate, this.recScore, this.remarks,});
+  AssignmentSubmissionInfo({
+    this.assignID,
+    this.courseID,
+    this.studentID,
+    this.content,
+    this.submitDate,
+    this.recScore,
+    this.remarks,
+  });
 
   AssignmentSubmissionInfo.fromMap(Map<String, dynamic> map) {
     this.courseID = map['courseID'];
@@ -119,12 +140,20 @@ class AssignmentSubmissionInfo implements SQLiteInfo {
 
 class PeerReviewInfo implements SQLiteInfo {
   static String tableName = 'peerReviews';
-  String content;
+  String content, reviewTitle;
   int peerID, assignID, submitID, dueDate, reviewerID, reviewedID, instrID;
 
-  PeerReviewInfo({this.submitID, this.content, this.assignID, this.reviewerID,
-    this.reviewedID, this.instrID, this.dueDate,});
-  
+  PeerReviewInfo(
+      {this.peerID,
+      this.submitID,
+      this.content,
+      this.assignID,
+      this.reviewerID,
+      this.reviewedID,
+      this.instrID,
+      this.dueDate,
+      this.reviewTitle});
+
   PeerReviewInfo.fromMap(Map<String, dynamic> map) {
     this.peerID = map['peerID'];
     this.assignID = map['assignID'];
@@ -134,10 +163,12 @@ class PeerReviewInfo implements SQLiteInfo {
     this.reviewerID = map['reviewerID'];
     this.reviewedID = map['reviewedID'];
     this.instrID = map['instrID'];
+    this.reviewTitle = map['reviewTitle'];
   }
-  
+
   Map<String, dynamic> toMap() {
     return {
+      'peerID': peerID,
       'assignID': assignID,
       'submitID': submitID,
       'content': content,
@@ -145,6 +176,7 @@ class PeerReviewInfo implements SQLiteInfo {
       'reviewedID': reviewedID,
       'instrID': instrID,
       'dueDate': dueDate,
+      'reviewTitle': reviewTitle,
     };
   }
 }
@@ -154,9 +186,14 @@ class RewardInfo implements SQLiteInfo {
   int rewardID, hasLimit, redeemLimit, cost;
   String title, desc;
 
-  RewardInfo({this.title, this.desc, this.cost,
-    this.hasLimit, this.redeemLimit,});
-  
+  RewardInfo({
+    this.title,
+    this.desc,
+    this.cost,
+    this.hasLimit,
+    this.redeemLimit,
+  });
+
   RewardInfo.fromMap(Map<String, dynamic> map) {
     this.rewardID = map['rewardID'];
     this.hasLimit = map['hasLimit'];
@@ -165,7 +202,7 @@ class RewardInfo implements SQLiteInfo {
     this.title = map['title'];
     this.desc = map['desc'];
   }
-  
+
   Map<String, dynamic> toMap() {
     return {
       'title': title,
@@ -181,8 +218,12 @@ class RedeemedRewardInfo implements SQLiteInfo {
   static String tableName = 'redeemedRewards';
   int redeemedID, studentID, rewardID, redeemDate;
 
-  RedeemedRewardInfo({this.rewardID, this.studentID, this.redeemDate,});
-  
+  RedeemedRewardInfo({
+    this.rewardID,
+    this.studentID,
+    this.redeemDate,
+  });
+
   RedeemedRewardInfo.fromMap(Map<String, dynamic> map) {
     this.redeemedID = map['redeemedID'];
     this.studentID = map['studentID'];

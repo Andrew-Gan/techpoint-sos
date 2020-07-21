@@ -7,23 +7,24 @@ import 'StudentAssignSubmitPage.dart';
 import 'StudentAssignReviewPage.dart';
 import 'package:flutter/material.dart';
 import './PeerReviewAssignSubmit.dart';
+import '../../REST_API.dart';
 
 class PeerReviewPage extends StatefulWidget {
-  final String email;
+  final AccountInfo userInfo;
   final String courseID;
-  final List<String> peerReviews;
-  PeerReviewPage(this.email, this.courseID, this.peerReviews);
+  final List<PeerReviewInfo> peerReviews;
+  PeerReviewPage(this.userInfo, this.courseID, this.peerReviews);
 
   @override
   State<PeerReviewPage> createState() =>
-      _PeerReviewPageState(email, courseID, peerReviews);
+      _PeerReviewPageState(userInfo, courseID, peerReviews);
 }
 
 class _PeerReviewPageState extends State<PeerReviewPage> {
   final String courseID;
-  final String email;
-  final List<String> peerReviews;
-  _PeerReviewPageState(this.email, this.courseID, this.peerReviews);
+  final AccountInfo userInfo;
+  final List<PeerReviewInfo> peerReviews;
+  _PeerReviewPageState(this.userInfo, this.courseID, this.peerReviews);
 
   @override
   Widget build(BuildContext context) {
@@ -80,64 +81,79 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
           ),
         ));
   }
+/*Future<String> getReviewTitle() async{
+  var reviewTitle = await _queryPeerReviewInfo().
+}*/
 
   Widget _buildPeerReviewRow(BuildContext context, int i) {
+    String reviewTitle = 'test';
+    /*var reviewList = await _queryPeerReviewInfo();
+      var reviewTitle = reviewList[i].reviewTitle;
+      return reviewTitle;
+    }*/
+    /*String () async {
+      var reviewList = await _queryPeerReviewInfo();
+      var reviewTitle = reviewList[i].reviewTitle;
+      return reviewTitle;
+    }*/
+
+    ;
     return ListTile(
-      title: Text(
-        peerReviews[i],
-      ),
+      //title: Text('' //.,
+      //  ), //find a way to retrieve review assignment title
       trailing: Icon(Icons.chevron_right),
       onTap: () async {
         int now = DateTime.now().millisecondsSinceEpoch;
-        var peerReviewInfo = await _queryPeerReviewInfo(peerReviews[i]);
-        if (peerReviewInfo.first.dueDate > now) {
-          // call Abdullah's peer review submissions page
-          () async {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return PeerReviewSubmitPage(email, peerReviewInfo[i]);
-            }));
-          };
-        } else {
-          // call peer review outcome page
-        }
+        var peerReviewInfo = await _queryPeerReviewInfo();
+        print(peerReviewInfo[i].content);
+        //if (peerReviewInfo.first.dueDate > now) {
+        // call Abdullah's peer review submissions page
+        //() async {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          reviewTitle = peerReviewInfo[i].reviewTitle;
+          return PeerReviewSubmitPage(userInfo.email, peerReviewInfo[i]);
+        }));
+        ; //deleted a }
+        //} else {
+        // call peer review outcome page
+        //}
       },
+      title: Text(reviewTitle),
     );
   }
 
-  Future<List<PeerReviewInfo>> _queryPeerReviewInfo(String assignTitle) async {
-    Future<Database> db =
-        openDatabase(join(await getDatabasesPath(), 'learningApp_database.db'));
-    Database dbRef = await db;
+  // Future<List<PeerReviewInfo>> _queryPeerReviewInfo(String assignTitle) async {
+  //   Future<Database> db =
+  //       openDatabase(join(await getDatabasesPath(), 'learningApp_database.db'));
+  //   Database dbRef = await db;
 
-    var res = await dbRef.query(
-      PeerReviewInfo.tableName,
-      where: 'courseID = ? AND assignTitle = ? AND reviewerEmail = ?',
-      whereArgs: [courseID, assignTitle, email],
-    );
+  //   var res = await dbRef.query(
+  //     PeerReviewInfo.tableName,
+  //     where: 'courseID = ? AND assignTitle = ? AND reviewerEmail = ?',
+  //     whereArgs: [courseID, assignTitle, email],
+  //   );
+
+  //   return List.generate(
+  //       res.length, (index) => PeerReviewInfo.fromMap(res[index]));
+  // }
+//removing the parameter assigntitle
+  Future<List<PeerReviewInfo>> _queryPeerReviewInfo() async {
+    int accountID = userInfo.accountID;
+    var res = await restQuery(PeerReviewInfo.tableName, '*',
+        'reviewerID=$accountID&courseID=$courseID');
 
     return List.generate(
         res.length, (index) => PeerReviewInfo.fromMap(res[index]));
   }
 
-  Future<AssignmentSubmissionInfo> _queryAssignSubmits(
-      String assignTitle) async {
-    Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'),
-    );
-    Database dbRef = await db;
+  Future<AssignmentSubmissionInfo> _queryAssignSubmits(int assignID) async {
+    int accountID = userInfo.accountID;
 
-    var res = await dbRef.query('assignmentSubmissions',
-        where: 'assignTitle = ? AND courseID = ? AND studentEmail = ?',
-        whereArgs: [assignTitle, courseID, email],
-        orderBy: 'submitDate DESC');
+    var map = await restQuery(AssignmentSubmissionInfo.tableName, '*',
+        'studentID=$accountID&assignID=$assignID');
 
-    dbRef.close();
-
-    if (res.length < 1) {
-      return null;
-    }
-
-    return AssignmentSubmissionInfo.fromMap(res.first);
+    if (map.length < 1) return null;
+    return AssignmentSubmissionInfo.fromMap(map.first);
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
+import '../../REST_API.dart';
 
 class PeerReviewSubmitPage extends StatefulWidget {
   final String studentEmail;
@@ -27,6 +28,7 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
   }
   final ansController = TextEditingController();
   bool isSubmitted = false, isSuccess = false;
+  TextEditingController controller;
 
   @override
   void initState() => super.initState();
@@ -47,7 +49,7 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
         children: [
           Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height - 80,
+            height: MediaQuery.of(context).size.height, //- 80,
             color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +57,7 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                   child: Text(
-                    assignContent,
+                    'insert review assignment title here', //reviewQInfo.reviewTitle,
                     style:
                         TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
@@ -63,7 +65,7 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, top: 10.0),
                   child: Text(
-                    reviewQInfo.content,
+                    'insert question here', //reviewQInfo.content,
                     maxLines: 3,
                     style: TextStyle(
                       fontSize: 16.0,
@@ -71,28 +73,45 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
                   ),
                 ),
                 Padding(
-                    padding:
-                        EdgeInsets.only(left: 25.0, right: 25.0, top: 80.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
+                    padding: EdgeInsets.only(
+                      left: 25.0,
+                      right: 25.0,
+                      top: 10,
+                    ),
+                    child: Column(
+                      //mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        Flexible(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: assignContent,
-                            ),
-                            maxLines: null,
-                            obscureText: true,
-                            //controller: ansController,
-                            enabled: false,
+                        //Flexible(
+                        /*child:*/ TextField(
+                          controller: TextEditingController(
+                              text: 'insert student submission here...'),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            /*labelText:
+                                'insert student submission here I am trying to see how far this wifget will go... ',*/
                           ),
-                        ),
+                          maxLines: null,
+
+                          //maxLines: 1,
+                          //obscureText: true,
+                          //controller: ansController,
+                          enabled: false,
+                        )
+                        //),
+                        //),
                       ],
                     )),
                 Padding(
+                  padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                  child: Text(
+                    'Your Review:', //reviewQInfo.reviewTitle,
+                    style:
+                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
                     padding:
-                        EdgeInsets.only(left: 25.0, right: 25.0, top: 80.0),
+                        EdgeInsets.only(left: 25.0, right: 25.0, top: 20.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -197,7 +216,7 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
     await dbRef.insert(
       PeerReviewInfo.tableName,
       PeerReviewInfo(
-        //peerID: reviewQInfo.peerID,
+        peerID: reviewQInfo.peerID,
         assignID: reviewQInfo.assignID,
         submitID: reviewQInfo.submitID,
         content: reviewQInfo.content,
@@ -234,8 +253,15 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
 
   //var assignQInfo =  _queryAssignInfo(reviewQInfo.assignID);
 
-  Future<AssignmentSubmissionInfo> _queryAssignSubmission(int assignID) async {
-    Future<Database> db = openDatabase(
+  Future<AssignmentSubmissionInfo> _queryAssignSubmits(int assignID) async {
+    int accountID = reviewQInfo.reviewerID; //studentInfo.accountID;
+
+    var map = await restQuery(AssignmentSubmissionInfo.tableName, '*',
+        'studentID=$accountID&assignID=$assignID');
+
+    if (map.length < 1) return null;
+    return AssignmentSubmissionInfo.fromMap(map.first);
+    /*Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'),
     );
     Database dbRef = await db;
@@ -249,11 +275,15 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
     dbRef.close();
     //var info = AssignmentSubmissionInfo.fromMap(res.first);
 
-    return AssignmentSubmissionInfo.fromMap(res.first);
+    return AssignmentSubmissionInfo.fromMap(res.first);*/
   }
 
   Future<AssignmentQuestionInfo> _queryAssignInfo(int assignID) async {
-    Future<Database> db = openDatabase(
+    var map = await restQuery(
+        AssignmentQuestionInfo.tableName, '*', 'assignID=$assignID');
+
+    return AssignmentQuestionInfo.fromMap(map.first);
+    /*Future<Database> db = openDatabase(
       join(await getDatabasesPath(), 'learningApp_database.db'),
     );
     Database dbRef = await db;
@@ -266,14 +296,14 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
 
     dbRef.close();
 
-    return AssignmentQuestionInfo.fromMap(res.first);
+    return AssignmentQuestionInfo.fromMap(res.first);*/
   }
 
   String assignContent;
   String assignTitle;
 
   Future<AssignmentSubmissionInfo> getContent() async {
-    var info = await _queryAssignSubmission(reviewQInfo.assignID);
+    var info = await _queryAssignSubmits(reviewQInfo.assignID);
     assignContent = info.content;
     return info;
   }
