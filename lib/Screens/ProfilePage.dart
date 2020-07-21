@@ -5,15 +5,16 @@ import 'teacher/TeacherCoursePage.dart';
 import 'student/StudentCoursePage.dart';
 import 'student/StudentRewardPage.dart';
 import '../REST_API.dart';
+import 'admin/AdminDataExportPage.dart';
 
 class ProfilePage extends StatelessWidget {
-  final AccountInfo userinfo;
+  final AccountInfo userInfo;
 
-  ProfilePage(this.userinfo);
+  ProfilePage(this.userInfo);
 
   @override
   Widget build(BuildContext context) {
-    int numCourses = userinfo.regCourse == null ? 0 : userinfo.regCourse.split(',').length;
+    int numCourses = userInfo.regCourse == null ? 0 : userInfo.regCourse.split(',').length;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -22,8 +23,12 @@ class ProfilePage extends StatelessWidget {
         title: Text('Profile'),
         actions: [
           IconButton(
-            icon: Icon(Icons.star),
-            onPressed: () => _onRewardPress(context),
+            icon: Icon(
+              userInfo.privilege > AccountPrivilege.admin.index ? 
+                Icons.star : Icons.cloud_download,
+            ),
+            onPressed: () => userInfo.privilege > AccountPrivilege.admin.index ?
+              _onRewardPress(context) : _onDownloadPress(context),
           ),
         ],
       ),
@@ -60,7 +65,7 @@ class ProfilePage extends StatelessWidget {
                               top: 5.0,
                             ),
                             child: Text(
-                              userinfo.name,
+                              userInfo.name,
                               style: TextStyle(fontSize: 16.0,),
                             ),
                           ),
@@ -85,7 +90,7 @@ class ProfilePage extends StatelessWidget {
                               top: 5.0,
                             ),
                             child: Text(
-                              userinfo.email,
+                              userInfo.email,
                               style: TextStyle(fontSize: 16.0,),
                             ),
                           ),
@@ -110,7 +115,7 @@ class ProfilePage extends StatelessWidget {
                               top: 5.0,
                             ),
                             child: Text(
-                              userinfo.college,
+                              userInfo.college,
                               style: TextStyle(fontSize: 16.0,),
                             ),
                           ),
@@ -119,7 +124,7 @@ class ProfilePage extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(left: 65.0),
                         child: Text(
-                          (userinfo.receivedScore - userinfo.deductedScore).toString(),
+                          (userInfo.receivedScore - userInfo.deductedScore).toString(),
                           style: TextStyle(
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold
@@ -162,7 +167,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildRow(BuildContext context, int index) {
-    List<String> regCourses = userinfo.regCourse.split(',');
+    List<String> regCourses = userInfo.regCourse.split(',');
     String courseID = regCourses[index];
     return ListTile(
       title: Text(
@@ -174,11 +179,11 @@ class ProfilePage extends StatelessWidget {
         int score = await _queryCourseScore(courseID);
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) {
-            if(userinfo.privilege == AccountPrivilege.student.index)
-              return StudentCoursePage(userinfo, courseID, assignQInfos, score);
+            if(userInfo.privilege == AccountPrivilege.student.index)
+              return StudentCoursePage(userInfo, courseID, assignQInfos, score);
               
-            else if(userinfo.privilege == AccountPrivilege.teacher.index)
-              return TeacherCoursePage(userinfo.accountID, courseID, assignQInfos);
+            else if(userInfo.privilege == AccountPrivilege.teacher.index)
+              return TeacherCoursePage(userInfo.accountID, courseID, assignQInfos);
 
             else return null;
           }
@@ -200,7 +205,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   Future<int> _queryCourseScore(String courseID) async {
-    int sum = 0, studentID = userinfo.accountID;
+    int sum = 0, studentID = userInfo.accountID;
 
     var map = await restQuery(AssignmentSubmissionInfo.tableName, 'recScore',
       'studentID=$studentID&courseID=$courseID');
@@ -216,7 +221,7 @@ class ProfilePage extends StatelessWidget {
       (i) => RewardInfo.fromMap(rewards[i])
     );
 
-    var studentID = userinfo.accountID;
+    var studentID = userInfo.accountID;
     var redeems = await restQuery(RedeemedRewardInfo.tableName, 'rewardID', 
       'studentID=$studentID');
     List<int> redeemList = List.generate(
@@ -226,10 +231,20 @@ class ProfilePage extends StatelessWidget {
 
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => StudentRewardPage(
-        userinfo,
+        userInfo,
         rewardList,
         redeemList,
       ),)
+    );
+  }
+
+  void _onDownloadPress(BuildContext context) async {
+    var resp = await restQuerySchema('name');
+    List<String> tableNames = List.generate(resp.length, (i) => resp[i]['name']);
+
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => 
+        AdminDataExportPage(tableNames, userInfo))
     );
   }
 }
