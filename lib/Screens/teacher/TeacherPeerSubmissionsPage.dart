@@ -66,8 +66,8 @@ class TeacherPeerSubmissionsPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 25.0, top: 25.0),
-                  height: 200.0,
+                  padding: EdgeInsets.all(25.0),
+                  height: 350.0,
                   child: ListView.builder(
                     padding: EdgeInsets.all(0.0),
                     itemBuilder: (context, i) {
@@ -87,11 +87,13 @@ class TeacherPeerSubmissionsPage extends StatelessWidget {
   }
 
   Widget _buildRow(BuildContext context, int i) {
+    if(peerReviews[i].content == null) peerReviews[i].content = '';
     return ListTile(
       title: Text(
+        'Submit ID: ' + peerReviews[i].submitID.toString() + '\n' +
         'Reviewer ID: ' + peerReviews[i].reviewerID.toString() + '\n' +
         'Reviewed ID: ' + peerReviews[i].reviewedID.toString() + '\n' +
-        'Content:\n' + peerReviews[i].content
+        'Content:\n' + peerReviews[i].content,
       ),
     );
   }

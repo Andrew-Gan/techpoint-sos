@@ -162,7 +162,7 @@ class TeacherCoursePage extends StatelessWidget {
 
   Future<List<PeerReviewInfo>> _queryPeerSubmits(int assignID) async {
     var map = await restQuery(PeerReviewInfo.tableName, '*', 'assignID=$assignID');
-
+ 
     List<PeerReviewInfo> queryRes = List.generate(map.length, (i) => 
       PeerReviewInfo.fromMap(map[i]));
 
