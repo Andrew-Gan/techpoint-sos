@@ -2,12 +2,10 @@
 June 22, 2020 - July 24, 2020  
 
 ## Team members  
-### Go squad  
-John Kaufeld, Kaitlin Walper  
-### Pro squad
-Andrew Gan, [Abdullah Salau](https://github.com/abdullah-salau), [Jaelyn Rogers](https://github.com/jrogers230)  
+**Go squad (Marketing)** - John Kaufeld, Kaitlin Walper  
+**Pro squad (Technical)** - Andrew Gan, [Abdullah Salau](https://github.com/abdullah-salau), [Jaelyn Rogers](https://github.com/jrogers230)  
 
-## Coach
+## Coaches
 Kelly Schafka, Eric Freiman, Chris Weiss  
 Coach company: [Dewpoint](https://www.dewpoint.com/)  
 
@@ -15,7 +13,6 @@ Coach company: [Dewpoint](https://www.dewpoint.com/)
 [Flutter](https://flutter.dev/docs) 1.17.5  
 [Android Studio](https://developer.android.com/studio) 4.0  
 AVD Android 4.1  
-[mySQL Workbench](https://www.mysql.com/products/workbench/)  
 [REST API](https://restfulapi.net/)  
 [DreamFactory](https://www.dreamfactory.com/)
 
@@ -29,20 +26,35 @@ You may refer to this [guide](https://flutter.dev/docs/get-started/install)
 1. Setup AVD in Android Studio.  
 You may refer to this [guide](https://developer.android.com/studio/run/managing-avds)  
 2. Run the flutter project in the text editor.
-3. Select the android emulator in the drop down menu.  
-You may require a second run while the emulator is being booted for the first time.
+3. Select the android emulator from the drop down menu.  
+The emulator may timeout while being booted for the first time.  
+In which case, perform a second run.
 ### Running the project on a physical device
 1. Connect the physical device to the computer using a USB cable.
 2. Enable developer options for your device and then enable USB debugging.  
-You may refer to this [guide](https://developer.android.com/studio/debug/dev-options)  
-3. Select the android device in the drop down menu.  
-
-Note: troubleshoot by running the 'flutter doctor -v' command in the terminal.  
+You may refer to this [guide](https://developer.android.com/studio/debug/dev-options)
+3. Run the flutter project in the text editor.
+4. Select the android device from the drop down menu.  
+  
+**Note**: troubleshoot by running the 'flutter doctor -v' command in the terminal.
 
 ## Preview
 <kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_login.png" width=200 height=400 /></kbd>
 <kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_profile.png" width=200 height=400 /></kbd>
 <kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_assignment.png" width=200 height=400 /></kbd>
+
+## Test accounts
+Account privilege: admin  
+email: gan35@purdue.edu  
+pw: 1234567890  
+
+Account privilege: teacher  
+email: teacher00@purdue.edu  
+pw: 123456  
+  
+Account privilege: student  
+email: student00@purdue.edu, student01@purdue.edu, student02@purdue.edu  
+pw: 123456  
 
 ## References
 [Item listing and generation](https://codelabs.developers.google.com/codelabs/first-flutter-app-pt1)  
