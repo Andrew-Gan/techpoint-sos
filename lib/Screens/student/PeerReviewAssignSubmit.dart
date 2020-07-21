@@ -39,6 +39,9 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(reviewQInfo.reviewTitle);
+    print(reviewQInfo.reviewerID);
+    print(reviewQInfo.reviewedID);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -209,35 +212,44 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
       return;
     }
 
-    final Future<Database> db =
-        openDatabase(join(await getDatabasesPath(), 'learningApp_database.db'));
+    /*final Future<Database> db =
+        openDatabase(join(await getDatabasesPath(), 'learningApp_database.db'));*/
 
-    final Database dbRef = await db;
-    await dbRef.insert(
-      PeerReviewInfo.tableName,
-      PeerReviewInfo(
-        peerID: reviewQInfo.peerID,
-        assignID: reviewQInfo.assignID,
-        submitID: reviewQInfo.submitID,
-        content: reviewQInfo.content,
-        dueDate: reviewQInfo.dueDate,
-        reviewedID: reviewQInfo.reviewedID,
-        reviewerID: reviewQInfo.reviewerID,
-        instrID: reviewQInfo.instrID,
+    // final Database dbRef = await db;
+    /*await dbRef.insert(
+      PeerReviewInfo.tableName,*/
+    var map = PeerReviewInfo(
+      //peerID: reviewQInfo.peerID,
+      assignID: reviewQInfo.assignID,
+      submitID: reviewQInfo.submitID,
+      content: ansController.text, //reviewQInfo.content,
+      dueDate: reviewQInfo.dueDate,
+      reviewedID: reviewQInfo.reviewedID,
+      reviewerID: reviewQInfo.reviewerID,
+      instrID: reviewQInfo.instrID,
 
-        /*assignTitle: reviewQInfo.assignTitle,
+      /*assignTitle: reviewQInfo.assignTitle,
         courseID: reviewQInfo.reviewerID,
         content: ansController.text,
         submitDate: DateTime.now().millisecondsSinceEpoch,
         studentEmail: studentEmail,
         recScore: 0,
         remarks: '',*/
-      ).toMap(),
+    ).toMap();
+    var peerID = reviewQInfo.peerID;
+    if (await restUpdate(
+        AssignmentSubmissionInfo.tableName, 'peerID=$peerID', map)) {
+      ansController.clear();
+      setState(() => isSuccess = true);
+    } else
+      setState(() => isSuccess = false);
+    /*}
+    else setState(() => isSuccess = false);
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     dbRef.close();
 
-    ansController.clear();
+    ansController.clear();*/
 
     setState(() => isSuccess = true);
   }

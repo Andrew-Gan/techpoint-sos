@@ -144,8 +144,7 @@ class PeerReviewInfo implements SQLiteInfo {
   int peerID, assignID, submitID, dueDate, reviewerID, reviewedID, instrID;
 
   PeerReviewInfo(
-      {this.peerID,
-      this.submitID,
+      {this.submitID,
       this.content,
       this.assignID,
       this.reviewerID,
@@ -155,7 +154,6 @@ class PeerReviewInfo implements SQLiteInfo {
       this.reviewTitle});
 
   PeerReviewInfo.fromMap(Map<String, dynamic> map) {
-    this.peerID = map['peerID'];
     this.assignID = map['assignID'];
     this.submitID = map['submitID'];
     this.content = map['content'];
