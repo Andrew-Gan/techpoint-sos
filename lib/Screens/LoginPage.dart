@@ -31,13 +31,13 @@ class _LoginPageState extends State<LoginPage> {
         child: ListView(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.all(100.0),
-              width: 30.0,
+              padding: EdgeInsets.only(top: 450.0),
+              width: 250.0,
+              height: 250.0,
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 image: DecorationImage(
-                  image: ExactAssetImage('assets/images/login.png'),
-                  fit: BoxFit.fitWidth,
+                  image: ExactAssetImage('assets/images/logo.png'),
                 ),
               ),
             ),
