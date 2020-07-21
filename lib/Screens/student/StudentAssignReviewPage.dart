@@ -4,7 +4,6 @@ import '../../CreateDB.dart';
 class StudentAssignReviewPage extends StatelessWidget {
   final AssignmentQuestionInfo assignQInfo;
   final AssignmentSubmissionInfo assignSInfo;
-  final FocusNode myFocusNode = FocusNode();
   final ansController = TextEditingController();
 
   StudentAssignReviewPage(this.assignQInfo, this.assignSInfo);

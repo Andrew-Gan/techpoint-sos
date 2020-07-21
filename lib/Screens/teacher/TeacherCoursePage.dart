@@ -5,6 +5,7 @@ import 'TeacherAssignCreatePage.dart';
 import 'TeacherPeerCreatePage.dart';
 import 'TeacherAssignSubmissionsPage.dart';
 import 'package:flutter/material.dart';
+import 'TeacherPeerSubmissionsPage.dart';
 
 class TeacherCoursePage extends StatelessWidget {
   final String courseID;
@@ -106,17 +107,16 @@ class TeacherCoursePage extends StatelessWidget {
         assignQInfos[i].assignTitle,
       ),
       trailing: Container(
-        width: 120,
+        width: 150,
         child: Row (
           children: <Widget> [
             IconButton(
               alignment: Alignment.centerRight,
               icon: Icon(Icons.update),
               onPressed: () async {
-                var info = await _queryAssignInfo(assignQInfos[i].assignID);
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => TeacherAssignUpdatePage(info),
+                    builder: (context) => TeacherAssignUpdatePage(assignQInfos[i]),
                   ),
                 );
               }
@@ -124,12 +124,23 @@ class TeacherCoursePage extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.list),
               onPressed: () async {
-                var assignQInfo = await _queryAssignInfo(assignQInfos[i].assignID);
-                var assignSInfo = await _queryAssignSubmits(assignQInfo);
+                var assignSInfo = await _queryAssignSubmits(assignQInfos[i].assignID);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) =>
-                      TeacherAssignSubmissionsPage(assignQInfo, assignSInfo),
+                      TeacherAssignSubmissionsPage(assignQInfos[i], assignSInfo),
+                  ),
+                );
+              }
+            ),
+            IconButton(
+              icon: Icon(Icons.rate_review),
+              onPressed: () async {
+                var peerReviews = await _queryPeerSubmits(assignQInfos[i].assignID);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                      TeacherPeerSubmissionsPage(assignQInfos[i], peerReviews),
                   ),
                 );
               }
@@ -140,24 +151,20 @@ class TeacherCoursePage extends StatelessWidget {
     );
   }
 
-  Future<AssignmentQuestionInfo> _queryAssignInfo(int assignID) async {
-    var map = await restQuery(AssignmentQuestionInfo.tableName, '*',
-      'assignID=$assignID');
-
-    var queryRes = List.generate(map.length, (i) {
-      return AssignmentQuestionInfo.fromMap(map[i]);
-    });
-
-    return queryRes.first;
-  }
-
-  Future<List<AssignmentSubmissionInfo>> 
-  _queryAssignSubmits(AssignmentQuestionInfo assignQInfos) async {
-    int assignID = assignQInfos.assignID;
+  Future<List<AssignmentSubmissionInfo>> _queryAssignSubmits(int assignID) async {
     var map = await restQuery(AssignmentSubmissionInfo.tableName, '*', 'assignID=$assignID');
 
     List<AssignmentSubmissionInfo> queryRes = List.generate(map.length, (i) => 
       AssignmentSubmissionInfo.fromMap(map[i]));
+
+    return queryRes;
+  }
+
+  Future<List<PeerReviewInfo>> _queryPeerSubmits(int assignID) async {
+    var map = await restQuery(PeerReviewInfo.tableName, '*', 'assignID=$assignID');
+ 
+    List<PeerReviewInfo> queryRes = List.generate(map.length, (i) => 
+      PeerReviewInfo.fromMap(map[i]));
 
     return queryRes;
   }

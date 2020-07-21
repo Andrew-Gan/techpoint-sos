@@ -165,16 +165,6 @@ class _TeacherViewSubmitPageState extends State<TeacherViewSubmitPage> {
   }
 
   void onUpdatePress() async {
-    // final Future<Database> db = openDatabase(
-    //   join(await getDatabasesPath(), 'learningApp_database.db'));
-
-    // final Database dbRef = await db;
-
-    // var res = await dbRef.query(
-    //   AccountInfo.tableName,
-    //   where: 'accountID = ?',
-    //   whereArgs: [assignSInfo.studentID],
-    // );
     int accountID = assignSInfo.studentID;
     var map = await restQuery(AccountInfo.tableName, '*', 'accountID=$accountID');
 

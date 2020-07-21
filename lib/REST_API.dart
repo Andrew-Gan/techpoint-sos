@@ -1,6 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 
 // constant strings used for http requests
@@ -44,6 +45,7 @@ Future<Map<String, dynamic>> restLogin(String email, String password) async {
     }
   );
 
+  // server ip redirect
   if(response.statusCode >= 300 && response.statusCode < 400) {
     String newUrl = json.decode(response.body)['new location'];
     var newResp = await http.post(
@@ -60,13 +62,30 @@ Future<Map<String, dynamic>> restLogin(String email, String password) async {
     response = newResp;
   }
 
+  if(response.statusCode < 200 || response.statusCode >= 300) {
+    print('trying admin');
+    // try logging in as admin
+    var adminResp = await http.post(
+      Uri.https(serverDomain, '/api/v2/system/admin/session'),
+      headers: {
+        'Accept': 'application/json',
+        apiKeyMatchString: apiKey,
+      },
+      body: {
+        'email' : email,
+        'password' : password,
+      }
+    );
+    response = adminResp;
+  }
+
+  // user logged in as admin or non-admin successfully
   if(response.statusCode >= 200 && response.statusCode < 300) {
     jwToken = json.decode(response.body)['session_token'];
     var map = await restQuery('accounts', '*', 'email=$email&password=$password');
-
     return map[0];
   }
-  
+
   return null;
 }
 
@@ -138,4 +157,53 @@ Future<List<dynamic>> restQuery(String tableName, String fields, String filter) 
   
   if(response.statusCode < 200 || response.statusCode > 299) return List<dynamic>();
   return json.decode(response.body)['resource'];
+}
+
+Future<List<dynamic>> restQuerySchema(String fields) async {
+  var response = await http.get(
+    Uri.encodeFull('https://purdueuniversity.apps.dreamfactory.com/api/v2/db/_schema?fields=$fields'),
+    headers: {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      apiKeyMatchString: apiKey,
+      jwTokenMatchString: jwToken,
+    },
+  );
+
+  if(response.statusCode < 200 || response.statusCode > 299) return List<dynamic>();
+  return json.decode(response.body)['resource'];
+}
+
+Future<bool> restExportData(List<String> tableNames, String path) async {
+  var bodyJson = {
+    "service" : {
+      "db":{	    
+        "_table": tableNames
+      }
+    }
+  };
+  
+  // HTTP POST request to obtain table data
+  var insertResp = await http.post(
+    Uri.encodeFull('https://purdueuniversity.apps.dreamfactory.com/api/v2/system/package'),
+    headers: {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      apiKeyMatchString: apiKey,
+      jwTokenMatchString: jwToken,
+    },
+    body: json.encode(bodyJson),
+  );
+
+  // return false if http request unsuccessful
+  if(insertResp.statusCode < 200 || insertResp.statusCode > 299) return false;
+
+  // download byte file and pipe to local storage
+  var link = json.decode(insertResp.body)['path'];
+  await HttpClient().getUrl(Uri.parse(link))
+  .then((HttpClientRequest request) => request.close())
+  .then((HttpClientResponse response) => 
+  response.pipe(File(path + '/learningApp_export.zip').openWrite()));
+
+  return true;
 }

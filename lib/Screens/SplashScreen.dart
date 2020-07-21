@@ -54,7 +54,7 @@ class SplashScreenState extends State<SplashScreen>
                   padding: EdgeInsets.only(bottom: 50.0),
                   child: Image.asset(
                     'assets/images/powered_by.png',
-                    height: 55.0,
+                    height: 60.0,
                     fit: BoxFit.scaleDown,
                   ))
             ],
@@ -64,8 +64,8 @@ class SplashScreenState extends State<SplashScreen>
             children: <Widget>[
               Image.asset(
                 'assets/images/logo.png',
-                width: animation.value * 250,
-                height: animation.value * 125,
+                width: animation.value * 400,
+                height: animation.value * 400,
               ),
             ],
           ),
