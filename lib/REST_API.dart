@@ -87,7 +87,7 @@ Future<Map<String, dynamic>> restLogin(String email, String password) async {
 
   if(response.statusCode >= 200 && response.statusCode < 300) {
     jwToken = json.decode(response.body)['session_token'];
-    var map = await restQuery('accounts', '*', 'email=$email&password=$password');
+    var map = await restQuery('accounts', '*', '(email=$email)and(password=$password)');
     return map[0];
   }
 
@@ -163,7 +163,7 @@ Future<bool> restUpdate(String tableName, String filter, Map<String, dynamic> ma
 /// 
 /// Perform query to server via http GET request.
 /// Name of table, fields to return and row filter should be provided.
-/// /// Return list of maps if query successful, otherwise return empty list.
+/// Return list of maps if query successful, otherwise return empty list.
 Future<List<dynamic>> restQuery(String tableName, String fields, String filter) async {
   if(!_isInit) restInit();
   var response = await http.get(

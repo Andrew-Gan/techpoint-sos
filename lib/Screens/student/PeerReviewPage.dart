@@ -166,8 +166,7 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
   Future<List<PeerReviewInfo>> _queryPeerReviewInfo() async {
     int accountID = userInfo.accountID;
     var res = await restQuery(PeerReviewInfo.tableName, '*',
-        'reviewerID=$accountID&courseID=$courseID');
-
+        '(reviewerID=$accountID)and(courseID=$courseID)');
     return List.generate(
         res.length, (index) => PeerReviewInfo.fromMap(res[index]));
   }
@@ -178,7 +177,7 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
     int accountID = peerReviews[i].reviewedID; //userInfo.accountID;
 
     var map = await restQuery(AssignmentSubmissionInfo.tableName, '*',
-        'studentID=$accountID&assignID=$assignID');
+        '(studentID=$accountID)and(assignID=$assignID)');
 
     if (map.length < 1) return null;
     return AssignmentSubmissionInfo.fromMap(map.first);

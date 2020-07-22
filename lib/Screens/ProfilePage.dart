@@ -208,7 +208,7 @@ class ProfilePage extends StatelessWidget {
     int sum = 0, studentID = userInfo.accountID;
 
     var map = await restQuery(AssignmentSubmissionInfo.tableName, 'recScore',
-      'studentID=$studentID&courseID=$courseID');
+      '(studentID=$studentID)and(courseID=$courseID)');
     for(int i = 0; i < map.length; i++) sum += map[i]['recScore'];
     
     return sum;

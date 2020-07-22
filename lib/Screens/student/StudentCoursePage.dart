@@ -139,28 +139,16 @@ class StudentCoursePage extends StatelessWidget {
     int accountID = studentInfo.accountID;
 
     var map = await restQuery(AssignmentSubmissionInfo.tableName, '*',
-        'studentID=$accountID&assignID=$assignID');
+        '(studentID=$accountID)and(assignID=$assignID)');
 
     if (map.length < 1) return null;
     return AssignmentSubmissionInfo.fromMap(map.first);
   }
 
-  //replacing querypeerreviewinfo with the one Andrew wrote in peerreviewpage
-  /*Future<List<String>> _queryPeerReviewInfo() async {
-    int reviewerID = studentInfo.accountID;
-    var map = await restQuery(
-        PeerReviewInfo.tableName, 'assignTitle', 'reviewerID=$reviewerID');
-
-    List<String> ret =
-        List.generate(map.length, (index) => map[index]['assignTitle']);
-
-    return ret.toSet().toList();
-  } */
-  //also removing String assignTitle as a parameter
   Future<List<PeerReviewInfo>> _queryPeerReviewInfo() async {
     int accountID = studentInfo.accountID;
     var res = await restQuery(PeerReviewInfo.tableName, '*',
-        'reviewerID=$accountID&courseID=$courseID');
+        '(reviewerID=$accountID)and(courseID=$courseID)');
 
     return List.generate(
         res.length, (index) => PeerReviewInfo.fromMap(res[index]));

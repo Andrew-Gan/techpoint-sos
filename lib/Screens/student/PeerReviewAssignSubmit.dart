@@ -274,7 +274,7 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
     int accountID = studentAccountInfo.accountID;
 
     var map = await restQuery(AssignmentSubmissionInfo.tableName, '*',
-        'studentID=$accountID&assignID=$assignID');
+        '(studentID=$accountID)and(assignID=$assignID)');
 
     if (map.length < 1) return null;
     return AssignmentSubmissionInfo.fromMap(map.first);

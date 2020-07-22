@@ -158,13 +158,14 @@ class AssignmentSubmissionInfo implements SQLiteInfo {
 /// Object that represents a row in 'peerReviews' table.
 class PeerReviewInfo implements SQLiteInfo {
   static String tableName = 'peerReviews';
-  String content, reviewTitle;
+  String content, reviewTitle, courseID;
   int peerID, assignID, submitID, dueDate, reviewerID, reviewedID, instrID;
 
   PeerReviewInfo(
       {this.submitID,
       this.content,
       this.assignID,
+      this.courseID,
       this.reviewerID,
       this.reviewedID,
       this.instrID,
@@ -174,6 +175,7 @@ class PeerReviewInfo implements SQLiteInfo {
   PeerReviewInfo.fromMap(Map<String, dynamic> map) {
     this.peerID = map['peerID'];
     this.assignID = map['assignID'];
+    this.courseID = map['courseID'];
     this.submitID = map['submitID'];
     this.content = map['content'];
     this.dueDate = map['dueDate'];
@@ -187,6 +189,7 @@ class PeerReviewInfo implements SQLiteInfo {
     return {
       'assignID': assignID,
       'submitID': submitID,
+      'courseID': courseID,
       'content': content,
       'reviewerID': reviewerID,
       'reviewedID': reviewedID,
