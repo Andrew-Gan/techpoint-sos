@@ -144,7 +144,7 @@ Return null upon a failed login attempt.</p>
 
   if(response.statusCode &gt;= 200 &amp;&amp; response.statusCode &lt; 300) {
     jwToken = json.decode(response.body)[&#39;session_token&#39;];
-    var map = await restQuery(&#39;accounts&#39;, &#39;*&#39;, &#39;email=$email&amp;password=$password&#39;);
+    var map = await restQuery(&#39;accounts&#39;, &#39;*&#39;, &#39;(email=$email)and(password=$password)&#39;);
     return map[0];
   }
 
