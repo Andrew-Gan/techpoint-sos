@@ -228,7 +228,11 @@ Future<bool> restExportData(List<String> tableNames, String path) async {
 
   var link = json.decode(insertResp.body)['path'];
   await HttpClient().getUrl(Uri.parse(link))
-  .then((HttpClientRequest request) => request.close())
+  .then((HttpClientRequest request) { 
+    request.headers.add(apiKeyMatchString, apiKey);
+    request.headers.add(jwTokenMatchString, jwToken);
+    return request.close();
+  })
   .then((HttpClientResponse response) => 
   response.pipe(File(path + '/learningApp_export.zip').openWrite()));
 
