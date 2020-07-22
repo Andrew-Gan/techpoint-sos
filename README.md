@@ -17,7 +17,7 @@ AVD Android 4.1
 [DreamFactory](https://www.dreamfactory.com/)
 
 ## Steps
-### Setting up the project in a text editor
+### Setting up the project in a code editor
 1. Install the tools required, including the plugins.  
 You may refer to this [guide](https://flutter.dev/docs/get-started/install)  
 2. In your preferrend code editor, navigate to the folder where the project is stored.  
@@ -55,6 +55,9 @@ pw: 123456
 Account privilege: student  
 email: student00@purdue.edu, student01@purdue.edu, student02@purdue.edu  
 pw: 123456  
+
+## Documentation
+[Documentation for Each1Teach1](https://andrew-gan.github.io/techpoint-sos) updated as of July 21 2020
 
 ## References
 [Item listing and generation](https://codelabs.developers.google.com/codelabs/first-flutter-app-pt1)  

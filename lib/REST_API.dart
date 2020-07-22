@@ -71,8 +71,6 @@ Future<Map<String, dynamic>> restLogin(String email, String password) async {
   }
 
   if(response.statusCode < 200 || response.statusCode >= 300) {
-    print('trying admin');
-    // try logging in as admin
     var adminResp = await http.post(
       Uri.https(serverDomain, '/api/v2/system/admin/session'),
       headers: {
@@ -215,7 +213,6 @@ Future<bool> restExportData(List<String> tableNames, String path) async {
     }
   };
   
-  // HTTP POST request to obtain table data
   var insertResp = await http.post(
     Uri.encodeFull('https://purdueuniversity.apps.dreamfactory.com/api/v2/system/package'),
     headers: {
@@ -227,10 +224,8 @@ Future<bool> restExportData(List<String> tableNames, String path) async {
     body: json.encode(bodyJson),
   );
 
-  // return false if http request unsuccessful
   if(insertResp.statusCode < 200 || insertResp.statusCode > 299) return false;
 
-  // download byte file and pipe to local storage
   var link = json.decode(insertResp.body)['path'];
   await HttpClient().getUrl(Uri.parse(link))
   .then((HttpClientRequest request) => request.close())
