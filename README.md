@@ -56,6 +56,9 @@ Account privilege: student
 email: student00@purdue.edu, student01@purdue.edu, student02@purdue.edu  
 pw: 123456  
 
+## Documentation
+[Documentation for Each1Teach1](https://andrew-gan.github.io/techpoint-sos) updated as of July 21 2020
+
 ## References
 [Item listing and generation](https://codelabs.developers.google.com/codelabs/first-flutter-app-pt1)  
 [UI interaction and navigation](https://codelabs.developers.google.com/codelabs/first-flutter-app-pt2)  
