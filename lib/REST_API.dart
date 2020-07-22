@@ -4,20 +4,26 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-// constant strings used for http requests
+/// url of database server
 final serverDomain = 'purdueuniversity.apps.dreamfactory.com';
+/// api key mapping string in http request header
 final apiKeyMatchString = 'X-DreamFactory-API-Key';
+/// session token mapping string in http request header
 final jwTokenMatchString = 'X-DreamFactory-Session-Token';
 
-// api key and session token obtained from login
+/// api key for app authorization
 String apiKey;
+/// session token for user authentication
 String jwToken;
 
-// global var to be used here only
+/// boolean for whether storage is initialized
 bool _isInit = false;
+/// flutter secure storage
 FlutterSecureStorage _storage;
 
-// initialize secure storage for app API key
+/// Initialize secure storage for app API key.
+/// 
+/// Store the api key for sql database and set _isInit to true.
 void restInit() {
   if(_isInit) return;
   _storage = FlutterSecureStorage();
@@ -28,7 +34,10 @@ void restInit() {
   _isInit = true;
 }
 
-// request session token using provided credentials. Return null if invalid
+/// Attempt login via http post request.
+/// 
+/// Attempt login as user and admin. Upon successful login, retrieve and store session token.
+/// Return null upon a failed login attempt.
 Future<Map<String, dynamic>> restLogin(String email, String password) async {
   if(!_isInit) restInit();
   apiKey = await _storage.read(key: 'api_key');
@@ -45,7 +54,6 @@ Future<Map<String, dynamic>> restLogin(String email, String password) async {
     }
   );
 
-  // server ip redirect
   if(response.statusCode >= 300 && response.statusCode < 400) {
     String newUrl = json.decode(response.body)['new location'];
     var newResp = await http.post(
@@ -79,7 +87,6 @@ Future<Map<String, dynamic>> restLogin(String email, String password) async {
     response = adminResp;
   }
 
-  // user logged in as admin or non-admin successfully
   if(response.statusCode >= 200 && response.statusCode < 300) {
     jwToken = json.decode(response.body)['session_token'];
     var map = await restQuery('accounts', '*', 'email=$email&password=$password');
@@ -89,7 +96,10 @@ Future<Map<String, dynamic>> restLogin(String email, String password) async {
   return null;
 }
 
-// terminate user token session
+/// Attempt logout for current session token.
+/// 
+/// Attempt logout. Upon successful login, return true.
+/// Return null upon a failed logout attempt.
 Future<bool> restLogout() async {
   if(!_isInit) restInit();
   var response = await http.delete(
@@ -106,7 +116,11 @@ Future<bool> restLogout() async {
  return false;
 }
 
-// performs sql.insert via http POST request. Return false if insertion failed
+/// Perform an insertion request.
+/// 
+/// Perform insertion to server via http POST request.
+/// Name of table and map of object to insert should be provided.
+/// Return true if insertion successful, otherwise false;
 Future<bool> restInsert(String tableName, Map<String, dynamic> map) async {
   if(!_isInit) restInit();
   var response = await http.post(
@@ -124,7 +138,11 @@ Future<bool> restInsert(String tableName, Map<String, dynamic> map) async {
   return false;
 }
 
-// performs sql.update via http PUT request. Return false if update failed
+/// Perform an update request.
+/// 
+/// Perform update to server via http PUT request.
+/// Name of table, row filter and map of updated object should be provided.
+/// /// Return true if update successful, otherwise false;
 Future<bool> restUpdate(String tableName, String filter, Map<String, dynamic> map) async {
   if(!_isInit) restInit();
   var response = await http.put(
@@ -143,7 +161,11 @@ Future<bool> restUpdate(String tableName, String filter, Map<String, dynamic> ma
   return false;
 }
 
-// performs sql.query via http GET request. Return null if query failed
+/// Perform a query request.
+/// 
+/// Perform query to server via http GET request.
+/// Name of table, fields to return and row filter should be provided.
+/// /// Return list of maps if query successful, otherwise return empty list.
 Future<List<dynamic>> restQuery(String tableName, String fields, String filter) async {
   if(!_isInit) restInit();
   var response = await http.get(
@@ -159,6 +181,12 @@ Future<List<dynamic>> restQuery(String tableName, String fields, String filter) 
   return json.decode(response.body)['resource'];
 }
 
+/// Perform a query request for the schema.
+/// 
+/// Perform query for schema to server via http GET request.
+/// Schema info include table name, number of entries, etc.
+/// Schema fields to return should be provided.
+/// Return list of maps, otherwise return empty list.
 Future<List<dynamic>> restQuerySchema(String fields) async {
   var response = await http.get(
     Uri.encodeFull('https://purdueuniversity.apps.dreamfactory.com/api/v2/db/_schema?fields=$fields'),
@@ -174,6 +202,10 @@ Future<List<dynamic>> restQuerySchema(String fields) async {
   return json.decode(response.body)['resource'];
 }
 
+/// Download package from link.
+/// 
+/// Given list of table names to export data, export and download table data as
+/// zip file to provided path. Downloaded file is named 'learningApp_export.zip'
 Future<bool> restExportData(List<String> tableNames, String path) async {
   var bodyJson = {
     "service" : {
