@@ -257,8 +257,6 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
     dbRef.close();
 
     ansController.clear();*/
-
-    setState(() => isSuccess = true);
   }
 
   @override

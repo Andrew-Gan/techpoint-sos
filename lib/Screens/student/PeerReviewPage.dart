@@ -8,6 +8,7 @@ import 'StudentAssignReviewPage.dart';
 import 'package:flutter/material.dart';
 import './PeerReviewAssignSubmit.dart';
 import '../../REST_API.dart';
+import './PeerReviewAssignReview.dart';
 
 class PeerReviewPage extends StatefulWidget {
   final AccountInfo userInfo;
@@ -90,7 +91,8 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
 }*/
 
   Widget _buildPeerReviewRow(BuildContext context, int i) {
-    String reviewTitle = 'test';
+    String reviewTitle = 'math';
+
     /*var reviewList = await _queryPeerReviewInfo();
       var reviewTitle = reviewList[i].reviewTitle;
       return reviewTitle;
@@ -121,13 +123,23 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
         //if (peerReviewInfo.first.dueDate > now) {
         // call Abdullah's peer review submissions page
         //() async {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          reviewTitle = assignQuestionInfo.assignTitle;
-          String reviewQuestion = assignQuestionInfo.content;
-          return PeerReviewSubmitPage(userInfo, peerReviewInfo[i],
-              assignSubmitInfo.content, reviewTitle, reviewQuestion);
-        }));
-        ; //deleted a }
+        if (peerReviewInfo[i].dueDate < now ||
+            peerReviewInfo[i].content == null) {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            reviewTitle = assignQuestionInfo.assignTitle;
+            String reviewQuestion = assignQuestionInfo.content;
+            return PeerReviewSubmitPage(userInfo, peerReviewInfo[i],
+                assignSubmitInfo.content, reviewTitle, reviewQuestion);
+          }));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            //reviewTitle = assignQuestionInfo.assignTitle;
+            //String reviewQuestion = assignQuestionInfo.content;
+            return PeerReviewAssignReviewPage(
+                assignQuestionInfo, assignSubmitInfo, peerReviewInfo[i]);
+          }));
+        }
+        //deleted a }
         //} else {
         // call peer review outcome page
         //}
