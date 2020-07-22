@@ -6,24 +6,31 @@ import '../../CreateDB.dart';
 import '../../REST_API.dart';
 
 class PeerReviewSubmitPage extends StatefulWidget {
-  final String studentEmail;
+  final AccountInfo studentAccountInfo;
   final PeerReviewInfo reviewQInfo;
+  String studentSubmission, reviewTitle, reviewQuestion;
   //final List<AssignmentQuestionInfo> assignQInfos;
-  PeerReviewSubmitPage(this.studentEmail, this.reviewQInfo);
+  PeerReviewSubmitPage(this.studentAccountInfo, this.reviewQInfo,
+      this.studentSubmission, this.reviewTitle, this.reviewQuestion);
 
   @override
   State<PeerReviewSubmitPage> createState() => _PeerReviewSubmitPageState(
-        studentEmail,
+        studentAccountInfo,
         reviewQInfo,
+        studentSubmission,
+        reviewTitle,
+        reviewQuestion,
       );
 }
 
 class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
-  final String studentEmail;
+  final AccountInfo studentAccountInfo;
   final PeerReviewInfo reviewQInfo;
+  String studentSubmission, reviewTitle, reviewQuestion;
   //final List<AssignmentQuestionInfo> assignQInfos;
   DateTime dueDate;
-  _PeerReviewSubmitPageState(this.studentEmail, this.reviewQInfo) {
+  _PeerReviewSubmitPageState(this.studentAccountInfo, this.reviewQInfo,
+      this.studentSubmission, this.reviewTitle, this.reviewQuestion) {
     dueDate = DateTime.fromMillisecondsSinceEpoch(reviewQInfo.dueDate);
   }
   final ansController = TextEditingController();
@@ -60,7 +67,7 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                   child: Text(
-                    'insert review assignment title here', //reviewQInfo.reviewTitle,
+                    reviewTitle, //reviewQInfo.reviewTitle,
                     style:
                         TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
@@ -68,7 +75,7 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, top: 10.0),
                   child: Text(
-                    'insert question here', //reviewQInfo.content,
+                    reviewQuestion, //reviewQInfo.content,
                     maxLines: 3,
                     style: TextStyle(
                       fontSize: 16.0,
@@ -86,8 +93,8 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
                       children: <Widget>[
                         //Flexible(
                         /*child:*/ TextField(
-                          controller: TextEditingController(
-                              text: 'insert student submission here...'),
+                          controller:
+                              TextEditingController(text: studentSubmission),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             /*labelText:
@@ -266,28 +273,13 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
   //var assignQInfo =  _queryAssignInfo(reviewQInfo.assignID);
 
   Future<AssignmentSubmissionInfo> _queryAssignSubmits(int assignID) async {
-    int accountID = reviewQInfo.reviewerID; //studentInfo.accountID;
+    int accountID = studentAccountInfo.accountID;
 
     var map = await restQuery(AssignmentSubmissionInfo.tableName, '*',
         'studentID=$accountID&assignID=$assignID');
 
     if (map.length < 1) return null;
     return AssignmentSubmissionInfo.fromMap(map.first);
-    /*Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'),
-    );
-    Database dbRef = await db;
-
-    var res = await dbRef.query(
-      AssignmentSubmissionInfo.tableName,
-      where: 'submitID = ?',
-      whereArgs: [reviewQInfo.submitID],
-    );
-
-    dbRef.close();
-    //var info = AssignmentSubmissionInfo.fromMap(res.first);
-
-    return AssignmentSubmissionInfo.fromMap(res.first);*/
   }
 
   Future<AssignmentQuestionInfo> _queryAssignInfo(int assignID) async {

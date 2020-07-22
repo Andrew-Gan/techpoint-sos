@@ -13,7 +13,11 @@ class PeerReviewPage extends StatefulWidget {
   final AccountInfo userInfo;
   final String courseID;
   final List<PeerReviewInfo> peerReviews;
-  PeerReviewPage(this.userInfo, this.courseID, this.peerReviews);
+  PeerReviewPage(
+    this.userInfo,
+    this.courseID,
+    this.peerReviews,
+  );
 
   @override
   State<PeerReviewPage> createState() =>
@@ -105,14 +109,23 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
       onTap: () async {
         int now = DateTime.now().millisecondsSinceEpoch;
         var peerReviewInfo = await _queryPeerReviewInfo();
+        var assignSubmitInfo =
+            await _queryAssignSubmits(peerReviewInfo[i].assignID, i);
+        var assignQuestionInfo =
+            await _queryAssignInfo(peerReviewInfo[i].assignID);
         print(peerReviewInfo[i].content);
+        print(assignSubmitInfo.content);
+        print(assignQuestionInfo.assignTitle);
+        print(userInfo.accountID);
 
         //if (peerReviewInfo.first.dueDate > now) {
         // call Abdullah's peer review submissions page
         //() async {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          reviewTitle = peerReviewInfo[i].reviewTitle;
-          return PeerReviewSubmitPage(userInfo.email, peerReviewInfo[i]);
+          reviewTitle = assignQuestionInfo.assignTitle;
+          String reviewQuestion = assignQuestionInfo.content;
+          return PeerReviewSubmitPage(userInfo, peerReviewInfo[i],
+              assignSubmitInfo.content, reviewTitle, reviewQuestion);
         }));
         ; //deleted a }
         //} else {
@@ -147,14 +160,23 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
         res.length, (index) => PeerReviewInfo.fromMap(res[index]));
   }
 
-  Future<AssignmentSubmissionInfo> _queryAssignSubmits(int assignID) async {
-    int accountID = userInfo.accountID;
+  Future<AssignmentSubmissionInfo> _queryAssignSubmits(
+      int assignID, int i) async {
+    var peerReviewInfo = await _queryPeerReviewInfo();
+    int accountID = peerReviews[i].reviewedID; //userInfo.accountID;
 
     var map = await restQuery(AssignmentSubmissionInfo.tableName, '*',
         'studentID=$accountID&assignID=$assignID');
 
     if (map.length < 1) return null;
     return AssignmentSubmissionInfo.fromMap(map.first);
+  }
+
+  Future<AssignmentQuestionInfo> _queryAssignInfo(int assignID) async {
+    var map = await restQuery(
+        AssignmentQuestionInfo.tableName, '*', 'assignID=$assignID');
+
+    return AssignmentQuestionInfo.fromMap(map.first);
   }
 
   @override
