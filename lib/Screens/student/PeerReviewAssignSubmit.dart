@@ -244,8 +244,8 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
         remarks: '',*/
     ).toMap();
     var peerID = reviewQInfo.peerID;
-    if (await restUpdate(
-        AssignmentSubmissionInfo.tableName, 'peerID=$peerID', map)) {
+    //Changing AssignmentSubmissionInfo to PeerReviewInfo
+    if (await restUpdate(PeerReviewInfo.tableName, 'peerID=$peerID', map)) {
       ansController.clear();
       setState(() => isSuccess = true);
     } else
