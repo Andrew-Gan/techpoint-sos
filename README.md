@@ -17,7 +17,7 @@ AVD Android 4.1
 [DreamFactory](https://www.dreamfactory.com/)
 
 ## Steps
-### Setting up the project in a text editor
+### Setting up the project in a code editor
 1. Install the tools required, including the plugins.  
 You may refer to this [guide](https://flutter.dev/docs/get-started/install)  
 2. In your preferrend code editor, navigate to the folder where the project is stored.  
