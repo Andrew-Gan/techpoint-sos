@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../CreateDB.dart';
 import '../../REST_API.dart';
 
+/// stateful class for instantiating PeerReviewSubmitPage screen
 class PeerReviewSubmitPage extends StatefulWidget {
   final AccountInfo studentAccountInfo;
   final PeerReviewInfo reviewQInfo;
@@ -20,6 +21,7 @@ class PeerReviewSubmitPage extends StatefulWidget {
       );
 }
 
+/// state class for PeerReviewSubmitPage screen
 class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
   final AccountInfo studentAccountInfo;
   final PeerReviewInfo reviewQInfo;

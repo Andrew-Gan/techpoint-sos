@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../CreateDB.dart';
 
+/// stateless class for instantiating StudentAssignReviewPage screen
 class StudentAssignReviewPage extends StatelessWidget {
   final AssignmentQuestionInfo assignQInfo;
   final AssignmentSubmissionInfo assignSInfo;

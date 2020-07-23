@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../CreateDB.dart';
 import '../../REST_API.dart';
 
+/// stateful class for instantiating TeacherPeerPairingPage screen
 class TeacherPeerPairingPage extends StatefulWidget {
   final int instrID;
   final int dueDate;
@@ -13,6 +14,7 @@ class TeacherPeerPairingPage extends StatefulWidget {
     _TeacherPeerPairingPageState(instrID, assignSInfos, dueDate);
 }
 
+/// state class for TeacherPeerPairingPage screen
 class _TeacherPeerPairingPageState extends State<TeacherPeerPairingPage> {
   final int instrID, dueDate;
   final List<AssignmentSubmissionInfo> assignSInfos;

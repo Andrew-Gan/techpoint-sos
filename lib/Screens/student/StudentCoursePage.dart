@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import './PeerReviewPage.dart';
 import '../../REST_API.dart';
 
+/// stateless class for instantiating StudentCoursePage screen
 class StudentCoursePage extends StatelessWidget {
   final String courseID;
   final AccountInfo studentInfo;

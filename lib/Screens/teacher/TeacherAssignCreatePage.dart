@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../CreateDB.dart';
 import '../../REST_API.dart';
 
+/// stateful class for instantiating TeacherAssignCreatePage screen
 class TeacherAssignCreatePage extends StatefulWidget {
   final int instrID;
   final String courseID;
@@ -12,6 +13,7 @@ class TeacherAssignCreatePage extends StatefulWidget {
     _TeacherAssignCreatePageState(courseID, instrID);
 }
 
+/// state class for TeacherAssignCreatePage screen
 class _TeacherAssignCreatePageState extends State<TeacherAssignCreatePage> {
   final String courseID;
   final int instrID;

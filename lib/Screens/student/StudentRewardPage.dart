@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../CreateDB.dart';
 import '../../REST_API.dart';
 
+/// stateful class for instantiating StudentRewardPage screen
 class StudentRewardPage extends StatefulWidget {
   final AccountInfo studentInfo;
   final List<RewardInfo> rewards;
@@ -13,6 +14,7 @@ class StudentRewardPage extends StatefulWidget {
     _StudentRewardPageState(studentInfo, rewards, redeems);
 }
 
+/// state class for StudentRewardPage screen
 class _StudentRewardPageState extends State<StudentRewardPage> {
   int points;
   bool isInsufficient = false;

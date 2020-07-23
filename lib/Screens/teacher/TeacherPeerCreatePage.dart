@@ -4,6 +4,7 @@ import 'TeacherPeerPairingPage.dart';
 import '../../CreateDB.dart';
 import '../../REST_API.dart';
 
+/// stateful class for instantiating TeacherPeerCreatePage screen
 class TeacherPeerCreatePage extends StatefulWidget {
   final int instrID;
   final List<AssignmentQuestionInfo> assignQInfos;
@@ -14,6 +15,7 @@ class TeacherPeerCreatePage extends StatefulWidget {
       _TeacherPeerCreatePageState(instrID, assignQInfos);
 }
 
+/// state class for TeacherPeerCreatePage screen
 class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
   int chosenAssignIndex = 0;
   bool isAutoPairing = true;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learningApp/REST_API.dart';
 import '../../CreateDB.dart';
 
+/// stateful class for instantiating TeacherAssignUpdatePage screen
 class TeacherAssignUpdatePage extends StatefulWidget {
   final AssignmentQuestionInfo assignQInfo;
   TeacherAssignUpdatePage(this.assignQInfo);
@@ -11,6 +12,7 @@ class TeacherAssignUpdatePage extends StatefulWidget {
     _TeacherAssignUpdatePageState(assignQInfo);
 }
 
+/// state class for TeacherAssignUpdatePage screen
 class _TeacherAssignUpdatePageState extends State<TeacherAssignUpdatePage> {
   final AssignmentQuestionInfo assignQInfo;
   final titleController = TextEditingController();

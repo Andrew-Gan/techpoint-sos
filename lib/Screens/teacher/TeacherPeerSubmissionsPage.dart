@@ -1,6 +1,7 @@
 import '../../CreateDB.dart';
 import 'package:flutter/material.dart';
 
+/// stateless class for instantiating TeacherPeerSubmissionsPage screen
 class TeacherPeerSubmissionsPage extends StatelessWidget {
   final AssignmentQuestionInfo assignQInfo;
   final List<PeerReviewInfo> peerReviews;

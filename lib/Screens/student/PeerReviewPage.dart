@@ -6,6 +6,7 @@ import './PeerReviewAssignSubmit.dart';
 import '../../REST_API.dart';
 import './PeerReviewAssignReview.dart';
 
+/// stateful class for instantiating PeerReviewPage screen
 class PeerReviewPage extends StatefulWidget {
   final AccountInfo userInfo;
   final String courseID;
@@ -21,6 +22,7 @@ class PeerReviewPage extends StatefulWidget {
       _PeerReviewPageState(userInfo, courseID, peerReviews);
 }
 
+/// state class for PeerReviewPage screen
 class _PeerReviewPageState extends State<PeerReviewPage> {
   final String courseID;
   final AccountInfo userInfo;

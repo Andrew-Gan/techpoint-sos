@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../CreateDB.dart';
 import 'package:learningApp/REST_API.dart';
 
+/// stateful class for instantiating StudentAssignSubmitPage screen
 class StudentAssignSubmitPage extends StatefulWidget {
   final int studentID;
   final AssignmentQuestionInfo assignQInfo;
@@ -12,6 +13,7 @@ class StudentAssignSubmitPage extends StatefulWidget {
     _StudentAssignSubmitPageState(studentID, assignQInfo);
 }
 
+/// state class for StudentAssignSubmitPage screen
 class _StudentAssignSubmitPageState extends State<StudentAssignSubmitPage> {
   final int studentID;
   final AssignmentQuestionInfo assignQInfo;

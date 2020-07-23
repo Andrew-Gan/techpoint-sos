@@ -2,6 +2,7 @@ import '../../CreateDB.dart';
 import 'package:flutter/material.dart';
 import 'TeacherViewSubmitPage.dart';
 
+/// stateless class for instantiating TeacherAssignSubmissionsPage screen
 class TeacherAssignSubmissionsPage extends StatelessWidget {
   final AssignmentQuestionInfo assignQInfo;
   final List<AssignmentSubmissionInfo> assignSInfo;

@@ -7,6 +7,7 @@ import 'TeacherAssignSubmissionsPage.dart';
 import 'package:flutter/material.dart';
 import 'TeacherPeerSubmissionsPage.dart';
 
+/// stateless class for instantiating TeacherCoursePage screen
 class TeacherCoursePage extends StatelessWidget {
   final String courseID;
   final int instrID;
