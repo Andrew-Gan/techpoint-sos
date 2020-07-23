@@ -176,11 +176,11 @@ class ProfilePage extends StatelessWidget {
       trailing: Icon(Icons.chevron_right),
       onTap: () async {
         var assignQInfos = await _queryAssignmentInfos(courseID);
-        int score = await _queryCourseScore(courseID);
+        List<int> score = await _queryCourseScore(courseID);
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) {
             if(userInfo.privilege == AccountPrivilege.student.index)
-              return StudentCoursePage(userInfo, courseID, assignQInfos, score);
+              return StudentCoursePage(userInfo, courseID, assignQInfos, score[0], score[1]);
               
             else if(userInfo.privilege == AccountPrivilege.teacher.index)
               return TeacherCoursePage(userInfo.accountID, courseID, assignQInfos);
@@ -204,14 +204,20 @@ class ProfilePage extends StatelessWidget {
     return queryRes;
   }
 
-  Future<int> _queryCourseScore(String courseID) async {
-    int sum = 0, studentID = userInfo.accountID;
+  Future<List<int>> _queryCourseScore(String courseID) async {
+    int totalReceived = 0, totalMax = 0, studentID = userInfo.accountID;
 
-    var map = await restQuery(AssignmentSubmissionInfo.tableName, 'recScore',
+    var map = await restQuery(AssignmentSubmissionInfo.tableName, 'assignID, recScore',
       '(studentID=$studentID)and(courseID=$courseID)');
-    for(int i = 0; i < map.length; i++) sum += map[i]['recScore'];
+    for(int i = 0; i < map.length; i++) {
+      totalReceived += map[i]['recScore'];
+
+      var assignID = map[i]['assignID'];
+      var map2 = await restQuery(AssignmentQuestionInfo.tableName, 'maxScore', 'assignID=$assignID');
+      totalMax += map2[0]['maxScore'];
+    }
     
-    return sum;
+    return [totalReceived, totalMax];
   }
 
   void _onRewardPress(BuildContext context) async {

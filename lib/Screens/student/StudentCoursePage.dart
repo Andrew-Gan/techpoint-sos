@@ -9,9 +9,9 @@ class StudentCoursePage extends StatelessWidget {
   final String courseID;
   final AccountInfo studentInfo;
   final List<AssignmentQuestionInfo> assignQInfos;
-  final int score;
+  final int recScore, maxScore;
   StudentCoursePage(
-      this.studentInfo, this.courseID, this.assignQInfos, this.score);
+      this.studentInfo, this.courseID, this.assignQInfos, this.recScore, this.maxScore);
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +45,10 @@ class StudentCoursePage extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.only(top: 20.0, left: 80.0),
                         width: 250.0,
-                        height: 80.0,
+                        height: 120.0,
                         child: Text(
-                          score.toString() + ' / 1000',
+                          _scoreToGrade(recScore, maxScore) + '\n' +
+                            recScore.toString() + ' / ' + maxScore.toString(),
                           style: TextStyle(fontSize: 30.0),
                         ),
                       ),
@@ -55,7 +56,13 @@ class StudentCoursePage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 25.0, top: 25.0),
+                  padding: EdgeInsets.only(top: 15.0, left: 25.0, right: 25.0,),
+                  child: LinearProgressIndicator(
+                    value: recScore / maxScore,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 25.0, top: 45.0),
                   child: Text(
                     'Assignments',
                     style: TextStyle(
@@ -111,14 +118,15 @@ class StudentCoursePage extends StatelessWidget {
         if (assignQInfo.dueDate > now || assignSInfo == null) {
           Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) => StudentAssignSubmitPage(
-                    studentInfo.accountID, assignQInfo)),
+              builder: (context) => StudentAssignSubmitPage(
+                studentInfo.accountID, assignQInfo)),
           );
-        } else {
+        }
+        else {
           Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) =>
-                    StudentAssignReviewPage(assignQInfo, assignSInfo)),
+              builder: (context) =>
+                StudentAssignReviewPage(assignQInfo, assignSInfo)),
           );
         }
       },
@@ -146,8 +154,18 @@ class StudentCoursePage extends StatelessWidget {
     int accountID = studentInfo.accountID;
     var res = await restQuery(PeerReviewInfo.tableName, '*',
         '(reviewerID=$accountID)and(courseID=$courseID)');
-
+  
     return List.generate(
         res.length, (index) => PeerReviewInfo.fromMap(res[index]));
+  }
+
+  String _scoreToGrade(int recScore, int maxScore) {
+    int percentage = recScore * 100 ~/ maxScore;
+    if(percentage > 90) return 'A';
+    if(percentage > 80) return 'B';
+    if(percentage > 70) return 'C';
+    if(percentage > 60) return 'D';
+    if(percentage > 50) return 'E';
+    else return 'F';
   }
 }

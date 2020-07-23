@@ -169,6 +169,7 @@ class _TeacherPeerPairingPageState extends State<TeacherPeerPairingPage> {
         reviewerID: pairs[i][1].studentID,
         reviewedID: pairs[i][0].studentID,
         instrID: instrID,
+        courseID: assignSInfos[0].courseID,
         dueDate: dueDate,
       ).toMap();
       await restInsert(PeerReviewInfo.tableName, map1);
@@ -180,6 +181,7 @@ class _TeacherPeerPairingPageState extends State<TeacherPeerPairingPage> {
         reviewerID: pairs[i][0].studentID,
         reviewedID: pairs[i][1].studentID,
         instrID: instrID,
+        courseID: assignSInfos[0].courseID,
         dueDate: dueDate,
       ).toMap();
       success = await restInsert(PeerReviewInfo.tableName, map2);
