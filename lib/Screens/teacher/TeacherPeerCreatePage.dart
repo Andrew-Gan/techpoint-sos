@@ -289,7 +289,7 @@ class _TeacherPeerCreatePageState extends State<TeacherPeerCreatePage> {
         AssignmentSubmissionInfo.tableName, '*', 'assignID=$assignID');
 
     // determine if auto pairing is enabled
-    // adding reviewTitle toarguments of the PeerReviewInfo object
+
     if (isAutoPairing) {
       for (int i = 0; i < map.length; i++) {
         for (int n = 1; n < chosenNum + 1; n++) {

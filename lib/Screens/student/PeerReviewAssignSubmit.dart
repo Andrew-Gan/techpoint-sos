@@ -1,15 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import '../../CreateDB.dart';
 import '../../REST_API.dart';
 
 class PeerReviewSubmitPage extends StatefulWidget {
   final AccountInfo studentAccountInfo;
   final PeerReviewInfo reviewQInfo;
-  String studentSubmission, reviewTitle, reviewQuestion;
-  //final List<AssignmentQuestionInfo> assignQInfos;
+  final String studentSubmission, reviewTitle, reviewQuestion;
   PeerReviewSubmitPage(this.studentAccountInfo, this.reviewQInfo,
       this.studentSubmission, this.reviewTitle, this.reviewQuestion);
 
@@ -27,7 +24,6 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
   final AccountInfo studentAccountInfo;
   final PeerReviewInfo reviewQInfo;
   String studentSubmission, reviewTitle, reviewQuestion;
-  //final List<AssignmentQuestionInfo> assignQInfos;
   DateTime dueDate;
   _PeerReviewSubmitPageState(this.studentAccountInfo, this.reviewQInfo,
       this.studentSubmission, this.reviewTitle, this.reviewQuestion) {
@@ -39,10 +35,6 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
 
   @override
   void initState() => super.initState();
-
-  //var assignQInfo = await _queryAssignInfo(reviewQInfo.assignID);
-
-//var info = AssignmentSubmissionInfo.fromMap(res.first);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +51,7 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
         children: [
           Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height, //- 80,
+            height: MediaQuery.of(context).size.height,
             color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +59,7 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                   child: Text(
-                    reviewTitle, //reviewQInfo.reviewTitle,
+                    reviewTitle,
                     style:
                         TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
@@ -75,7 +67,7 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, top: 10.0),
                   child: Text(
-                    reviewQuestion, //reviewQInfo.content,
+                    reviewQuestion,
                     maxLines: 3,
                     style: TextStyle(
                       fontSize: 16.0,
@@ -89,32 +81,22 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
                       top: 10,
                     ),
                     child: Column(
-                      //mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        //Flexible(
-                        /*child:*/ TextField(
+                        TextField(
                           controller:
                               TextEditingController(text: studentSubmission),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            /*labelText:
-                                'insert student submission here I am trying to see how far this wifget will go... ',*/
                           ),
                           maxLines: null,
-
-                          //maxLines: 1,
-                          //obscureText: true,
-                          //controller: ansController,
                           enabled: false,
                         )
-                        //),
-                        //),
                       ],
                     )),
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                   child: Text(
-                    'Your Review:', //reviewQInfo.reviewTitle,
+                    'Your Review:',
                     style:
                         TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
@@ -219,44 +201,22 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
       return;
     }
 
-    /*final Future<Database> db =
-        openDatabase(join(await getDatabasesPath(), 'learningApp_database.db'));*/
-
-    // final Database dbRef = await db;
-    /*await dbRef.insert(
-      PeerReviewInfo.tableName,*/
     var map = PeerReviewInfo(
-      //peerID: reviewQInfo.peerID,
       assignID: reviewQInfo.assignID,
       submitID: reviewQInfo.submitID,
-      content: ansController.text, //reviewQInfo.content,
+      content: ansController.text,
       dueDate: reviewQInfo.dueDate,
       reviewedID: reviewQInfo.reviewedID,
       reviewerID: reviewQInfo.reviewerID,
       instrID: reviewQInfo.instrID,
-
-      /*assignTitle: reviewQInfo.assignTitle,
-        courseID: reviewQInfo.reviewerID,
-        content: ansController.text,
-        submitDate: DateTime.now().millisecondsSinceEpoch,
-        studentEmail: studentEmail,
-        recScore: 0,
-        remarks: '',*/
     ).toMap();
     var peerID = reviewQInfo.peerID;
-    //Changing AssignmentSubmissionInfo to PeerReviewInfo
+
     if (await restUpdate(PeerReviewInfo.tableName, 'peerID=$peerID', map)) {
       ansController.clear();
       setState(() => isSuccess = true);
     } else
       setState(() => isSuccess = false);
-    /*}
-    else setState(() => isSuccess = false);
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    dbRef.close();
-
-    ansController.clear();*/
   }
 
   @override
@@ -264,11 +224,6 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
     ansController.dispose();
     super.dispose();
   }
-
-  //var assignQInfo = _queryAssignInfo(assignQInfos[i].assignID);
-  //String Rtitle = assignQInfo.assignTitle;
-
-  //var assignQInfo =  _queryAssignInfo(reviewQInfo.assignID);
 
   Future<AssignmentSubmissionInfo> _queryAssignSubmits(int assignID) async {
     int accountID = studentAccountInfo.accountID;
@@ -285,20 +240,6 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
         AssignmentQuestionInfo.tableName, '*', 'assignID=$assignID');
 
     return AssignmentQuestionInfo.fromMap(map.first);
-    /*Future<Database> db = openDatabase(
-      join(await getDatabasesPath(), 'learningApp_database.db'),
-    );
-    Database dbRef = await db;
-
-    var res = await dbRef.query(
-      AssignmentQuestionInfo.tableName,
-      where: 'assignID = ?',
-      whereArgs: [assignID],
-    );
-
-    dbRef.close();
-
-    return AssignmentQuestionInfo.fromMap(res.first);*/
   }
 
   String assignContent;

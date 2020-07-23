@@ -1,10 +1,6 @@
 import 'dart:async';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 
 import '../../CreateDB.dart';
-import 'StudentAssignSubmitPage.dart';
-import 'StudentAssignReviewPage.dart';
 import 'package:flutter/material.dart';
 import './PeerReviewAssignSubmit.dart';
 import '../../REST_API.dart';
@@ -86,27 +82,11 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
           ),
         ));
   }
-/*Future<String> getReviewTitle() async{
-  var reviewTitle = await _queryPeerReviewInfo().
-}*/
 
   Widget _buildPeerReviewRow(BuildContext context, int i) {
-    String reviewTitle = 'math';
+    String reviewTitle = 'English';
 
-    /*var reviewList = await _queryPeerReviewInfo();
-      var reviewTitle = reviewList[i].reviewTitle;
-      return reviewTitle;
-    }*/
-    /*String () async {
-      var reviewList = await _queryPeerReviewInfo();
-      var reviewTitle = reviewList[i].reviewTitle;
-      return reviewTitle;
-    }*/
-
-    ;
     return ListTile(
-      //title: Text('' //.,
-      //  ), //find a way to retrieve review assignment title
       trailing: Icon(Icons.chevron_right),
       onTap: () async {
         int now = DateTime.now().millisecondsSinceEpoch;
@@ -120,10 +100,7 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
         print(assignQuestionInfo.assignTitle);
         print(userInfo.accountID);
 
-        //if (peerReviewInfo.first.dueDate > now) {
-        // call Abdullah's peer review submissions page
-        //() async {
-        if (peerReviewInfo[i].dueDate < now ||
+        if (peerReviewInfo[i].dueDate > now &&
             peerReviewInfo[i].content == null) {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             reviewTitle = assignQuestionInfo.assignTitle;
@@ -133,36 +110,15 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
           }));
         } else {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            //reviewTitle = assignQuestionInfo.assignTitle;
-            //String reviewQuestion = assignQuestionInfo.content;
             return PeerReviewAssignReviewPage(
                 assignQuestionInfo, assignSubmitInfo, peerReviewInfo[i]);
           }));
         }
-        //deleted a }
-        //} else {
-        // call peer review outcome page
-        //}
       },
       title: Text(reviewTitle),
     );
   }
 
-  // Future<List<PeerReviewInfo>> _queryPeerReviewInfo(String assignTitle) async {
-  //   Future<Database> db =
-  //       openDatabase(join(await getDatabasesPath(), 'learningApp_database.db'));
-  //   Database dbRef = await db;
-
-  //   var res = await dbRef.query(
-  //     PeerReviewInfo.tableName,
-  //     where: 'courseID = ? AND assignTitle = ? AND reviewerEmail = ?',
-  //     whereArgs: [courseID, assignTitle, email],
-  //   );
-
-  //   return List.generate(
-  //       res.length, (index) => PeerReviewInfo.fromMap(res[index]));
-  // }
-//removing the parameter assigntitle
   Future<List<PeerReviewInfo>> _queryPeerReviewInfo() async {
     int accountID = userInfo.accountID;
     var res = await restQuery(PeerReviewInfo.tableName, '*',
@@ -173,8 +129,7 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
 
   Future<AssignmentSubmissionInfo> _queryAssignSubmits(
       int assignID, int i) async {
-    var peerReviewInfo = await _queryPeerReviewInfo();
-    int accountID = peerReviews[i].reviewedID; //userInfo.accountID;
+    int accountID = peerReviews[i].reviewedID;
 
     var map = await restQuery(AssignmentSubmissionInfo.tableName, '*',
         '(studentID=$accountID)and(assignID=$assignID)');

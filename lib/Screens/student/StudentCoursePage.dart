@@ -87,16 +87,13 @@ class StudentCoursePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            //changing type of peerReviewTitles from List<String> to List<PeerReviewInfo>
             List<PeerReviewInfo> peerReviewTitles =
                 await _queryPeerReviewInfo();
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
               return PeerReviewPage(studentInfo, courseID, peerReviewTitles);
             }));
-            // Add your onPressed code here!
           },
           label: Text('Peer Review'),
-          //icon: Icon(Icons.thumb_up),
           backgroundColor: Colors.grey),
     );
   }

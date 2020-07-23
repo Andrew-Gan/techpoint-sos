@@ -52,14 +52,8 @@ class PeerReviewAssignReviewPage extends StatelessWidget {
                           TextEditingController(text: assignSInfo.content),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        /*labelText:
-                                'insert student submission here I am trying to see how far this wifget will go... ',*/
                       ),
                       maxLines: null,
-
-                      //maxLines: 1,
-                      //obscureText: true,
-                      //controller: ansController,
                       enabled: false,
                     )),
                 Padding(
@@ -75,30 +69,13 @@ class PeerReviewAssignReviewPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, top: 15.0),
                   child: Text(
-                    peerReviews
-                        .content, //reviewer's response (peerReviewInfo[i].content)
+                    peerReviews.content, //reviewer's response
                     maxLines: 5,
                     style: TextStyle(
                       fontSize: 16.0,
                     ),
                   ),
                 ),
-                /*Padding(
-                  padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 140.0),
-                  child: Text(
-                    'Given score',
-                    maxLines: 15,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 25.0, top: 15.0),
-                  child: Text(assignSInfo.recScore.toString() + ' / ' +
-                    assignQInfo.maxScore.toString()),
-                ),*/
                 Padding(
                   padding: EdgeInsets.only(left: 25.0, top: 50.0),
                   child: Text(
@@ -113,7 +90,6 @@ class PeerReviewAssignReviewPage extends StatelessWidget {
                   padding: EdgeInsets.only(left: 25.0, top: 15.0),
                   child: Text(
                     'Not Graded yet',
-                    /*assignSInfo.remarks,//create peerReviewInfo remarks*/
                     style: TextStyle(
                       fontSize: 16.0,
                     ),
