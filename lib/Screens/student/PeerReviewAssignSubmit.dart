@@ -38,9 +38,6 @@ class _PeerReviewSubmitPageState extends State<PeerReviewSubmitPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(reviewQInfo.reviewTitle);
-    print(reviewQInfo.reviewerID);
-    print(reviewQInfo.reviewedID);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(

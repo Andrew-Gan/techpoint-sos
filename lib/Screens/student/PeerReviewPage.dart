@@ -95,10 +95,6 @@ class _PeerReviewPageState extends State<PeerReviewPage> {
             await _queryAssignSubmits(peerReviewInfo[i].assignID, i);
         var assignQuestionInfo =
             await _queryAssignInfo(peerReviewInfo[i].assignID);
-        print(peerReviewInfo[i].content);
-        print(assignSubmitInfo.content);
-        print(assignQuestionInfo.assignTitle);
-        print(userInfo.accountID);
 
         if (peerReviewInfo[i].dueDate > now &&
             peerReviewInfo[i].content == null) {
