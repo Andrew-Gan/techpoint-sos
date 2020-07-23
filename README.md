@@ -39,25 +39,13 @@ You may refer to this [guide](https://developer.android.com/studio/debug/dev-opt
 **Note**: troubleshoot by running the 'flutter doctor -v' command in the terminal.
 
 ## Preview
-<kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_login.png" width=200 height=400 /></kbd>
-<kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_profile.png" width=200 height=400 /></kbd>
-<kbd><img src="https://github.com/Andrew-Gan/techpoint-sos/blob/master/img/preview_assignment.png" width=200 height=400 /></kbd>
-
-## Test accounts
-Account privilege: admin  
-email: gan35@purdue.edu  
-pw: 1234567890  
-
-Account privilege: teacher  
-email: teacher00@purdue.edu  
-pw: 123456  
-  
-Account privilege: student  
-email: student00@purdue.edu, student01@purdue.edu, student02@purdue.edu  
-pw: 123456  
+<kbd><img src="img/preview_login.png" width=200 height=400 /></kbd>
+<kbd><img src="img/preview_profile.png" width=200 height=400 /></kbd>
+<kbd><img src="img/preview_assignment.png" width=200 height=400 /></kbd>
 
 ## Documentation
-[Documentation for Each1Teach1](https://andrew-gan.github.io/techpoint-sos) updated as of July 21 2020
+[Documentation for Each1Teach1](https://andrew-gan.github.io/techpoint-sos)  
+updated as of July 21 2020
 
 ## References
 [Item listing and generation](https://codelabs.developers.google.com/codelabs/first-flutter-app-pt1)  
