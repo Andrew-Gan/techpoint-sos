@@ -1,5 +1,10 @@
 # Techpoint's SOS Challenge
 June 22, 2020 - July 24, 2020  
+  
+Each1Teach1 is an application that enhances students' online learning experience in response to the COVID-19 pandemic that forced schools to switch to online learning. The app includes remote assignment submission, peer review and reward redemption features.  
+  
+This work was submited as part of [TechPoint](https://techpoint.org/)'s [SOS Challenge](https://techpoint.org/2020/05/techpointsoschallenge/).  
+Click [here](https://devpost.com/software/sos-challenge) to learn more.
 
 ## Team members  
 **Go squad (Marketing)** - John Kaufeld, Kaitlin Walper  
