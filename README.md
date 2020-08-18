@@ -49,10 +49,6 @@ You may refer to this [guide](https://developer.android.com/studio/debug/dev-opt
 <kbd><img src="img/preview_profile.png" width=200 height=400 /></kbd>
 <kbd><img src="img/preview_assignment.png" width=200 height=400 /></kbd>
 
-## Documentation
-[Documentation for Each1Teach1](https://andrew-gan.github.io/techpoint-sos)  
-updated as of July 21 2020
-
 ## References
 [Item listing and generation](https://codelabs.developers.google.com/codelabs/first-flutter-app-pt1)  
 [UI interaction and navigation](https://codelabs.developers.google.com/codelabs/first-flutter-app-pt2)  
